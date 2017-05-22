@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<billStatus>
+  <bill>
+    <subjects>
+      <billSubjects>
+        <policyArea>
+          <name>Congress</name>
+        </policyArea>
+        <legislativeSubjects>
+          <item>
+            <name>Congressional operations and organization</name>
+          </item>
+        </legislativeSubjects>
+      </billSubjects>
+    </subjects>
+    <amendments />
+    <recordedVotes />
+    <sponsors>
+      <item>
+        <firstName>PETE</firstName>
+        <fullName>Rep. Sessions, Pete [R-TX-32]</fullName>
+        <state>TX</state>
+        <identifiers>
+          <lisID>1525</lisID>
+          <gpoId>8188</gpoId>
+          <bioguideId>S000250</bioguideId>
+        </identifiers>
+        <middleName />
+        <lastName>SESSIONS</lastName>
+        <district>32</district>
+        <bioguideId>S000250</bioguideId>
+        <byRequestType />
+        <party>R</party>
+      </item>
+      <item>
+        <firstName>PETE</firstName>
+        <fullName>Rep. Sessions, Pete [R-TX-32]</fullName>
+        <state>TX</state>
+        <identifiers>
+          <lisID>1525</lisID>
+          <gpoId>8188</gpoId>
+          <bioguideId>S000250</bioguideId>
+        </identifiers>
+        <middleName />
+        <lastName>SESSIONS</lastName>
+        <district>32</district>
+        <bioguideId>S000250</bioguideId>
+        <byRequestType />
+        <party>R</party>
+      </item>
+    </sponsors>
+    <createDate>2015-01-07T09:38:03Z</createDate>
+    <updateDate>2017-02-14T20:05:58Z</updateDate>
+    <billType>HCONRES</billType>
+    <cboCostEstimates />
+    <calendarNumbers />
+    <notes />
+    <committeeReports />
+    <constitutionalAuthorityStatementText />
+    <introducedDate>2015-01-06</introducedDate>
+    <title>Regarding consent to assemble outside the seat of government.</title>
+    <cosponsors />
+    <summaries>
+      <billSummaries>
+        <item>
+          <versionCode>00</versionCode>
+          <text><![CDATA[<p>Authorizes the Speaker of the House and the Majority Leader of the Senate, or their respective designees, to notify the Members of the House and the Senate, respectively, to assemble at a place outside the District of Columbia whenever, in their opinion, the public interest shall warrant it.</p>]]></text>
+          <actionDesc>Introduced in House</actionDesc>
+          <lastSummaryUpdateDate>2015-01-16T17:59:10Z</lastSummaryUpdateDate>
+          <name>Introduced in House</name>
+          <actionDate>2015-01-06</actionDate>
+          <updateDate>2015-01-06T05:00:00Z</updateDate>
+        </item>
+        <item>
+          <versionCode>81</versionCode>
+          <text><![CDATA[<p>(This measure has not been amended since it was introduced. The summary of that version is repeated here.)</p> <p>Authorizes the Speaker of the House and the Majority Leader of the Senate, or their respective designees, to notify the Members of the House and the Senate, respectively, to assemble at a place outside the District of Columbia whenever, in their opinion, the public interest shall warrant it.</p>]]></text>
+          <actionDesc>Passed House without amendment</actionDesc>
+          <lastSummaryUpdateDate>2015-02-06T21:52:55Z</lastSummaryUpdateDate>
+          <name>Passed House without amendment</name>
+          <actionDate>2015-01-06</actionDate>
+          <updateDate>2015-01-06T20:45:01Z</updateDate>
+        </item>
+      </billSummaries>
+    </summaries>
+    <originChamber>House</originChamber>
+    <titles>
+      <item>
+        <titleType>Official Title as Introduced</titleType>
+        <chamberName />
+        <chamberCode />
+        <parentTitleType />
+        <title>Regarding consent to assemble outside the seat of government.</title>
+      </item>
+      <item>
+        <titleType>Display Title</titleType>
+        <chamberName />
+        <chamberCode />
+        <parentTitleType />
+        <title>Regarding consent to assemble outside the seat of government.</title>
+      </item>
+    </titles>
+    <congress>114</congress>
+    <policyArea>
+      <name>Congress</name>
+    </policyArea>
+    <committees>
+      <billCommittees />
+    </committees>
+    <latestAction>
+      <actionDate>2015-01-07</actionDate>
+      <text>Received in the Senate.</text>
+      <links />
+    </latestAction>
+    <actions>
+      <actionByCounts>
+        <senate>1</senate>
+        <houseOfRepresentatives>6</houseOfRepresentatives>
+      </actionByCounts>
+      <item>
+        <actionDate>2015-01-07</actionDate>
+        <committee />
+        <links />
+        <sourceSystem>
+          <code>0</code>
+          <name>Senate</name>
+        </sourceSystem>
+        <text>Received in the Senate.</text>
+        <type>IntroReferral</type>
+      </item>
+      <item>
+        <committee />
+        <actionDate>2015-01-06</actionDate>
+        <text>Motion to reconsider laid on the table Agreed to without objection.</text>
+        <actionCode>H38310</actionCode>
+        <actionTime>18:33:25</actionTime>
+        <sourceSystem>
+          <code>2</code>
+          <name>House floor actions</name>
+        </sourceSystem>
+        <links />
+        <type>Floor</type>
+      </item>
+      <item>
+        <committee />
+        <actionDate>2015-01-06</actionDate>
+        <text>On agreeing to the resolution Agreed to without objection. (text: CR H32)</text>
+        <actionCode>H37100</actionCode>
+        <actionTime>18:32:50</actionTime>
+        <sourceSystem>
+          <code>2</code>
+          <name>House floor actions</name>
+        </sourceSystem>
+        <links>
+          <link>
+            <url>https://www.congress.gov/congressional-record/volume-161/house-section/page/H32</url>
+            <name>H32</name>
+          </link>
+        </links>
+        <type>Floor</type>
+      </item>
+      <item>
+        <committee />
+        <actionDate>2015-01-06</actionDate>
+        <text>Passed/agreed to in House: On agreeing to the resolution Agreed to without objection.(text: CR H32)</text>
+        <actionCode>8000</actionCode>
+        <actionTime>18:32:50</actionTime>
+        <sourceSystem>
+          <code>9</code>
+          <name>Library of Congress</name>
+        </sourceSystem>
+        <links>
+          <link>
+            <url>https://www.congress.gov/congressional-record/volume-161/house-section/page/H32</url>
+            <name>H32</name>
+          </link>
+        </links>
+        <type>Floor</type>
+      </item>
+      <item>
+        <committee />
+        <actionDate>2015-01-06</actionDate>
+        <text>Considered as privileged matter. (consideration: CR H32)</text>
+        <actionCode>H30000</actionCode>
+        <actionTime>18:32:37</actionTime>
+        <sourceSystem>
+          <code>2</code>
+          <name>House floor actions</name>
+        </sourceSystem>
+        <links>
+          <link>
+            <url>https://www.congress.gov/congressional-record/volume-161/house-section/page/H32</url>
+            <name>H32</name>
+          </link>
+        </links>
+        <type>Floor</type>
+      </item>
+      <item>
+        <committee />
+        <sourceSystem>
+          <code>9</code>
+          <name>Library of Congress</name>
+        </sourceSystem>
+        <text>Introduced in House</text>
+        <actionCode>Intro-H</actionCode>
+        <actionDate>2015-01-06</actionDate>
+        <links />
+        <type>IntroReferral</type>
+      </item>
+      <item>
+        <committee />
+        <sourceSystem>
+          <code>9</code>
+          <name>Library of Congress</name>
+        </sourceSystem>
+        <text>Introduced in House</text>
+        <actionCode>1000</actionCode>
+        <actionDate>2015-01-06</actionDate>
+        <links />
+        <type>IntroReferral</type>
+      </item>
+      <actionTypeCounts>
+        <introducedInHouse>1</introducedInHouse>
+        <passageOfAMeasure>1</passageOfAMeasure>
+        <introducedInTheHouse>1</introducedInTheHouse>
+        <passedAgreedToInHouse>1</passedAgreedToInHouse>
+        <introducedInSenate>1</introducedInSenate>
+        <considerationByHouse>1</considerationByHouse>
+        <motionToReconsiderResults>1</motionToReconsiderResults>
+      </actionTypeCounts>
+    </actions>
+    <laws />
+    <relatedBills />
+    <billNumber>1</billNumber>
+  </bill>
+  <dublinCore xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:format>text/xml</dc:format>
+    <dc:language>EN</dc:language>
+    <dc:rights>Pursuant to Title 17 Section 105 of the United States Code, this file is not subject to copyright protection and is in the public domain.</dc:rights>
+    <dc:contributor>Congressional Research Service, Library of Congress</dc:contributor>
+    <dc:description>This file contains bill summaries and statuses for federal legislation. A bill summary describes the most significant provisions of a piece of legislation and details the effects the legislative text may have on current law and federal programs. Bill summaries are authored by the Congressional Research Service (CRS) of the Library of Congress. As stated in Public Law 91-510 (2 USC 166 (d)(6)), one of the duties of CRS is "to prepare summaries and digests of bills and resolutions of a public general nature introduced in the Senate or House of Representatives". For more information, refer to the User Guide that accompanies this file.</dc:description>
+  </dublinCore>
+</billStatus>
+

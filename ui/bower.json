@@ -1,0 +1,30 @@
+{
+  "name": "easypolitics-ui",
+  "homepage": "https://github.com/abigpotostew/easypolitics-ui",
+  "authors": [
+    "stew.bracken@gmail.com"
+  ],
+  "description": "easypolitics-ui",
+  "main": "src/kotlin/bz/stew/bracken/Main.kt",
+  "keywords": [
+    "stew",
+    "bracken",
+    "kotlin",
+    "easy",
+    "politics",
+    "easypolitics"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "hover": "Hover#^2.1.0",
+    "bootstrap": "bootstrap#v4.0.0-alpha.6"
+  }
+}

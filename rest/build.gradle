@@ -1,0 +1,104 @@
+String buildOutDir = "build"
+String sharedSrc = "../shared/src/main/kotlin"
+String genTargetDir = "$buildOutDir/gen"
+
+
+buildscript {
+	ext {
+		//kotlinVersion = "1.1.2"
+		springBootVersion = '1.5.2.RELEASE'
+	}
+//	repositories {
+//		mavenCentral()
+//	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		//classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlin_version}")
+	}
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+//apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'easypolitics-rest'
+	version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/kotlin'
+	test.kotlin.srcDirs += 'src/test/kotlin'
+}
+
+
+//repositories {
+//	mavenCentral()
+//	//maven{ url 'http://repository.jetbrains.com/kotlin-nosql' }
+//}
+
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.springframework.boot:spring-boot-starter-data-rest")
+	compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+	//compile('org.springframework.boot:spring-boot-starter')
+	//compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+	compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
+	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}")
+	//compile("org.jetbrains.kotlin:kotlin-nosql-mongodb:0.1-SNAPSHOT")
+	compile project(':db')
+	compile 'org.litote.kmongo:kmongo:3.3.5'
+
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile project(':db').sourceSets.test.output
+
+	compile project(':shared')
+}
+
+task copySharedCode(type: Copy){
+	doFirst{
+		println("Copying shared code into $genTargetDir")
+	}
+	from sharedSrc
+	into genTargetDir
+	eachFile { println ("Copying: ${it.file}" )}
+	doLast{
+		println("finished copying '$sharedSrc' into '$genTargetDir'.")
+	}
+}
+
+
+assemble {
+	dependsOn copySharedCode
+}
+
+
+bootRun{
+   //debug = true
+	//run {
+		jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.db.name=congress2', '-Dbz.stewart.bracken.db.collection=bills115_load']
+	//}
+}
+
+test{
+	jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=y']
+}
+
+
+task bootRunDebug(){
+	doFirst{
+		boolean priorDebugVal = tasks.bootRun.debug
+		tasks.bootRun.debug = true
+		try{
+			tasks.bootRun.execute()
+		}finally{
+			tasks.run.debug = priorDebugVal
+		}
+	}
+}

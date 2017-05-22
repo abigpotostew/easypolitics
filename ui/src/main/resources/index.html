@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Billz kotlin</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="fixed-top">
+        <div class="collapse " id="navbarToggleExternalContent">
+            <div class="bg-inverse p-4">
+                <h4 class="text-white">Collapsed content</h4>
+                <span class="text-muted">Toggleable via the navbar brand.</span>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-inverse bg-inverse collapse">
+
+
+            <div style="display: inline-block;">
+                <ul class="nav navbar-nav" style="display: inline-block;">
+                    <li>
+                        <div class="navbar-header">
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li>
+                        <form class="form-inline my-2 my-lg-0 nav-item ">
+                            <label class="mr-sm-2 text-white" for="billFilter-party">Party:</label>
+                            <select class="custom-select form-inline mb-2 mr-sm-2 mb-sm-0" id="billFilter-party">
+                                <option selected value="NONE">All</option>
+                                <option value="DEMOCRAT">Democrat</option>
+                                <option value="REPUBLICAN">Rep</option>
+                                <option value="INDEPENDENT">Ind</option>
+                            </select>
+                        </form>
+                    </li>
+                    <li>
+                        <form class="form-inline mr-sm-2 text-white">
+                            <label class="mr-sm-2 text-white" for="billFilter-fixedstatus">Status:</label>
+                            <select class="custom-select form-inline mb-2 mr-sm-2 mb-sm-0" id="billFilter-fixedstatus">
+                                <option selected value="0">All</option>
+                            </select>
+                        </form>
+                    </li>
+                    <li class="form-inline">
+                        <form class="form-inline mr-sm-2 text-white">
+                            <label class="mr-sm-2 text-white" for="billFilter-dateintrostart">Introduced:</label>
+                            <input type="date" class="form-inline form-control" id="billFilter-dateintrostart">
+                            <label class="mr-sm-2 text-white" for="billFilter-dateintroend">-</label>
+                            <input type="date" class="form-inline form-control" id="billFilter-dateintroend">
+                        </form>
+                    </li>
+
+                    <li class="form-inline">
+                        <form class="form-inline mr-sm-2 text-white">
+                            <label class="mr-sm-2 text-white" for="billFilter-lastmajorstatus">Major Action:</label>
+                            <select class="custom-select form-inline mb-2 mr-sm-2 mb-sm-0" id="billFilter-lastmajorstatus">
+                                <option selected value="0">All</option>
+                            </select>
+                        </form>
+
+                    </li>
+
+                </ul>
+
+                <span class="navbar-text" id="nav-bar-billCount">
+                     Showing 0 bills
+                 </span>
+            </div>
+
+
+
+        </nav>
+    </div>
+    <br><br><br><br><br><br><br>
+    <div id="root" class="container-fluid">
+        <div id="bills" class="card-deck">
+            <div class="bill" id="bill_template" style="display: none">
+                <div class="card billGridContent hvr-fade" style="">
+                    <h4 class="billTitle card-header"></h4>
+                    <div class="card-block">
+                        <h6 class="billSponsor card-text card-subtitle"></h6>
+                        <h7 class="billStatus card-text card-subtitle"></h7>
+                        <p class="billDescription card-text multiline-ellipses5"></p>
+                        <!--multiline-ellipses-->
+                        <!--<a href="#" class="billExpander btn btn-primary">More</a>-->
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted billDate">Last updated 3 mins ago</small>
+                    </div>
+                </div>
+
+                <div class="card billExpanded" style="display: none;">
+                    <div class="card-header">
+                        <!--<h4 class="billTitle card-header"></h4>-->
+                        <ul class="nav nav-tabs  flex-column flex-sm-row card-header-tabs" role="tablist">
+                            <li class="flex-sm-fill text-sm-center nav-item">
+                                <a class="nav-link active bill-exp-nav-tab0" data-toggle="tab" href="#bill-exp-nav-tab0" role="tab">Bill</a>
+                            </li>
+                            <li class="flex-sm-fill text-sm-center nav-item">
+                                <a class="nav-link bill-exp-nav-tab1" data-toggle="tab" href="#bill-exp-nav-tab1" role="tab">Contact</a>
+                            </li>
+                            <li class="flex-sm-fill text-sm-center nav-item">
+                                <a class="nav-link bill-exp-nav-tab2" data-toggle="tab" href="#bill-exp-nav-tab2" role="tab">Related Bills</a>
+                            </li>
+                            <li class="flex-sm-fill text-sm-center nav-item">
+                                <a class="nav-link bill-exp-nav-tab3" data-toggle="tab" href="#bill-exp-nav-tab3" role="tab">Pizza</a>
+                            </li>
+                            <!--<li class="flex-sm-fill text-sm-center nav-item">-->
+                                <!--<a class="nav-link bill-exp-nav-tab3" data-toggle="tab" href="#bill-exp-nav-tab3" role="tab">More</a>-->
+                            <!--</li>-->
+                        </ul>
+                    </div>
+                    <!-- Tab panes -->
+                    <!--<div class="card-block">-->
+                    <div class="tab-content">
+                        <div class="tab-pane active card-block" id="bill-exp-nav-tab0" role="tabpanel">
+
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="billStatus card-text card-subtitle"></h6>
+                                        <p class="billDescription card-text"></p>
+                                        <p class="billDate card-text"></p>
+                                        <p class="billStatusDescription"></p>
+                                        <p class="billLinkContainer">
+                                            <a href="#" class="billLink" target="_blank"></a>
+                                        </p>
+                                        <div class="btn-group mr-2 billTracker" role="group" aria-label="First group">
+                                            <button type="button" class="btn btn-secondary billTracker-intro">Introduced</button>
+                                            <button type="button" class="btn btn-secondary billTracker-house">Passed House</button>
+                                            <button type="button" class="btn btn-secondary billTracker-senate">Passed Senate</button>
+                                            <button type="button" class="btn btn-secondary billTracker-president">President</button>
+                                            <button type="button" class="btn btn-secondary billTracker-law">Law</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+
+                                        <div class="card billExpandedSponsorData" style="/*width: 20rem;*/">
+                                            <img class="card-img-top billExpandedSponsorImg" src="" alt="Bill sponsor">
+                                            <div class="card-block">
+                                                <h5 class="billSponsor card-title"></h5>
+                                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="tab-pane card-block" id="bill-exp-nav-tab1" role="tabpanel">
+
+                        </div>
+                        <div class="tab-pane card-block" id="bill-exp-nav-tab2" role="tabpanel">...</div>
+                        <div class="tab-pane card-block" id="bill-exp-nav-tab3" role="tabpanel">PIZZAPIZZAPIZZA</div>
+                    </div>
+                    <!--</div>-->
+
+
+                </div>
+
+                <!--<div class="row ">-->
+                    <!--<div class="col">-->
+
+
+
+
+
+
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="billExpanded">-->
+
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/velocity/1.4.0/velocity.min.js"></script>
+    <script src="//cdn.jsdelivr.net/velocity/1.4.0/velocity.ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="lib/kotlin.js"></script>
+    <script type="text/javascript" src="easypolitics-ui.js"></script>
+</body>
+
+
+</html>

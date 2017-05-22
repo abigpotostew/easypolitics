@@ -1,0 +1,41 @@
+
+apply plugin: 'kotlin2js'
+//apply plugin: 'kotlin'
+//
+//buildscript {
+//    ext.kotlin_version = '1.1.2'
+//    repositories {
+//        mavenCentral()
+//    }
+//    dependencies {
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//    }
+//}
+
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/kotlin'
+    //test.kotlin.srcDirs += 'src/test/kotlin'
+}
+dependencies{
+//    compile "org.litote.kmongo:kmongo:3.3.5"
+//    compile 'io.github.microutils:kotlin-logging:1.4.3'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:${kotlin_version}" //for kot>=1.1
+}
+
+compileKotlin2Js {
+    kotlinOptions.metaInfo = true
+    kotlinOptions.sourceMap = true
+    kotlinOptions.outputFile = "shared/build/shared.js"
+    kotlinOptions.suppressWarnings = true
+    kotlinOptions.verbose = true
+
+}
+
+jar.dependsOn(compileKotlin2Js)
+task outJar(type: Jar) {
+    archiveName = "hello_js.jar"
+    from("build") {
+        include '**'
+    }
+    with jar
+}

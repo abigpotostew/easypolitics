@@ -1,0 +1,20 @@
+/**
+ * Adapted for javascript compilation from https://github.com/TinyMission/kara
+ * original license: https://www.apache.org/licenses/LICENSE-2.0
+ */
+package kotlinx.html
+
+enum class ButtonType : StringEnum<ButtonType> {
+    button, reset, submit;
+
+    override val value: String get() = name
+}
+
+enum class InputType : StringEnum<InputType> {
+    button, checkbox, file, hidden, image, password, radio, reset, submit, text,
+
+    // HTML5:
+    color, date, datetime, datetime_local, email, number, range, search, tel, time, url, month, week;
+
+    override val value: String = name.replace('_', '-')
+}

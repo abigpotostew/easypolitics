@@ -1,0 +1,196 @@
+import com.wiredforcode.gradle.spawn.*
+
+String projectDir = file(".")
+String baseBuildDir = file("build")
+String testMainDir = file("src/test")
+
+String mainResourcesRel = "main"
+String testResourcesRel = "test"
+
+String sharedSrc = "../shared/src/main/kotlin"
+String genTargetDir = "build/gen"
+//String genTargetDir = baseBuildDir + 'gen'
+
+String resourcesDir = "src/main/resources"
+
+String MAIN_CLASS = 'bz.stewart.bracken.db.MainKt'
+
+//
+
+buildscript {
+    ext.kotlin_version = '1.1.2'
+
+    repositories {
+        mavenCentral()
+
+        maven { url 'http://dl.bintray.com/vermeulen-mp/gradle-plugins' }
+        //jcenter() //argparser
+        //maven{url 'https://dl.bintray.com/xenomachina/maven'}
+
+    }
+
+    dependencies {
+        //classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.wiredforcode:gradle-spawn-plugin:0.6.0'
+
+    }
+}
+
+
+apply plugin: "kotlin"
+apply plugin: 'com.wiredforcode.spawn'
+apply plugin: 'application'
+
+defaultTasks 'run'
+
+repositories {
+    //mavenCentral()
+    //maven{url 'https://dl.bintray.com/xenomachina/maven/'}
+    //maven{  url 'http://repository.jetbrains.com/kotlin-nosql' }
+    //jcenter()
+    maven{url 'https://dl.bintray.com/xenomachina/maven'}
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile "org.litote.kmongo:kmongo:3.3.5"
+    compile 'io.github.microutils:kotlin-logging:1.4.3'
+    //compile("org.jetbrains.kotlin:kotlin-nosql-mongodb:0.1-SNAPSHOT")
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.22' //required at compile time
+    //runtime group: 'org.slf4j', name: 'slf4j-api', version: '1.7.22' //required at compile time
+    compile "com.xenomachina:kotlin-argparser:2.0.0"
+
+    //this causes rest porject to fail, need to understand fix
+    //runtime 'org.slf4j:slf4j-log4j12:1.7.24'// required at runtime...
+
+    //runtime 'startdb'
+
+    testCompile 'junit:junit:4.9'
+    testCompile "org.mockito:mockito-core:1.9.5"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+    compile project(':shared')
+
+    runtime "org.slf4j:log4j-over-slf4j:1.7.24"
+
+
+    //compile files(sharedSrc)
+    //compile task copySharedCode
+
+}
+
+
+
+
+
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/kotlin'
+    main.kotlin.srcDirs += 'build/gen'
+    //main.kotlin.srcDirs += '../shared/src/main'
+    test.kotlin.srcDirs += 'src/test/kotlin'
+
+    //main.java.srcDirs += 'src/main/myJava'
+}
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+
+}
+
+compileKotlin {
+    kotlinOptions.suppressWarnings = true
+}
+
+
+task startdb(type: SpawnProcessTask, dependsOn: 'assemble'){
+
+    command "mongod --dbpath /Users/stew/Documents/db/congress1"
+    ready 'waiting for connections on port'
+
+}
+task stopdb(type: KillProcessTask)
+
+task copyMainResources(dependsOn:build){
+
+    doFirst{
+        println("COPYING resources into build folder...")
+    }
+
+    dependencies{
+        build
+        //runtime files('resources')//, 'resources/index.html')
+    }
+    doLast {
+        copy {
+            from resourcesDir
+            into "${baseBuildDir}"
+            exclude {details -> details.isDirectory()}
+            //include['*.html', '*.js', '*.css']
+            /*exclude { details ->
+                details.file.name.endsWith('.html') &&
+                        details.file.text.contains('staging')
+            }*/
+            eachFile { println ("Copying resource for build: ${it.file}" )}
+        }
+
+
+        println("Finished copying resources into build folder...")
+    }
+
+
+}
+
+
+test{
+    systemProperty "test.resources", "$baseBuildDir/resources/test"
+    //systemProperty "test.resources", project.getProperty("test.resources") // can use gw test -Ptest.resources=sdfasd
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': "$MAIN_CLASS"
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+
+
+run {
+    mainClassName = "$MAIN_CLASS"
+    //systemProperty "-data", project.getProperty("data") // can use gw test -Ptest.resources=sdfasd
+    if ( project && project.hasProperty("appArgs") ) {
+        args Eval.me(appArgs)
+    }
+
+}
+
+task debugRun(dependsOn:build){
+    doFirst{
+        tasks.run.debug = true
+        try{
+            tasks.run.execute()
+        }finally{
+            tasks.run.debug = false
+        }
+    }
+}
+
+task copySharedCode(type: Copy){
+    doFirst{
+        println("Copying shared code into $genTargetDir")
+    }
+    from sharedSrc
+    into genTargetDir
+    eachFile { println ("Copying: ${it.file}" )}
+    doLast{
+        println("finished copying '$sharedSrc' into '$genTargetDir'.")
+    }
+}
+
+
+assemble {
+    dependsOn copySharedCode
+}

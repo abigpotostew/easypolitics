@@ -1,0 +1,150 @@
+//group 'bz.stewart.bracken'
+
+version '1.0-SNAPSHOT'
+
+String projName = "easypolitics-ui" //${project.name}
+String confidence = "internal"
+String buildRootDir = "${projectDir}/build"
+String buildOutDir = "${buildRootDir}/${confidence}/${projName}"
+
+String sharedSrc = "../shared/src/main/kotlin"
+String genTargetDir = "$buildOutDir/gen"
+
+String resourcesDir = "src/main/resources"
+
+buildscript {
+    ext.kotlin_version = project.kotlin_version
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+    }
+}
+
+//////////////////////////////////////////////////////
+
+apply plugin: 'kotlin2js'
+
+repositories {
+    mavenCentral()
+//    maven{
+//        url "http://nexus.yested.net/nexus/content/repositories/releases/"
+//    }
+}
+compileKotlin2Js {
+    kotlinOptions.metaInfo = true
+    kotlinOptions.outputFile = "${buildOutDir}/${projName}.js"
+    kotlinOptions.sourceMap = true
+    //kotlinOptions.suppressWarnings = false
+    kotlinOptions.verbose = true
+
+    kotlinOptions.moduleKind = "umd"
+    //kotlin.incremental=true //only re-build changed files
+}
+
+
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/kotlin'
+    main.kotlin.srcDirs += genTargetDir
+    //main.kotlin.srcDirs += project(':shared').sourceSets.main.kotlin.srcDirs//doesn't work
+    //main.kotlin.srcDirs += "../shared/src/main"// this also seems to jack up my rest build
+}
+
+dependencies {
+    //compile project(':shared')
+    //compile "org.jetbrains.kotlin:kotlin-js-library:${project.kotlin_version}" //for kot<1.1
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:${project.kotlin_stdlib_js_version}" //for kot>=1.1
+    //compile "net.yested:Yested:0.0.98"
+
+    //compile 
+    //compile
+    //compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    //testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+    //testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+    //runtime ([copyJsResources])
+
+    compile project(':shared')
+
+}
+
+task copyJsResources(dependsOn:build){
+
+    doFirst{
+        println("COPYING resources from $resourcesDir into build directory $buildOutDir")
+    }
+
+    dependencies{
+        //build
+        //compile files(resourcesDir)//, '${resourcesDir}/index.html') //using an html file here breaks intellij
+    }
+    doLast {
+        copy {
+            from resourcesDir
+            into "${buildOutDir}"
+            exclude {details -> details.isDirectory()}
+            eachFile { println ("Copying resource for build: ${it.file}" )}
+        }
+        //copy kotlin.js into lib folder
+        configurations.compile.each { File file ->
+            copy {
+                includeEmptyDirs = false
+                from zipTree(file.absolutePath)
+                into "${buildOutDir}/lib"
+                include { fileTreeElement ->
+                    def path = fileTreeElement.path
+                    path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+                }
+            }
+        }
+
+        println("Copied kotlin.js from jar")
+        println("Finished copying resources into build folder...")
+    }
+
+
+}
+
+//task copyKotlinJsLib(dependsOn: [build]){
+//
+//}
+
+tasks.build.doLast() {
+    tasks.copyJsResources.execute()
+    //tasks.copyKotlinJsLib.execute()
+
+    println("Finished build!")
+}
+
+task cleaner(type: Delete) {
+    doLast{
+        [buildRootDir, "out"].each({ String s->
+            println("Deleting: ${s}")
+            delete s
+        })
+        followSymlinks = true
+    }
+}
+tasks.clean.doLast{
+    tasks.cleaner.execute()
+}
+
+
+
+task copySharedCode(type: Copy){
+    doFirst{
+        println("Copying shared code into $genTargetDir")
+    }
+    from sharedSrc
+    into genTargetDir
+    eachFile { println ("Copying: ${it.file}" )}
+    doLast{
+        println("finished copying '$sharedSrc' into '$genTargetDir'.")
+    }
+}
+
+
+assemble {
+    dependsOn copySharedCode
+}
