@@ -1,19 +1,15 @@
 package bz.stewart.bracken.legislators
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import java.io.File
-import java.nio.file.Files
+import com.fasterxml.jackson.module.kotlin.readValue
 
 class LegislatorRuntime(private val args: Arguments) {
 
-   private var socialFile:File? = null
+   private var socialFile: java.io.File? = null
 
    fun invalidArgsMessage():String?{
-      for (f: File in args.files){
-         if(!validYamlFile(f)){
-            return "File '$f' is unreadable, or is not a .yaml file. Only accepts files ending with .yaml."
+      for (f: java.io.File in args.files){
+         if(!validJsonFile(f)){
+            return "File '$f' is unreadable, or is not a .json file. Only accepts files ending with .json."
          }
       }
 
@@ -22,9 +18,9 @@ class LegislatorRuntime(private val args: Arguments) {
       }
 
       if(!args.socialMediaFiles.isNullOrBlank()){
-         val _socialFile = File(args.socialMediaFiles)
-         if(!validYamlFile(_socialFile)){
-            return "Social file is unreadable or not a yaml file: ${args.socialMediaFiles}"
+         val _socialFile = java.io.File(args.socialMediaFiles)
+         if(!validJsonFile(_socialFile)){
+            return "Social file is unreadable or not a json file: ${args.socialMediaFiles}"
          }
          socialFile = _socialFile
       }
@@ -32,22 +28,36 @@ class LegislatorRuntime(private val args: Arguments) {
       return null
    }
 
-   private fun validYamlFile(file:File):Boolean{
-      return file.isFile && file.canRead() && (file.extension.equals("yaml") || file.extension.equals("yml"))
+   private fun validJsonFile(file: java.io.File):Boolean{
+      return file.isFile && file.canRead() && (file.extension.equals("json") || file.extension.equals("jsn"))
    }
 
    fun execute() {
-      val mapper = ObjectMapper(YAMLFactory()) // Enable YAML parsing
-      mapper.registerModule(KotlinModule()) // Enable Kotlin support
+      //val mapper = ObjectMapper(YAMLFactory()) // Enable YAML parsing
+      //mapper.registerModule(KotlinModule()) // Enable Kotlin support
+      val mapper = com.fasterxml.jackson.module.kotlin.jacksonObjectMapper()
 
-      val legs = mutableListOf<LegislatorsYaml>()
+
+      val legs = mutableListOf<LegislatorData>()
       for ( f in args.files ) {
-         legs.add(Files.newBufferedReader(f.toPath()).use {
-            mapper.readValue(it, LegislatorsYaml::class.java)
+         legs.addAll(java.nio.file.Files.newBufferedReader(f.toPath()).use {
+            //mapper.readValue(it, LegislatorsYaml::class.java)
+            //mapper.readValue(it, LegislatorData::class.java)
+            val arr:List<LegislatorData> = mapper.readValue(it)
+            arr
+
+
+            //mapper.readValue(it, object : TypeReference<List<LegislatorData>>() {}) as List<LegislatorData>
+
+//            val myObjects:List<LegislatorData> = mapper.readValue(it,
+//               mapper.getTypeFactory().constructCollectionType(List::class.java, LegislatorData::class.java))
          })
       }
       for(l in legs){
-         l.legislators
+         val str = l.toString()
+         str[0]
+         //l.legislators
       }
    }
 }
+//gw :legislators:run -PappArgs="['-f', '/Users/stew/Documents/Code/github/congress-legislators/alternate_formats/legislators-current.json', '-s', '/Users/stew/Documents/Code/github/congress-legislators/alternate_formats/legislators-social-media.json', '-t', '-b', 'legislators1']"
