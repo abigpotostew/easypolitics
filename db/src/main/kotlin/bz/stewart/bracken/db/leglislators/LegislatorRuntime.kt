@@ -1,8 +1,8 @@
-package bz.stewart.bracken.legislators
+package bz.stewart.bracken.db.leglislators
 
 import com.fasterxml.jackson.module.kotlin.readValue
 
-class LegislatorRuntime(private val args: Arguments) {
+class LegislatorRuntime(private val args: LegislatorArguments) {
 
    private var socialFile: java.io.File? = null
 

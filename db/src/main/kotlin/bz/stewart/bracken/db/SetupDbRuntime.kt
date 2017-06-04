@@ -2,14 +2,14 @@ package bz.stewart.bracken.db
 
 import bz.stewart.bracken.db.database.DbItem
 import bz.stewart.bracken.db.database.TimedTransaction
-import bz.stewart.bracken.db.database.mongodb.MongoTransaction
+import bz.stewart.bracken.db.bill.database.mongodb.MongoTransaction
 import mu.KLogging
 import java.io.File
 
 /**
  * Created by stew on 3/11/17.
  */
-class SetupDbRuntime<Bill : DbItem>(var args: Arguments) : DbRuntime<Bill> {
+class SetupDbRuntime<Bill : DbItem>(var args: BillArguments) : DbRuntime<Bill> {
 
    companion object : KLogging()
 

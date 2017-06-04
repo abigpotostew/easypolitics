@@ -1,6 +1,6 @@
-package bz.stewart.bracken.db.database.mongodb
+package bz.stewart.bracken.db.bill.database.mongodb
 
-import bz.stewart.bracken.db.data.Bill
+import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.database.CollectionWriter
 import bz.stewart.bracken.db.database.Database
 import bz.stewart.bracken.db.database.emptyDatabaseWriter

@@ -4,11 +4,11 @@ import bz.stewart.bracken.db.AssertAllFound
 import bz.stewart.bracken.db.TestUtils.Methods.getTestResourcesData
 import bz.stewart.bracken.shared.DateUtils
 import bz.stewart.bracken.db.RuntimeMode
-import bz.stewart.bracken.db.data.Bill
-import bz.stewart.bracken.db.data.BillHistory
-import bz.stewart.bracken.db.data.Sponsor
-import bz.stewart.bracken.db.database.mongodb.BillJsonDataDatabase
-import bz.stewart.bracken.db.database.mongodb.SingleBillWriter
+import bz.stewart.bracken.db.bill.data.Bill
+import bz.stewart.bracken.db.bill.data.BillHistory
+import bz.stewart.bracken.db.bill.data.Sponsor
+import bz.stewart.bracken.db.bill.database.mongodb.BillJsonDataDatabase
+import bz.stewart.bracken.db.bill.database.mongodb.SingleBillWriter
 import bz.stewart.bracken.shared.data.BillType
 import org.junit.After
 import org.junit.Assert.assertTrue

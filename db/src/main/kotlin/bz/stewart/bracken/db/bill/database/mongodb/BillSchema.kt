@@ -1,4 +1,4 @@
-package bz.stewart.bracken.db.database.mongodb
+package bz.stewart.bracken.db.bill.database.mongodb
 
 //import bz.stewart.bracken.db.data.Bill
 //import kotlinx.nosql.Column

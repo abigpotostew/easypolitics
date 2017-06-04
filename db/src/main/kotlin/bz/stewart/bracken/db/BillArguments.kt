@@ -1,6 +1,6 @@
 package bz.stewart.bracken.db
 
-import bz.stewart.bracken.db.data.Bill
+import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.database.DbItem
 import com.xenomachina.argparser.ArgParser
 import java.io.File
@@ -9,7 +9,7 @@ import java.io.File
  * Immutable
  * Created by stew on 3/10/17.
  */
-class Arguments(parser: ArgParser) {
+class BillArguments(parser: ArgParser) {
    val data by parser.storing("-d", "--data",
                               help = "Path to the data folder from the bills script.") { File(this) }
 
@@ -39,7 +39,7 @@ class Arguments(parser: ArgParser) {
 enum class RuntimeMode {
    NONE, RESET, UPDATE;
 
-   fun getDbRuntime(args: Arguments): DbRuntime<out DbItem> {
+   fun getDbRuntime(args: BillArguments): DbRuntime<out DbItem> {
       return when (this) {
          NONE -> emptyDbRuntime()
          RESET, UPDATE -> SetupDbRuntime<Bill>(args)

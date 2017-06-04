@@ -1,7 +1,7 @@
 package bz.stewart.bracken.rest
 
-import bz.stewart.bracken.db.database.mongodb.BillMongoDb
-import bz.stewart.bracken.db.database.mongodb.ReadOnlyDatabase
+import bz.stewart.bracken.db.bill.database.mongodb.BillMongoDb
+import bz.stewart.bracken.db.bill.database.mongodb.ReadOnlyDatabase
 import org.litote.kmongo.KMongo
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

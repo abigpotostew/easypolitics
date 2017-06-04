@@ -1,4 +1,4 @@
-package bz.stewart.bracken.db.data.parse
+package bz.stewart.bracken.db.bill.data.parse
 
 import bz.stewart.bracken.shared.DateUtils
 import com.fasterxml.jackson.core.JsonGenerator

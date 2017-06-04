@@ -1,4 +1,4 @@
-package bz.stewart.bracken.db.data
+package bz.stewart.bracken.db.bill.data
 
 import bz.stewart.bracken.shared.data.PublicRelatedBill
 import com.fasterxml.jackson.annotation.JsonInclude

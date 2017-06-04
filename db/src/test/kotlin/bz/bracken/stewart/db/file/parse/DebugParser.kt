@@ -1,6 +1,6 @@
 package bz.bracken.stewart.db.file.parse
 
-import bz.stewart.bracken.db.data.Bill
+import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.file.parse.Parser
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper

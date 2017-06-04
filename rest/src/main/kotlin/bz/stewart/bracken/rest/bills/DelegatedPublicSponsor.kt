@@ -1,6 +1,6 @@
 package bz.stewart.bracken.rest.bills
 
-import bz.stewart.bracken.db.data.Sponsor
+import bz.stewart.bracken.db.bill.data.Sponsor
 import bz.stewart.bracken.shared.data.PublicSponsor
 
 /**

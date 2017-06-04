@@ -1,4 +1,4 @@
-package bz.stewart.bracken.db.database.mongodb
+package bz.stewart.bracken.db.bill.database.mongodb
 
 /**
  * Created by stew on 4/1/17.
