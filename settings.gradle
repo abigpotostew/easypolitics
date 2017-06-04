@@ -21,7 +21,7 @@ include 'db'
 include 'ui'
 include 'rest'
 include 'shared'
-include 'legislators'
+//include 'legislators'
 
 //subprojects{
     //common config here
