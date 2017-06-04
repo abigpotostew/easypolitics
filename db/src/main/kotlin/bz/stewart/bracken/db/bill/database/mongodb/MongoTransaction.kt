@@ -1,9 +1,9 @@
-package bz.stewart.bracken.db.database.mongodb
+package bz.stewart.bracken.db.bill.database.mongodb
 
-import bz.stewart.bracken.db.Arguments
+import bz.stewart.bracken.db.BillArguments
 import bz.stewart.bracken.db.RuntimeMode
 import bz.stewart.bracken.db.SetupDbRuntime
-import bz.stewart.bracken.db.data.Bill
+import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.database.CollectionWriter
 import bz.stewart.bracken.db.database.Transaction
 import com.mongodb.MongoTimeoutException
@@ -14,7 +14,7 @@ import java.io.File
 /**
  * Created by stew on 3/12/17.
  */
-class MongoTransaction(val args: Arguments) : Transaction<Bill, AbstractMongoDb<Bill>> {
+class MongoTransaction(val args: BillArguments) : Transaction<Bill, AbstractMongoDb<Bill>> {
    companion object : KLogging()
 
    val data: File = args.data

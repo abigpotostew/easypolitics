@@ -1,6 +1,6 @@
 package bz.stewart.bracken.rest
 
-import bz.stewart.bracken.db.database.mongodb.BillMongoDb
+import bz.stewart.bracken.db.bill.database.mongodb.BillMongoDb
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 

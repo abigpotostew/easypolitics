@@ -1,7 +1,7 @@
 package bz.stewart.bracken.rest.bills
 
-import bz.stewart.bracken.db.data.Bill
-import bz.stewart.bracken.db.data.parse.DbDateSerializer
+import bz.stewart.bracken.db.bill.data.Bill
+import bz.stewart.bracken.db.bill.data.parse.DbDateSerializer
 import bz.stewart.bracken.shared.data.*
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude

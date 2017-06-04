@@ -1,10 +1,6 @@
 package bz.stewart.bracken.db.database
 
-import bz.stewart.bracken.db.data.Bill
-import bz.stewart.bracken.db.database.mongodb.AbstractMongoDb
-import bz.stewart.bracken.db.database.mongodb.MongoTransaction
 import java.util.*
-import javax.xml.crypto.Data
 
 /**
  * Created by stew on 3/30/17.

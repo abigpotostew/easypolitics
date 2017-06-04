@@ -1,7 +1,7 @@
-package bz.stewart.bracken.db.data
+package bz.stewart.bracken.db.bill.data
 
-import bz.stewart.bracken.db.data.parse.DbDateSerializer
-import bz.stewart.bracken.db.data.parse.FlexibleDateParser
+import bz.stewart.bracken.db.bill.data.parse.DbDateSerializer
+import bz.stewart.bracken.db.bill.data.parse.FlexibleDateParser
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize

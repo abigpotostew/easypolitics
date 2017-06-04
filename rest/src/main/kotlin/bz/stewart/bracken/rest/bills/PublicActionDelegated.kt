@@ -1,6 +1,6 @@
 package bz.stewart.bracken.rest.bills
 
-import bz.stewart.bracken.db.data.Action
+import bz.stewart.bracken.db.bill.data.Action
 import bz.stewart.bracken.shared.data.PublicAction
 
 /**

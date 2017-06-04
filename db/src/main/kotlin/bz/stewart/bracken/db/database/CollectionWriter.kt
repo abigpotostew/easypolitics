@@ -1,7 +1,5 @@
 package bz.stewart.bracken.db.database
 
-import bz.stewart.bracken.db.data.Bill
-
 /**
  * Created by stew on 3/9/17.
  */

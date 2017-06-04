@@ -1,7 +1,7 @@
-package bz.stewart.bracken.db.database.mongodb
+package bz.stewart.bracken.db.bill.database.mongodb
 
 //import org.litote.kmongo.MongoOperator
-import bz.stewart.bracken.db.data.Bill
+import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.database.CollectionWriter
 import com.mongodb.MongoWriteException
 import org.litote.kmongo.save

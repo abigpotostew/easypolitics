@@ -1,8 +1,8 @@
 package bz.stewart.bracken.db
 
-import bz.stewart.bracken.db.database.mongodb.BillJsonDataDatabase
-import bz.stewart.bracken.db.database.mongodb.BillMongoDb
-import bz.stewart.bracken.db.database.mongodb.SingleBillWriter
+import bz.stewart.bracken.db.bill.database.mongodb.BillJsonDataDatabase
+import bz.stewart.bracken.db.bill.database.mongodb.BillMongoDb
+import bz.stewart.bracken.db.bill.database.mongodb.SingleBillWriter
 import org.junit.Assert.assertTrue
 import java.io.File
 import java.util.*

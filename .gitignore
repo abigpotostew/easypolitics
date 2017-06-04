@@ -6,3 +6,4 @@
 *.iws
 build
 lib
+.pid.lock

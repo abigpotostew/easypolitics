@@ -1,4 +1,4 @@
-package bz.stewart.bracken.legislators
+package bz.stewart.bracken.db.leglislators
 
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
@@ -7,7 +7,7 @@ import java.io.File
 /**
  * Created by stew on 5/21/17.
  */
-class Arguments(parser: ArgParser){
+class LegislatorArguments(parser: ArgParser){
    val files by parser.adding("-f", "--file", help="Path(s) to legislator json files."){
       File(this)
    }

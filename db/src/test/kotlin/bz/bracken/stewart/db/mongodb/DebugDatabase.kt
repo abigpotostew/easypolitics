@@ -1,7 +1,7 @@
 package bz.bracken.stewart.db.mongodb
 
-import bz.stewart.bracken.db.data.Bill
-import bz.stewart.bracken.db.database.mongodb.BillMongoDb
+import bz.stewart.bracken.db.bill.data.Bill
+import bz.stewart.bracken.db.bill.database.mongodb.BillMongoDb
 import mu.KLogging
 
 /**

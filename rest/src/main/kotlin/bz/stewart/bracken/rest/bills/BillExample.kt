@@ -1,10 +1,10 @@
 package bz.stewart.bracken.rest.bills
 
-import bz.stewart.bracken.db.data.BillHistory
-import bz.stewart.bracken.db.data.RelatedBill
-import bz.stewart.bracken.db.data.Summary
-import bz.stewart.bracken.db.data.Title
-import bz.stewart.bracken.db.data.parse.DbDateSerializer
+import bz.stewart.bracken.db.bill.data.BillHistory
+import bz.stewart.bracken.db.bill.data.RelatedBill
+import bz.stewart.bracken.db.bill.data.Summary
+import bz.stewart.bracken.db.bill.data.Title
+import bz.stewart.bracken.db.bill.data.parse.DbDateSerializer
 import bz.stewart.bracken.shared.DateUtils
 import bz.stewart.bracken.shared.data.*
 import java.util.*
