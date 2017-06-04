@@ -23,7 +23,7 @@ fun main(argv: Array<String>) = mainBody("easypolitics-db") {
       hardFail("First arg must be -b (bill mode) or -l (legislator mode).")
    }
    val argvlist :MutableList<String> =argv.toMutableList()
-   argvlist.removeAt(2)
+   argvlist.removeAt(0)
    val argv = argvlist.toTypedArray()
    mode.mainRun(argv)
 
@@ -74,10 +74,10 @@ enum class MainMode(val flag:String){
 }
 
 private fun resolveMainMode(argv:Array<String>):MainMode{
-   if (argv.size < 2){
+   if (argv.size < 1){
       return MainMode.NONE
    }
-   val modeFlag = argv[2]
+   val modeFlag = argv[0]
    for(mode in MainMode.values()) {
       if (modeFlag.equals(mode.flag)){
          return mode
