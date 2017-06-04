@@ -39,3 +39,33 @@ task outJar(type: Jar) {
     }
     with jar
 }
+
+build{
+    enabled = false
+}
+
+jar {
+    enabled = false
+}
+
+assemble {
+    enabled=false
+}
+
+compileKotlin2Js{
+    enabled=false
+}
+
+compileJava{
+    enabled=false
+}
+
+classes{
+    enabled=false
+}
+compileJava{
+    enabled=false
+}
+processResources{
+    enabled=false
+}

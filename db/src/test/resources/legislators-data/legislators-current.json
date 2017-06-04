@@ -1,0 +1,490 @@
+[{
+   "id": {
+      "bioguide": "B000944",
+      "thomas": "00136",
+      "lis": "S307",
+      "govtrack": 400050,
+      "opensecrets": "N00003535",
+      "votesmart": 27018,
+      "fec": ["H2OH13033", "S6OH00163"],
+      "cspan": 5051,
+      "wikipedia": "Sherrod Brown",
+      "house_history": 9996,
+      "ballotpedia": "Sherrod Brown",
+      "maplight": 168,
+      "icpsr": 29389,
+      "wikidata": "Q381880",
+      "google_entity_id": "kg:/m/034s80"
+   },
+   "name": {
+      "first": "Sherrod",
+      "last": "Brown",
+      "official_full": "Sherrod Brown"
+   },
+   "bio": {
+      "birthday": "1952-11-09",
+      "gender": "M",
+      "religion": "Lutheran"
+   },
+   "terms": [{
+      "type": "rep",
+      "start": "1993-01-05",
+      "end": "1995-01-03",
+      "state": "OH",
+      "district": 13,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1995-01-04",
+      "end": "1997-01-03",
+      "state": "OH",
+      "district": 13,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1997-01-07",
+      "end": "1999-01-03",
+      "state": "OH",
+      "district": 13,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1999-01-06",
+      "end": "2001-01-03",
+      "state": "OH",
+      "district": 13,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "2001-01-03",
+      "end": "2003-01-03",
+      "state": "OH",
+      "district": 13,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "2003-01-07",
+      "end": "2005-01-03",
+      "state": "OH",
+      "district": 13,
+      "party": "Democrat",
+      "url": "http://www.house.gov/sherrodbrown"
+   }, {
+      "type": "rep",
+      "start": "2005-01-04",
+      "end": "2007-01-03",
+      "state": "OH",
+      "district": 13,
+      "party": "Democrat",
+      "url": "http://www.house.gov/sherrodbrown"
+   }, {
+      "type": "sen",
+      "start": "2007-01-04",
+      "end": "2013-01-03",
+      "state": "OH",
+      "class": 1,
+      "party": "Democrat",
+      "url": "http://brown.senate.gov/",
+      "address": "713 HART SENATE OFFICE BUILDING WASHINGTON DC 20510",
+      "phone": "202-224-2315",
+      "fax": "202-228-6321",
+      "contact_form": "http://www.brown.senate.gov/contact/",
+      "office": "713 Hart Senate Office Building"
+   }, {
+      "type": "sen",
+      "start": "2013-01-03",
+      "end": "2019-01-03",
+      "state": "OH",
+      "party": "Democrat",
+      "class": 1,
+      "url": "https://www.brown.senate.gov",
+      "address": "713 Hart Senate Office Building Washington DC 20510",
+      "phone": "202-224-2315",
+      "fax": "202-228-6321",
+      "contact_form": "http://www.brown.senate.gov/contact/",
+      "office": "713 Hart Senate Office Building",
+      "state_rank": "senior",
+      "rss_url": "http://www.brown.senate.gov/rss/feeds/?type=all&amp;"
+   }]
+},
+
+{
+   "id": {
+      "bioguide": "M000639",
+      "thomas": "00791",
+      "lis": "S306",
+      "govtrack": 400272,
+      "opensecrets": "N00000699",
+      "votesmart": 26961,
+      "fec": ["H2NJ13075", "S6NJ00289"],
+      "cspan": 29608,
+      "house_history": 18124,
+      "wikipedia": "Bob Menendez",
+      "ballotpedia": "Bob Menendez",
+      "maplight": 368,
+      "icpsr": 29373,
+      "wikidata": "Q888132",
+      "google_entity_id": "kg:/m/033d3p"
+   },
+   "name": {
+      "first": "Robert",
+      "last": "Men\u00e9ndez",
+      "nickname": "Bob",
+      "official_full": "Robert Menendez"
+   },
+   "other_names": [{
+      "last": "Menendez"
+   }],
+   "bio": {
+      "birthday": "1954-01-01",
+      "gender": "M",
+      "religion": "Roman Catholic"
+   },
+   "terms": [{
+      "type": "rep",
+      "start": "1993-01-05",
+      "end": "1995-01-03",
+      "state": "NJ",
+      "district": 13,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1995-01-04",
+      "end": "1997-01-03",
+      "state": "NJ",
+      "district": 13,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1997-01-07",
+      "end": "1999-01-03",
+      "state": "NJ",
+      "district": 13,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1999-01-06",
+      "end": "2001-01-03",
+      "state": "NJ",
+      "district": 13,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "2001-01-03",
+      "end": "2003-01-03",
+      "state": "NJ",
+      "district": 13,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "2003-01-07",
+      "end": "2005-01-03",
+      "state": "NJ",
+      "district": 13,
+      "party": "Democrat",
+      "url": "http://menendez.house.gov"
+   }, {
+      "type": "rep",
+      "start": "2005-01-04",
+      "end": "2006-01-16",
+      "state": "NJ",
+      "district": 13,
+      "party": "Democrat",
+      "url": "http://menendez.house.gov"
+   }, {
+      "type": "sen",
+      "start": "2006-01-18",
+      "end": "2007-01-03",
+      "state": "NJ",
+      "class": 1,
+      "party": "Democrat",
+      "url": "http://menendez.senate.gov/"
+   }, {
+      "type": "sen",
+      "start": "2007-01-04",
+      "end": "2013-01-03",
+      "state": "NJ",
+      "class": 1,
+      "party": "Democrat",
+      "url": "http://menendez.senate.gov/",
+      "address": "528 HART SENATE OFFICE BUILDING WASHINGTON DC 20510",
+      "phone": "202-224-4744",
+      "fax": "202-228-2197",
+      "contact_form": "http://menendez.senate.gov/contact/",
+      "office": "528 Hart Senate Office Building"
+   }, {
+      "type": "sen",
+      "start": "2013-01-03",
+      "end": "2019-01-03",
+      "state": "NJ",
+      "party": "Democrat",
+      "class": 1,
+      "url": "https://www.menendez.senate.gov",
+      "address": "528 Hart Senate Office Building Washington DC 20510",
+      "phone": "202-224-4744",
+      "fax": "202-228-2197",
+      "contact_form": "https://www.menendez.senate.gov/contact",
+      "office": "528 Hart Senate Office Building",
+      "state_rank": "senior",
+      "rss_url": "http://www.menendez.senate.gov/rss/feeds/index.cfm?type=news"
+   }]
+}, 
+
+{
+   "id": {
+      "bioguide": "S000033",
+      "thomas": "01010",
+      "lis": "S313",
+      "govtrack": 400357,
+      "opensecrets": "N00000528",
+      "votesmart": 27110,
+      "fec": ["H8VT01016", "S4VT00033"],
+      "cspan": 994,
+      "wikipedia": "Bernie Sanders",
+      "ballotpedia": "Bernie Sanders",
+      "maplight": 450,
+      "icpsr": 29147,
+      "house_history": 21173,
+      "wikidata": "Q359442",
+      "google_entity_id": "kg:/m/01_gbv"
+   },
+   "name": {
+      "first": "Bernard",
+      "last": "Sanders",
+      "nickname": "Bernie",
+      "official_full": "Bernard Sanders"
+   },
+   "bio": {
+      "birthday": "1941-09-08",
+      "gender": "M",
+      "religion": "Jewish"
+   },
+   "terms": [{
+      "type": "rep",
+      "start": "1991-01-03",
+      "end": "1993-01-03",
+      "state": "VT",
+      "district": 0,
+      "party": "Independent"
+   }, {
+      "type": "rep",
+      "start": "1993-01-05",
+      "end": "1995-01-03",
+      "state": "VT",
+      "district": 0,
+      "party": "Independent"
+   }, {
+      "type": "rep",
+      "start": "1995-01-04",
+      "end": "1997-01-03",
+      "state": "VT",
+      "district": 0,
+      "party": "Independent"
+   }, {
+      "type": "rep",
+      "start": "1997-01-07",
+      "end": "1999-01-03",
+      "state": "VT",
+      "district": 0,
+      "party": "Independent"
+   }, {
+      "type": "rep",
+      "start": "1999-01-06",
+      "end": "2001-01-03",
+      "state": "VT",
+      "district": 0,
+      "party": "Independent"
+   }, {
+      "type": "rep",
+      "start": "2001-01-03",
+      "end": "2003-01-03",
+      "state": "VT",
+      "district": 0,
+      "party": "Independent"
+   }, {
+      "type": "rep",
+      "start": "2003-01-07",
+      "end": "2005-01-03",
+      "state": "VT",
+      "district": 0,
+      "party": "Independent",
+      "url": "http://bernie.house.gov"
+   }, {
+      "type": "rep",
+      "start": "2005-01-04",
+      "end": "2007-01-03",
+      "state": "VT",
+      "district": 0,
+      "party": "Independent",
+      "url": "http://bernie.house.gov"
+   }, {
+      "type": "sen",
+      "start": "2007-01-04",
+      "end": "2013-01-03",
+      "state": "VT",
+      "class": 1,
+      "party": "Independent",
+      "url": "http://sanders.senate.gov/",
+      "address": "332 DIRKSEN SENATE OFFICE BUILDING WASHINGTON DC 20510",
+      "phone": "202-224-5141",
+      "fax": "202-228-0776",
+      "contact_form": "http://www.sanders.senate.gov/contact/",
+      "office": "332 Dirksen Senate Office Building"
+   }, {
+      "type": "sen",
+      "start": "2013-01-03",
+      "end": "2019-01-03",
+      "state": "VT",
+      "party": "Independent",
+      "caucus": "Democrat",
+      "class": 1,
+      "url": "https://www.sanders.senate.gov",
+      "address": "332 Dirksen Senate Office Building Washington DC 20510",
+      "phone": "202-224-5141",
+      "fax": "202-228-0776",
+      "contact_form": "http://www.sanders.senate.gov/contact/",
+      "office": "332 Dirksen Senate Office Building",
+      "state_rank": "junior",
+      "rss_url": "http://www.sanders.senate.gov/rss/"
+   }]
+},
+
+{
+   "id": {
+      "bioguide": "W000779",
+      "thomas": "01247",
+      "lis": "S247",
+      "govtrack": 300100,
+      "opensecrets": "N00007724",
+      "votesmart": 27036,
+      "icpsr": 14871,
+      "fec": ["S6OR00110", "H0OR03026"],
+      "cspan": 1962,
+      "wikipedia": "Ron Wyden",
+      "ballotpedia": "Ron Wyden",
+      "maplight": 619,
+      "house_history": 24150,
+      "wikidata": "Q529344",
+      "google_entity_id": "kg:/m/0178p9"
+   },
+   "name": {
+      "first": "Ron",
+      "last": "Wyden",
+      "official_full": "Ron Wyden"
+   },
+   "bio": {
+      "birthday": "1949-05-03",
+      "gender": "M",
+      "religion": "Jewish"
+   },
+   "terms": [{
+      "type": "rep",
+      "start": "1981-01-05",
+      "end": "1983-01-03",
+      "state": "OR",
+      "district": 3,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1983-01-03",
+      "end": "1985-01-03",
+      "state": "OR",
+      "district": 3,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1985-01-03",
+      "end": "1987-01-03",
+      "state": "OR",
+      "district": 3,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1987-01-06",
+      "end": "1989-01-03",
+      "state": "OR",
+      "district": 3,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1989-01-03",
+      "end": "1991-01-03",
+      "state": "OR",
+      "district": 3,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1991-01-03",
+      "end": "1993-01-03",
+      "state": "OR",
+      "district": 3,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1993-01-05",
+      "end": "1995-01-03",
+      "state": "OR",
+      "district": 3,
+      "party": "Democrat"
+   }, {
+      "type": "rep",
+      "start": "1995-01-04",
+      "end": "1996-02-05",
+      "state": "OR",
+      "district": 3,
+      "party": "Democrat"
+   }, {
+      "type": "sen",
+      "start": "1996-01-01",
+      "end": "1999-01-03",
+      "state": "OR",
+      "class": 3,
+      "party": "Democrat"
+   }, {
+      "type": "sen",
+      "start": "1999-01-06",
+      "end": "2005-01-03",
+      "state": "OR",
+      "class": 3,
+      "party": "Democrat",
+      "url": "http://wyden.senate.gov/"
+   }, {
+      "type": "sen",
+      "start": "2005-01-04",
+      "end": "2011-01-03",
+      "state": "OR",
+      "class": 3,
+      "party": "Democrat",
+      "url": "http://wyden.senate.gov/"
+   }, {
+      "type": "sen",
+      "start": "2011-01-05",
+      "end": "2017-01-03",
+      "state": "OR",
+      "class": 3,
+      "party": "Democrat",
+      "url": "https://www.wyden.senate.gov",
+      "address": "221 Dirksen Senate Office Building Washington DC 20510",
+      "phone": "202-224-5244",
+      "fax": "202-228-2717",
+      "contact_form": "http://www.wyden.senate.gov/contact",
+      "office": "221 Dirksen Senate Office Building",
+      "state_rank": "senior",
+      "rss_url": "http://www.wyden.senate.gov/rss/feeds/?type=all&amp;"
+   }, {
+      "type": "sen",
+      "start": "2017-01-03",
+      "end": "2023-01-03",
+      "state": "OR",
+      "class": 3,
+      "state_rank": "senior",
+      "party": "Democrat",
+      "url": "https://www.wyden.senate.gov",
+      "rss_url": "http://www.wyden.senate.gov/rss/feeds/?type=all&amp;",
+      "address": "221 Dirksen Senate Office Building Washington DC 20510",
+      "office": "221 Dirksen Senate Office Building",
+      "phone": "202-224-5244",
+      "contact_form": "https://www.wyden.senate.gov/contact/",
+      "fax": "202-228-2717"
+   }]
+}]

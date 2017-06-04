@@ -1,6 +1,6 @@
 package bz.bracken.stewart.db.file.parse
 
-import bz.stewart.bracken.db.AssertAllFound
+import bz.bracken.stewart.db.AssertAllFound
 import bz.stewart.bracken.db.TestUtils.Methods.getTestResourcesData
 import bz.stewart.bracken.db.file.DataWalk
 import bz.stewart.bracken.db.file.parse.Parser
@@ -26,7 +26,9 @@ public class ParserTest () {
 
    @Test
    public fun dataWalkTest(){
-      val elementFinder = AssertAllFound<String>(listOf<String>("hconres1-113", "hjres1-113", "s11-113", "sres1-113","hconres1-114", "s11-115", "s71-115"),true)
+      val elementFinder = AssertAllFound<String>(
+            listOf<String>("hconres1-113", "hjres1-113", "s11-113", "sres1-113",
+                           "hconres1-114", "s11-115", "s71-115"), true)
 
       var didComplete=false
       val parser = object :Parser{

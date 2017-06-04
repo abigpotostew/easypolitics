@@ -58,7 +58,7 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile project(':db').sourceSets.test.output
 
-	compile project(':shared')
+	//compile project(':shared')
 }
 
 task copySharedCode(type: Copy){

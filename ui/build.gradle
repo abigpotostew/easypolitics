@@ -65,7 +65,7 @@ dependencies {
 
     //runtime ([copyJsResources])
 
-    compile project(':shared')
+    //compile project(':shared')
 
 }
 

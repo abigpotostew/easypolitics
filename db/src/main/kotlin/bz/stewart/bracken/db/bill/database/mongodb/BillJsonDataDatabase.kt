@@ -141,6 +141,7 @@ class BillJsonDataDatabase(val dataRoot: File, dbName: String, private val collN
 
    }
 
+   @Deprecated("Collection should not be persisted, pass in collection name each call rather than save it.")
    override fun getCollectionName(): String {
       return collName
    }

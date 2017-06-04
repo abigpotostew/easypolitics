@@ -2,7 +2,7 @@ package bz.stewart.bracken.db
 
 import bz.stewart.bracken.db.file.DataWalk
 import bz.stewart.bracken.db.file.parse.EmptyParser
-import bz.stewart.bracken.db.leglislators.LegislatorArguments
+import bz.stewart.bracken.db.leglislators.ParsedArguments
 import bz.stewart.bracken.db.leglislators.LegislatorRuntime
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.mainBody
@@ -56,10 +56,10 @@ enum class MainMode(val flag:String){
       }
    }, LEGISLATOR("-l") {
       override fun mainRun(argv: Array<String>) {
-         LegislatorArguments(ArgParser(argv)).run{
+         ParsedArguments(ArgParser(argv)).run{
             logger.info({ "Starting Legislator mode with options: $this" })
             val legs = LegislatorRuntime(this)
-            val validationMessage = legs.invalidArgsMessage()
+            val validationMessage = invalidArgsMessage()
             if(validationMessage!=null){
                val msg = "App args incorrect: $validationMessage"
                logger.error(msg)

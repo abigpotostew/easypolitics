@@ -91,4 +91,12 @@ abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "",
    fun getWriter(): CollectionWriter<T, in Database<T>> {
       return collWriter
    }
+
+   /**
+    * careful now
+    */
+   fun dropDb(){
+      validateOpen()
+      db?.drop()
+   }
 }

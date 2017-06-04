@@ -11,13 +11,13 @@ import java.util.*
 data class LegislatorData(
       val _id: ObjectId? = null,
       val id: IdData,
-      val name: NameData,
+      val name: NameData = NameData(),
       @JsonIgnore
-      val other_names: List<OtherNameData>?,
-      val bio: BioData,
-      val leadership_roles: List<LeadershipRoleData>?,
-      val terms: List<TermData>?,
-      val family: List<FamilyMember>?
+      val other_names: List<OtherNameData>? = null,
+      val bio: BioData = BioData(),
+      val leadership_roles: List<LeadershipRoleData>? = null,
+      val terms: List<TermData>? = null,
+      val family: List<FamilyMember>? = null
                          ) : DbItem {
    override fun getDbId(): ObjectId? {
       return _id

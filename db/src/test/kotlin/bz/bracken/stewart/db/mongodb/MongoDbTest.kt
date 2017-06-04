@@ -1,14 +1,14 @@
 package bz.bracken.stewart.db.mongodb
 
-import bz.stewart.bracken.db.AssertAllFound
-import bz.stewart.bracken.db.TestUtils.Methods.getTestResourcesData
-import bz.stewart.bracken.shared.DateUtils
+import bz.bracken.stewart.db.AssertAllFound
 import bz.stewart.bracken.db.RuntimeMode
+import bz.stewart.bracken.db.TestUtils.Methods.getTestResourcesData
 import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.bill.data.BillHistory
 import bz.stewart.bracken.db.bill.data.Sponsor
 import bz.stewart.bracken.db.bill.database.mongodb.BillJsonDataDatabase
 import bz.stewart.bracken.db.bill.database.mongodb.SingleBillWriter
+import bz.stewart.bracken.shared.DateUtils
 import bz.stewart.bracken.shared.data.BillType
 import org.junit.After
 import org.junit.Assert.assertTrue
@@ -89,7 +89,9 @@ class MongoDbTest {
 
    @Test
    fun loadAllTestData(){
-      val testFinder = AssertAllFound<String>(listOf<String>("hconres1-113", "hjres1-113", "s11-113", "sres1-113","hconres1-114", "s11-115", "s71-115"),true)
+      val testFinder = AssertAllFound<String>(
+            listOf<String>("hconres1-113", "hjres1-113", "s11-113", "sres1-113",
+                           "hconres1-114", "s11-115", "s71-115"), true)
       val db = BillJsonDataDatabase(File(getTestResourcesData()), "congress1", collectionName, RuntimeMode.RESET, false,
                                     writer!!)
       db.openDatabase()

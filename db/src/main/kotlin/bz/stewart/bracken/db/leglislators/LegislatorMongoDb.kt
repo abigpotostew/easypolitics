@@ -9,5 +9,5 @@ import bz.stewart.bracken.db.database.Database
  */
 abstract class LegislatorMongoDb(dbName: String,
                         collWriter: CollectionWriter<LegislatorData, Database<LegislatorData>>) : AbstractMongoDb<LegislatorData>(
-      "", LegislatorData::class.java, collWriter) {
+      dbName, LegislatorData::class.java, collWriter) {
 }
