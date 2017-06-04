@@ -2,6 +2,8 @@ package bz.stewart.bracken.db.bill.database.mongodb
 
 import bz.stewart.bracken.db.RuntimeMode
 import bz.stewart.bracken.db.bill.data.Bill
+import bz.stewart.bracken.db.database.CollectionWriter
+import bz.stewart.bracken.db.database.Database
 import bz.stewart.bracken.db.file.DataWalk
 import bz.stewart.bracken.db.file.FileUtils
 import bz.stewart.bracken.db.file.parse.AbstractJacksonParser
@@ -19,7 +21,7 @@ import java.util.*
  */
 class BillJsonDataDatabase(val dataRoot: File, dbName: String, private val collName: String,
                            val runtimeMode: RuntimeMode = RuntimeMode.NONE, val testRun: Boolean = true,
-                           val writer: BillWriter) : BillMongoDb(dbName) {
+                           writer: BillWriter) : BillMongoDb(dbName, writer as CollectionWriter<Bill, Database<Bill>>) {
 
    companion object : KLogging()
 
@@ -72,7 +74,7 @@ class BillJsonDataDatabase(val dataRoot: File, dbName: String, private val collN
       var countParsed: Int = 0
       var countWritten: Int = 0
 
-      writer.before(this)
+      getWriter().before(this)
 
       val fileWalker = DataWalk(dataRoot, onlyParseCongresNum, object : AbstractJacksonParser<Bill>(clazz), Parser {
          override fun parseData(uniqueId: String, data: File, lastModified: File?) {
@@ -94,7 +96,7 @@ class BillJsonDataDatabase(val dataRoot: File, dbName: String, private val collN
                //if((runtimeMode==RuntimeMode.UPDATE && shouldUpdate(lastModified,bill,existingBill)) || runtimeMode==RuntimeMode.RESET ){
                //need to do the lastmodified logic here
                bill.setLastModified(externalModTime)
-               writer.write(bill, collName, parent)
+               getWriter().write(bill, collName, parent)
                countWritten++
             }
             else {
@@ -104,7 +106,7 @@ class BillJsonDataDatabase(val dataRoot: File, dbName: String, private val collN
          }
 
          override fun onComplete() {
-            writer.after(parent)
+            getWriter().after(parent)
 //            println("============================================================")
 //            println("== Parsed: $countParsed\n== Wrote: $countWritten")
 //            println("============================================================")
@@ -126,7 +128,7 @@ class BillJsonDataDatabase(val dataRoot: File, dbName: String, private val collN
       if (runtimeMode == RuntimeMode.RESET) {
          //writer.before(this)
          droppedCount = getCollection(collName)?.count() ?: 0
-         writer.drop(collName, parent)
+         getWriter().drop(collName, parent)
          //writer.after(this)
       }
       fileWalker.traverse()

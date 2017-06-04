@@ -1,27 +1,17 @@
 package bz.stewart.bracken.db.leglislators
 
-/**
- * Created by stew on 5/21/17.
- */
-data class LegislatorsYaml(val legislators: List<bz.stewart.bracken.db.leglislators.LegislatorData>)
+import bz.stewart.bracken.db.database.DbItem
+import com.fasterxml.jackson.annotation.JsonIgnore
+import org.bson.types.ObjectId
+import java.util.*
 
-data class LegislatorData(val id: bz.stewart.bracken.db.leglislators.IdData,
-                          val name: bz.stewart.bracken.db.leglislators.NameData,
-                          @com.fasterxml.jackson.annotation.JsonIgnore
-                          val other_names: List<bz.stewart.bracken.db.leglislators.OtherNameData>?,
-                          val bio: bz.stewart.bracken.db.leglislators.BioData,
-                          val leadership_roles:List<bz.stewart.bracken.db.leglislators.LeadershipRoleData>?,
-                          val terms: List<bz.stewart.bracken.db.leglislators.TermData>?,
-                          val family:List<bz.stewart.bracken.db.leglislators.FamilyMember>?
-                          )
+data class FamilyMember(val name: String?,
+                        val relation: String?)
 
-data class FamilyMember (val name:String?,
-                         val relation:String?)
-
-data class OtherNameData(val first :String?,
-                          val last:String?,
-                          val middle:String?,
-                          val end: java.util.Date?)
+data class OtherNameData(val first: String?,
+                         val last: String?,
+                         val middle: String?,
+                         val end: java.util.Date?)
 
 data class IdData(
       val bioguide: String, // The alphanumeric ID for this legislator in http://bioguide.congress.gov. Note that at one time some legislators (women who had changed their name when they got married) had two entries on the bioguide website. Only one bioguide ID is included here. This is the best field to use as a primary key.
@@ -38,8 +28,8 @@ data class IdData(
       val maplight: String?, //The numeric ID for this legislator on maplight.org (stored as an integer).
       val house_history: String?, //The numeric ID for this legislator on http://history.house.gov/People/Search/. The ID is present only for members who have served in the U.S. House.
       val bioguide_previous: String?, //When bioguide.congress.gov mistakenly listed a legislator under multiple IDs, this field is a list of alternative IDs. (This often ocurred for women who changed their name.) The IDs in this list probably were removed from bioguide.congress.gov but might still be in use in the wild.
-      val wikidata:String?,
-      val google_entity_id:String?
+      val wikidata: String?,
+      val google_entity_id: String?
                  )
 
 data class NameData(
@@ -70,7 +60,7 @@ data class TermData(
       val state_rank: String?, //For senators, whether they are the "junior" or "senior" senator (only valid if the term is current, otherwise the senator's rank at the time the term ended).
       val party: String?, //The political party of the legislator. If the legislator changed parties, this is the most recent party held during the term and party_affiliations will be set. Values are typically "Democrat", "Independent", or "Republican". The value typically matches the political party of the legislator on the ballot in his or her last election, although for state affiliate parties such as "Democratic Farmer Labor" we will use the national party name ("Democrat") instead to keep the values of this field normalized.
       val caucus: String?, //For independents, the party that the legislator caucuses with, using the same values as the party field. Omitted if the legislator caucuses with the party indicated in the party field. When in doubt about the difference between the party and caucus fields, the party field is what displays after the legislator's name (i.e. "(D)") but the caucus field is what normally determines committee seniority. This field was added starting with terms for the 113th Congress.
-      val party_affiliations: List<bz.stewart.bracken.db.leglislators.PartyAffiliation>?, //This field is present if the legislator changed party or caucus affiliation during the term. The value is a list of time periods, with start and end dates, each of which has a party field and a caucus field if applicable, with the same meanings as the main party and caucus fields. The time periods cover the entire term, so the first start will match the term start, the last end will match the term end, and the last party (and caucus if present) will match the term party (and caucus).
+      val party_affiliations: List<PartyAffiliation>?, //This field is present if the legislator changed party or caucus affiliation during the term. The value is a list of time periods, with start and end dates, each of which has a party field and a caucus field if applicable, with the same meanings as the main party and caucus fields. The time periods cover the entire term, so the first start will match the term start, the last end will match the term end, and the last party (and caucus if present) will match the term party (and caucus).
       val url: String?, //The official website URL of the legislator (only valid if the term is current).
       val address: String?, //The mailing address of the legislator's Washington, D.C. office (only valid if the term is current, otherwise the last known address).
       val phone: String?, //The phone number of the legislator's Washington, D.C. office (only valid if the term is current, otherwise the last known number).
@@ -80,9 +70,9 @@ data class TermData(
       val rss_url: String? //The URL to the official website's RSS feed (only valid if the term is current, otherwise the last known URL).
                    )
 
-data class PartyAffiliation (val start:String?,
-                             val end:String?,
-                             val party:String?)
+data class PartyAffiliation(val start: String?,
+                            val end: String?,
+                            val party: String?)
 
 data class LeadershipRoleData(
       val title: String?, //Minority Leader

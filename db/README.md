@@ -6,4 +6,4 @@ Drop the entire existing database and reload
 gw run -PappArgs="['-d','~/congress/data', '--reset']"
 
 
-gw debugRun -PappArgs="['-d', '/Users/stew/Documents/Code/github/congress/data', '--update', '-b', 'congress2', '-C115']"
+gw debugRun -PappArgs="['-b','-d', '/Users/stew/Documents/Code/github/congress/data', '--update', '-b', 'congress2', '-C115']"

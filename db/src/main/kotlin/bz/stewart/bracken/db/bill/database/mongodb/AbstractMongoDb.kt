@@ -15,22 +15,24 @@ import org.litote.kmongo.KMongo
 /**
  * Created by stew on 3/9/17.
  */
-abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "", val clazz:Class<T>, val collWriter: CollectionWriter<T, out Database<T>> = emptyDatabaseWriter()) : Database<T>() {
+abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "",
+                                           val clazz: Class<T>,
+                                           val collWriter: CollectionWriter<T, Database<T>> = emptyDatabaseWriter()) : Database<T>() {
 
    private var client: MongoClient? = null
    protected var db: MongoDatabase? = null
    private var isOpen = false
    var databaseName: String = _databaseName
 
-   companion object: KLogging()
+   companion object : KLogging()
 
-   fun isDbOpen():Boolean{
+   fun isDbOpen(): Boolean {
       return isOpen
    }
 
    fun openDatabase() {
-      if(isDbOpen()){
-         logger.debug{"Mongo Db already open."}
+      if (isDbOpen()) {
+         logger.debug { "Mongo Db already open." }
       }
       try {
          client = KMongo.createClient()
@@ -52,22 +54,23 @@ abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "", val clazz
 
    protected fun validForQuery(collection: String) {
       if (!this.isOpen || collection.isEmpty()) {
-         throw RuntimeException("Running query before opening connection to mongo database.")
+         throw RuntimeException(
+               "Running query before opening connection to mongo database.")
       }
    }
 
-   fun getCollection(collection: String):MongoCollection<T>?{
+   fun getCollection(collection: String): MongoCollection<T>? {
       validateOpen()
-      return db!!.getCollection(collection,clazz)
+      return db!!.getCollection(collection, clazz)
    }
 
-   private fun validateOpen(){
-      if(!isDbOpen()){
+   private fun validateOpen() {
+      if (!isDbOpen()) {
          throw RuntimeException("Please call openDatabase() before running a query")
       }
    }
 
-   fun <R> queryCollection(collection: String, query: MongoCollection<T>.() -> R?):R? {
+   fun <R> queryCollection(collection: String, query: MongoCollection<T>.() -> R?): R? {
       validateOpen()
       validForQuery(collection)
       val col: MongoCollection<T>? = getCollection(collection)
@@ -79,9 +82,13 @@ abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "", val clazz
       return databaseName
    }
 
-   abstract fun getCollectionName():String
+   abstract fun getCollectionName(): String
 
-   fun getTargetCollection():MongoCollection<T>?{
+   fun getTargetCollection(): MongoCollection<T>? {
       return getCollection(getCollectionName())
+   }
+
+   fun getWriter(): CollectionWriter<T, in Database<T>> {
+      return collWriter
    }
 }

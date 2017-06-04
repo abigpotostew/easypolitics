@@ -10,7 +10,7 @@ import bz.stewart.bracken.db.database.emptyDatabaseWriter
  * Created by stew on 4/1/17.
  */
 abstract class BillMongoDb(_databaseName: String = "",
-                           collWriter: CollectionWriter<Bill, out Database<Bill>> = emptyDatabaseWriter())
+                           collWriter: CollectionWriter<Bill, Database<Bill>> = emptyDatabaseWriter())
 
    : AbstractMongoDb<Bill>(
       _databaseName, Bill::class.java, collWriter) {
