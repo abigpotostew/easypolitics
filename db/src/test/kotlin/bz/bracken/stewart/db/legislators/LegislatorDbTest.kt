@@ -80,10 +80,11 @@ class LegislatorDbTest {
 
       //todo make this verify more data
       val finder = AssertAllFound<LegislatorData>(expected, true, {
-         val checkSocial = social && (this.id.bioguide=="S000033" || this.id.bioguide=="M000639")
-         val hasSocial = if (checkSocial){
+         val checkSocial = social && (this.id.bioguide == "S000033" || this.id.bioguide == "M000639")
+         val hasSocial = if (checkSocial) {
             this.social?.twitter == it.social?.twitter
-         } else{
+         }
+         else {
             true
          }
          this.id.bioguide == it.id.bioguide && hasSocial
@@ -142,7 +143,7 @@ class LegislatorDbTest {
 
       val db = LegislatorCreateDb(dbName, emptyDatabaseWriter())
       db.openDatabase()
-      assertSampleData(db,true)
+      assertSampleData(db, true)
 
    }
 
