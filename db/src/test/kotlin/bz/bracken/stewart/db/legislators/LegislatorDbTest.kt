@@ -5,6 +5,8 @@ import bz.stewart.bracken.db.TestUtils
 import bz.stewart.bracken.db.database.CollectionWriter
 import bz.stewart.bracken.db.database.Database
 import bz.stewart.bracken.db.leglislators.*
+import bz.stewart.bracken.db.leglislators.data.IdData
+import bz.stewart.bracken.db.leglislators.data.LegislatorData
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -47,7 +49,8 @@ class LegislatorDbTest {
       db.openDatabase()
       writer.before(db)
 
-      for (l in ParserJson().parseData(File(currentDataPath).toPath())) {
+      for (l in ParserLegislatorJson().parseData(
+            File(currentDataPath).toPath())) {
          writer.write(l, collectionName, db)
       }
 

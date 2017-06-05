@@ -1,0 +1,55 @@
+[{
+   "id": {
+      "bioguide": "R000600",
+      "thomas": "02222",
+      "govtrack": 412664
+   },
+   "social": {
+      "twitter": "RepAmata",
+      "facebook": "aumuaamata",
+      "youtube_id": "UCGdrLQbt1PYDTPsampx4t1A",
+      "twitter_id": 3026622545
+   }
+}, {
+   "id": {
+      "bioguide": "B001283",
+      "thomas": "02155",
+      "govtrack": 412567
+   },
+   "social": {
+      "twitter": "RepJBridenstine",
+      "facebook": "CongressmanJimBridenstine",
+      "youtube": "RepJimBridenstine",
+      "youtube_id": "UC4uUpWvIK-fiOfTG_D3rX8g",
+      "instagram": "repjbridenstine",
+      "instagram_id": 295797332,
+      "twitter_id": 1092757885
+   }
+}, {
+   "id": {
+      "bioguide": "E000295",
+      "thomas": "02283",
+      "govtrack": 412667
+   },
+   "social": {
+      "twitter": "SenJoniErnst",
+      "facebook": "senjoniernst",
+      "youtube_id": "UCLwrmtF_84FIcK3TyMs4MIw",
+      "instagram": "senjoniernst",
+      "instagram_id": 1582702853,
+      "twitter_id": 2856787757
+   }
+}, {
+   "id": {
+      "bioguide": "S000033",
+      "thomas": "01010",
+      "govtrack": 400357
+   },
+   "social": {
+      "twitter": "SenSanders",
+      "facebook": "senatorsanders",
+      "youtube": "senatorsanders",
+      "youtube_id": "UCD_DaKNac0Ta-2PeHuoQ1uA",
+      "twitter_id": 29442313
+   }
+}]

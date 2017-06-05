@@ -1,5 +1,8 @@
-package bz.stewart.bracken.db.leglislators
+package bz.stewart.bracken.db.leglislators.data
 
+import com.fasterxml.jackson.annotation.JsonInclude
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class FamilyMember(val name: String? = null,
                         val relation: String? = null)
 
@@ -8,6 +11,7 @@ data class OtherNameData(val first: String? = null,
                          val middle: String? = null,
                          val end: java.util.Date? = null)
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class IdData(
       val bioguide: String, // The alphanumeric ID for this legislator in http://bioguide.congress.gov. Note that at one time some legislators (women who had changed their name when they got married) had two entries on the bioguide website. Only one bioguide ID is included here. This is the best field to use as a primary key.
       val thomas: String? = null, //The numeric ID for this legislator on http://thomas.gov and http://beta.congress.gov. The ID is stored as a string with leading zeros preserved.
@@ -27,6 +31,7 @@ data class IdData(
       val google_entity_id: String? = null
                  )
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class NameData(
       val first: String? = null, //The legislator's first name. Sometimes a first initial and period (e.g. in W. Todd Akin), in which case it is suggested to not use the first name for display purposes.
       val middle: String? = null, //The legislator's middle name or middle initial (with period).
@@ -38,12 +43,14 @@ data class NameData(
       val other_names: List<String>? = null
                    )
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class BioData(
       val birthday: String? = null, //The legislator's birthday, in YYYY-MM-DD format.
       val gender: String? = null, //The legislator's gender, either "M" or "F". (In historical data, we've worked backwards from history.house.gov's Women in Congress feature.)
       val religion: String? = null//The legislator's religion.
                   )
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class TermData(
       val type: String? = null, //The type of the term. Either "sen" for senators or "rep" for representatives and delegates to the House.
       val start: java.util.Date?, //The date legislative service began: the date the legislator was sworn in, if known, or else the beginning of the legislator's term. Since 1935 regularly elected terms begin on January 3 at noon on odd-numbered years, but when Congress does not first meet on January 3, term start dates might reflect that swearing-in occurred on a later date. (Prior to 1935, terms began on March 4 of odd-numbered years, see here.) Formatted as YYYY-MM-DD.
@@ -65,10 +72,12 @@ data class TermData(
       val rss_url: String? = null //The URL to the official website's RSS feed (only valid if the term is current, otherwise the last known URL).
                    )
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class PartyAffiliation(val start: String? = null,
                             val end: String? = null,
                             val party: String? = null)
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class LeadershipRoleData(
       val title: String? = null, //Minority Leader
       val chamber: String? = null, //senate

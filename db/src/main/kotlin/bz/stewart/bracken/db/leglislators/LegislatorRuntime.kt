@@ -3,6 +3,8 @@ package bz.stewart.bracken.db.leglislators
 import bz.stewart.bracken.db.database.CollectionWriter
 import bz.stewart.bracken.db.database.Database
 import bz.stewart.bracken.db.database.emptyDatabaseWriter
+import bz.stewart.bracken.db.leglislators.data.LegislatorData
+import bz.stewart.bracken.db.leglislators.data.SocialMapper
 import mu.KLogging
 
 class LegislatorRuntime(private val args: LegislatorArguments) {
@@ -19,8 +21,17 @@ class LegislatorRuntime(private val args: LegislatorArguments) {
       }
       db = LegislatorCreateDb(args.dbName,
                               writer as CollectionWriter<LegislatorData, Database<LegislatorData>>)
+
+      val socialMapper = if (args.socialFile != null) {
+         SocialMapper(ParserSocialJson().parseData(
+               args.socialFile!!.toPath()))
+      }
+      else {
+         SocialMapper(emptyList())
+      }
+
       db.use {
-         executeCurrentLegislators()
+         executeCurrentLegislators(socialMapper)
       }
 
       if (args.testMode == true) {
@@ -31,7 +42,7 @@ class LegislatorRuntime(private val args: LegislatorArguments) {
       }
    }
 
-   fun executeCurrentLegislators() {
+   fun executeCurrentLegislators(socialMapper:SocialMapper) {
       val collName = "current"
       val db: LegislatorCreateDb = db!!
       db.openDatabase()
@@ -42,7 +53,8 @@ class LegislatorRuntime(private val args: LegislatorArguments) {
       writer.after(db)
 
       //parse data
-      val legislators = ParserJson().parseData(args.files.map { it.toPath() })
+      val legislators = ParserLegislatorJson().parseData(args.files.map { it.toPath() })
+      socialMapper.associateSocialToPeople(legislators)
 
       //write to database
       writer.before(db)
