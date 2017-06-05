@@ -26,6 +26,13 @@ abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "",
 
    companion object : KLogging()
 
+   /**
+    * Delegates the drop behavior to the writer.
+    */
+   fun dropDatabase() {
+      getWriter().dropDb(db!!)
+   }
+
    fun isDbOpen(): Boolean {
       return isOpen
    }
@@ -92,11 +99,7 @@ abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "",
       return collWriter
    }
 
-   /**
-    * careful now
-    */
-   fun dropDb(){
-      validateOpen()
-      db?.drop()
+   override fun close() {
+      closeDatabase()
    }
 }

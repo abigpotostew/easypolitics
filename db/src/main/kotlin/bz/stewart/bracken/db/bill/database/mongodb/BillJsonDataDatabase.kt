@@ -19,15 +19,18 @@ import java.util.*
 /**
  * Created by stew on 3/9/17.
  */
-class BillJsonDataDatabase(val dataRoot: File, dbName: String, private val collName: String,
-                           val runtimeMode: RuntimeMode = RuntimeMode.NONE, val testRun: Boolean = true,
-                           writer: BillWriter) : BillMongoDb(dbName, writer as CollectionWriter<Bill, Database<Bill>>) {
+class BillJsonDataDatabase(val dataRoot: File, dbName: String,
+                           private val collName: String,
+                           val runtimeMode: RuntimeMode = RuntimeMode.NONE,
+                           val testRun: Boolean = true,
+                           writer: BillWriter) : BillMongoDb(dbName,
+                                                             writer as CollectionWriter<Bill, Database<Bill>>) {
 
    companion object : KLogging()
 
    val parent = this
-   var droppedCount:Long = 0
-   val skippedWrite:MutableCollection<Bill> = mutableListOf()
+   var droppedCount: Long = 0
+   val skippedWrite: MutableCollection<Bill> = mutableListOf()
 
    val MIN_DATE: Date = Date(Long.MIN_VALUE)
 
@@ -76,54 +79,58 @@ class BillJsonDataDatabase(val dataRoot: File, dbName: String, private val collN
 
       getWriter().before(this)
 
-      val fileWalker = DataWalk(dataRoot, onlyParseCongresNum, object : AbstractJacksonParser<Bill>(clazz), Parser {
-         override fun parseData(uniqueId: String, data: File, lastModified: File?) {
+      val fileWalker = DataWalk(dataRoot, onlyParseCongresNum,
+                                object : AbstractJacksonParser<Bill>(clazz), Parser {
+                                   override fun parseData(uniqueId: String, data: File,
+                                                          lastModified: File?) {
 
-            val bill = readMap(data)
-            var existingBill: Bill? = null
-            countParsed++
+                                      val bill = readMap(data)
+                                      var existingBill: Bill? = null
+                                      countParsed++
 
-            try {// TODO skip this query if in reset mode?
-               parent.queryCollection(collName, {
-                  val found = find("{getBillId:${bill.bill_id.json} }".formatJson())
-                  existingBill = found.first()
-               })
-            } catch (e: JSONParseException) {
-               logger.info { "Error $e" }
-            }
-            val externalModTime = getBillExternalModifiedTime(lastModified, bill)
-            if (shouldUpdate(externalModTime, existingBill)) {
-               //if((runtimeMode==RuntimeMode.UPDATE && shouldUpdate(lastModified,bill,existingBill)) || runtimeMode==RuntimeMode.RESET ){
-               //need to do the lastmodified logic here
-               bill.setLastModified(externalModTime)
-               getWriter().write(bill, collName, parent)
-               countWritten++
-            }
-            else {
-               skippedWrite.add(bill)
-               logger.debug { "Skipping ${bill.bill_id} because db entry is up to date." }
-            }
-         }
+                                      try {// TODO skip this query if in reset mode?
+                                         parent.queryCollection(collName, {
+                                            val found = find(
+                                                  "{getBillId:${bill.bill_id.json} }".formatJson())
+                                            existingBill = found.first()
+                                         })
+                                      } catch (e: JSONParseException) {
+                                         logger.info { "Error $e" }
+                                      }
+                                      val externalModTime = getBillExternalModifiedTime(
+                                            lastModified, bill)
+                                      if (shouldUpdate(externalModTime, existingBill)) {
+                                         //if((runtimeMode==RuntimeMode.UPDATE && shouldUpdate(lastModified,bill,existingBill)) || runtimeMode==RuntimeMode.RESET ){
+                                         //need to do the lastmodified logic here
+                                         bill.setLastModified(externalModTime)
+                                         getWriter().write(bill, collName, parent)
+                                         countWritten++
+                                      }
+                                      else {
+                                         skippedWrite.add(bill)
+                                         logger.debug { "Skipping ${bill.bill_id} because db entry is up to date." }
+                                      }
+                                   }
 
-         override fun onComplete() {
-            getWriter().after(parent)
+                                   override fun onComplete() {
+                                      getWriter().after(parent)
 //            println("============================================================")
 //            println("== Parsed: $countParsed\n== Wrote: $countWritten")
 //            println("============================================================")
-            logger.info { "============================================================" }
-            logger.info { "== Finished parsing data. Stats:" }
-            if (runtimeMode == RuntimeMode.RESET) {
-               logger.info { "== Dropped: $droppedCount" }
-            }
-            logger.info { "== Parsed: $countParsed" }
-            logger.info { "== Wrote: $countWritten" }
-            logger.info { "== Skipped: ${skippedWrite.size}" }
-            if (testRun) {
-               logger.info { "== Test mode: no data was written to database." }
-            }
-            logger.info { "============================================================" }
-         }
-      })
+                                      logger.info { "============================================================" }
+                                      logger.info { "== Finished parsing data. Stats:" }
+                                      if (runtimeMode == RuntimeMode.RESET) {
+                                         logger.info { "== Dropped: $droppedCount" }
+                                      }
+                                      logger.info { "== Parsed: $countParsed" }
+                                      logger.info { "== Wrote: $countWritten" }
+                                      logger.info { "== Skipped: ${skippedWrite.size}" }
+                                      if (testRun) {
+                                         logger.info { "== Test mode: no data was written to database." }
+                                      }
+                                      logger.info { "============================================================" }
+                                   }
+                                })
       //try {
       if (runtimeMode == RuntimeMode.RESET) {
          //writer.before(this)
@@ -141,7 +148,8 @@ class BillJsonDataDatabase(val dataRoot: File, dbName: String, private val collN
 
    }
 
-   @Deprecated("Collection should not be persisted, pass in collection name each call rather than save it.")
+   @Deprecated(
+         "Collection should not be persisted, pass in collection name each call rather than save it.")
    override fun getCollectionName(): String {
       return collName
    }

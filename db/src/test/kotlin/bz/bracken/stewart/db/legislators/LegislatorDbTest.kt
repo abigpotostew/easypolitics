@@ -16,64 +16,64 @@ import java.util.*
  */
 class LegislatorDbTest {
 
-   val dbName = "legislators"+ Date().time
+   val dbName = "legislators" + Date().time
    val collectionName = "current"
    val currentDataPath = TestUtils.getTestResourcesDir(
          "/legislators-data/legislators-current.json")
-   var writer :CollectionWriter<LegislatorData, Database<LegislatorData>>?=null
-   var db:LegislatorCreateDb?=null
+   var writer: CollectionWriter<LegislatorData, Database<LegislatorData>>? = null
+   var db: LegislatorCreateDb? = null
 
    @Before
-   fun testSetup(){
-       writer = LegislatorDbWriter() as CollectionWriter<LegislatorData, Database<LegislatorData>>
-       db = LegislatorCreateDb(dbName,writer!!)
+   fun testSetup() {
+      writer = LegislatorDbWriter() as CollectionWriter<LegislatorData, Database<LegislatorData>>
+      db = LegislatorCreateDb(dbName, writer!!)
    }
 
    @After
-   fun testTeardown(){
+   fun testTeardown() {
       writer?.after(db!!)
-      if(db!=null && (db?.isDbOpen() ?: false)){
+      if (db != null && (db?.isDbOpen() ?: false)) {
          db!!.openDatabase()
-         db?.dropDb()
+         db?.dropDatabase()
          db?.closeDatabase()
       }
    }
 
    @Test
-   fun testLoadAllData(){
+   fun testLoadAllData() {
 
       val writer = LegislatorDbWriter() as CollectionWriter<LegislatorData, Database<LegislatorData>>
-      val db = LegislatorCreateDb(dbName,writer)
+      val db = LegislatorCreateDb(dbName, writer)
       db.openDatabase()
       writer.before(db)
 
-      for(l in ParserJson().parseData(File(currentDataPath).toPath())){
-         writer.write(l,collectionName,db)
+      for (l in ParserJson().parseData(File(currentDataPath).toPath())) {
+         writer.write(l, collectionName, db)
       }
 
       assertSampleData(db)
 
-      writer.drop(collectionName,db)
+      writer.drop(collectionName, db)
       writer.after(db)
 
    }
 
-   private fun assertSampleData(db:LegislatorCreateDb){
+   private fun assertSampleData(db: LegislatorCreateDb) {
 
       val expected = listOf<LegislatorData>(
-            LegislatorData(id= IdData(bioguide = "B000944")),
-            LegislatorData(id= IdData(bioguide = "M000639")),
-            LegislatorData(id= IdData(bioguide = "S000033")),
-            LegislatorData(id= IdData(bioguide = "W000779"))
+            LegislatorData(id = IdData(bioguide = "B000944")),
+            LegislatorData(id = IdData(bioguide = "M000639")),
+            LegislatorData(id = IdData(bioguide = "S000033")),
+            LegislatorData(id = IdData(bioguide = "W000779"))
                                            )
 
       //todo make this verify more data
       val finder = AssertAllFound<LegislatorData>(expected, true, {
          this.id.bioguide == it.id.bioguide
       })
-      db.queryCollection(collectionName,{
+      db.queryCollection(collectionName, {
          val res = find()
-         for(l in res.iterator()){
+         for (l in res.iterator()) {
             finder.foundElement(l)
          }
       })
@@ -81,17 +81,39 @@ class LegislatorDbTest {
    }
 
    @Test
-   fun runtimeTest(){
-      val args = MockLegislatorArgs(_dbName = dbName, _files = mutableListOf(File(currentDataPath)), _testMode = false)
+   fun runtimeTest() {
+      val args = MockLegislatorArgs(_dbName = dbName,
+                                    _files = mutableListOf(File(currentDataPath)),
+                                    _testMode = false)
       val runtime = LegislatorRuntime(args = args)
       runtime.execute()
 
       val writer = LegislatorDbWriter() as CollectionWriter<LegislatorData, Database<LegislatorData>>
-      val db = LegislatorCreateDb(dbName,writer)
+      val db = LegislatorCreateDb(dbName, writer)
 
       db.openDatabase()
       assertSampleData(db)
       //rely on cleanup from teardown
+   }
+
+   @Test
+   fun runtimeTestTestMode() {
+      val args = MockLegislatorArgs(_dbName = dbName,
+                                    _files = mutableListOf(File(currentDataPath)),
+                                    _testMode = true)
+      val runtime = LegislatorRuntime(args = args)
+      runtime.execute()
+
+      val writer = LegislatorDbWriter() as CollectionWriter<LegislatorData, Database<LegislatorData>>
+      val db = LegislatorCreateDb(dbName, writer)
+
+      db.openDatabase()
+      db.queryCollection(collectionName, {
+         val res = find()
+         val actualData = mutableListOf<LegislatorData>()
+         res.forEach { actualData.add(it) }
+         assert(actualData.size == 0)
+      })
    }
 
 }

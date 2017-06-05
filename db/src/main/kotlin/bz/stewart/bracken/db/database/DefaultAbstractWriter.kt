@@ -2,9 +2,13 @@ package bz.stewart.bracken.db.database
 
 import bz.stewart.bracken.db.bill.database.mongodb.AbstractMongoDb
 import com.mongodb.MongoWriteException
+import com.mongodb.client.MongoDatabase
 import org.litote.kmongo.save
 
-abstract class DefaultAbstractWriter<T : DbItem>: CollectionWriter<T, AbstractMongoDb<T>> {
+/**
+ * Default mutating collection writer.
+ */
+abstract class DefaultAbstractWriter<T : DbItem> : CollectionWriter<T, AbstractMongoDb<T>> {
    var isOpen = false
    var openToDb: AbstractMongoDb<T>? = null
 
@@ -20,7 +24,8 @@ abstract class DefaultAbstractWriter<T : DbItem>: CollectionWriter<T, AbstractMo
 
    private fun validStateToWrite(db: AbstractMongoDb<T>) {
       if (!isOpen || db != openToDb) {
-         throw RuntimeException("Error, the writer.before() method was not called before calling the write method.")
+         throw RuntimeException(
+               "Error, the writer.before() method was not called before calling the write method.")
       }
    }
 
@@ -35,8 +40,12 @@ abstract class DefaultAbstractWriter<T : DbItem>: CollectionWriter<T, AbstractMo
    }
 
    override fun drop(collection: String,
-            db: AbstractMongoDb<T>) {
+                     db: AbstractMongoDb<T>) {
       validStateToWrite(db)
       db.getCollection(collection)?.drop()
+   }
+
+   override fun dropDb(db: MongoDatabase) {
+      db.drop()
    }
 }

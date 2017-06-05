@@ -26,10 +26,10 @@ class MongoDbTest {
    val dbName = "congress1"
    val collectionName = "bills_test_" + Date().time
 
-   var writer: SingleBillWriter?=null
-   var db:DebugDatabase?=null
+   var writer: SingleBillWriter? = null
+   var db: DebugDatabase? = null
 
-   private fun createTestBill():Bill{
+   private fun createTestBill(): Bill {
       return Bill(
             _id = null,
             bill_id = "sconres1-113",
@@ -38,24 +38,26 @@ class MongoDbTest {
             by_request = "by_request",
             congressNum = 113,
             cosponsorsArr = emptyArray(),
-            billHistory = BillHistory(active = "true", vetoed = "false", enacted = "true", awaiting_signature = "false"),
+            billHistory = BillHistory(active = "true", vetoed = "false", enacted = "true",
+                                      awaiting_signature = "false"),
             introduced_at = DateUtils.defaultDate(),
             billNumber = "1",
             committeesArr = emptyArray(),
             official_title = "Official title",
             related_bills = emptyArray(),
-            billSponsor = Sponsor(bioguide_id = "1234ABC", name = "name", state = "CA", title = "title"),
+            billSponsor = Sponsor(bioguide_id = "1234ABC", name = "name", state = "CA",
+                                  title = "title"),
             currentStatus = "getCurrentStatus",
             status_at = DateUtils.defaultDate(),
             subjectsArr = emptyArray(),
             titlesArr = emptyArray(),
             updated_at = DateUtils.defaultDate(),
             urlBill = "www.com"
-                     )
+                 )
    }
 
    @Before
-   fun testSetup(){
+   fun testSetup() {
       writer = SingleBillWriter()
       db = DebugDatabase(dbName)
       db!!.openDatabase()
@@ -63,9 +65,9 @@ class MongoDbTest {
    }
 
    @After
-   fun tearDown(){
-      if(db!!.isDbOpen()) {
-         if(writer!!.isOpen){
+   fun tearDown() {
+      if (db!!.isDbOpen()) {
+         if (writer!!.isOpen) {
             writer?.before(db!!)
          }
          writer?.drop(collectionName, db!!)
@@ -73,7 +75,6 @@ class MongoDbTest {
          db!!.closeDatabase()
       }
    }
-
 
 
    @Test
@@ -88,17 +89,18 @@ class MongoDbTest {
    }
 
    @Test
-   fun loadAllTestData(){
+   fun loadAllTestData() {
       val testFinder = AssertAllFound<String>(
             listOf<String>("hconres1-113", "hjres1-113", "s11-113", "sres1-113",
                            "hconres1-114", "s11-115", "s71-115"), true)
-      val db = BillJsonDataDatabase(File(getTestResourcesData()), "congress1", collectionName, RuntimeMode.RESET, false,
+      val db = BillJsonDataDatabase(File(getTestResourcesData()), "congress1",
+                                    collectionName, RuntimeMode.RESET, false,
                                     writer!!)
       db.openDatabase()
       db.loadData(null)
-      db.queryCollection(collectionName,{
+      db.queryCollection(collectionName, {
          val searchRes = find()
-         for (b:Bill in searchRes.iterator()){
+         for (b: Bill in searchRes.iterator()) {
             testFinder.foundElement(b.bill_id)
          }
       })

@@ -1,0 +1,6 @@
+Test mode update legislator dbs
+    gw :db:debugRun -PappArgs="['-l', '-f', '/Users/stew/Documents/Code/github/congress-legislators/alternate_formats/legislators-current.json', '-s', '/Users/stew/Documents/Code/github/congress-legislators/alternate_formats/legislators-social-media.json', '-t', '-b', 'legislators1']"
+
+
+Update legislator databases (current and social)
+   gw :db:debugRun -PappArgs="['-l', '-f', '/Users/stew/Documents/Code/github/congress-legislators/alternate_formats/legislators-current.json', '-s', '/Users/stew/Documents/Code/github/congress-legislators/alternate_formats/legislators-social-media.json', '-b', 'legislators1']"

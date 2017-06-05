@@ -1,13 +1,13 @@
 package bz.bracken.stewart.db.file
 
-import bz.stewart.bracken.db.TestUtils
-import bz.stewart.bracken.shared.DateUtils
 import bz.stewart.bracken.db.RuntimeMode
+import bz.stewart.bracken.db.TestUtils
 import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.bill.database.mongodb.AbstractMongoDb
 import bz.stewart.bracken.db.bill.database.mongodb.BillJsonDataDatabase
 import bz.stewart.bracken.db.bill.database.mongodb.BillWriter
 import bz.stewart.bracken.db.file.FileUtils
+import bz.stewart.bracken.shared.DateUtils
 import org.bson.types.ObjectId
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -29,23 +29,28 @@ class DateModifiedTest {
 
    @Before
    fun testSetupDb() {
-      testDb = BillJsonDataDatabase(File(TestUtils.getTestResourcesData()), "congress1", "test1235", RuntimeMode.NONE,
+      testDb = BillJsonDataDatabase(File(TestUtils.getTestResourcesData()), "congress1",
+                                    "test1235", RuntimeMode.NONE,
                                     true,
-            /*emptyDatabaseWriter<Bill,AbstractMongoDb<Bill>>()*/writer = object : BillWriter() {
-         override fun write(element: Bill, collection:String, db: AbstractMongoDb<Bill>) {
-         }
+            /*emptyDatabaseWriter<Bill,AbstractMongoDb<Bill>>()*/
+                                    writer = object : BillWriter() {
+                                       override fun write(element: Bill,
+                                                          collection: String,
+                                                          db: AbstractMongoDb<Bill>) {
+                                       }
 
-         override fun drop(collection: String,
-                           db: AbstractMongoDb<Bill>) {
-         }
-      })
+                                       override fun drop(collection: String,
+                                                         db: AbstractMongoDb<Bill>) {
+                                       }
+                                    })
    }
 
    @Test
    fun lastModFormatTest() {
       var str: String = "2017-02-18T03:08:00.128Z"
       var out = DateUtils.parseLastModifiedDateString(str)
-      assertTrue(out != null && out.toString() == EXPECTED_TIME) //it converts to pst locale by default even though input date is in UTC
+      assertTrue(
+            out != null && out.toString() == EXPECTED_TIME) //it converts to pst locale by default even though input date is in UTC
 
       str = "2017-02-18T03:08:00.128"
       out = DateUtils.parseLastModifiedDateString(str)
@@ -73,24 +78,34 @@ class DateModifiedTest {
 
    @Test
    fun billModifiedTest() {
-      billWIthDatesHelper("2017-02-18T03:08:00.128Z","2017-02-18T03:08:00.128Z",false,"Date on file equal to date on db, no modified")
-      billWIthDatesHelper("2017-02-18T03:08:00.128Z","2017-02-18T03:08:00.129Z",true,"Date on file greater than date on db, has been modified")
-      billWIthDatesHelper("2017-02-18T03:08:00.129Z","2017-02-18T03:08:00.128Z",false,"Date on file less than db, no modified")
-      billWIthDatesHelper("2017-02-18T03:08:00.128Z","2017-02-18T03:08:00.128Z",false,"dates should be equals, not modified",File(
-            TestUtils.getTestResourcesData()+"/113/bills/hconres/hconres1/data-fromfdsys-lastmod.txt"))
-      billWIthDatesHelper("2017-02-18T03:08:00.129Z","2017-02-18T03:08:00.128Z",false,"db modified after file",File(
-            TestUtils.getTestResourcesData()+"/113/bills/hconres/hconres1/data-fromfdsys-lastmod.txt"))
-      billWIthDatesHelper("2017-02-18T03:08:00.127Z","2017-02-18T03:08:00.128Z",true,"db modified before file, true",File(
-            TestUtils.getTestResourcesData()+"/113/bills/hconres/hconres1/data-fromfdsys-lastmod.txt"))
+      billWIthDatesHelper("2017-02-18T03:08:00.128Z", "2017-02-18T03:08:00.128Z", false,
+                          "Date on file equal to date on db, no modified")
+      billWIthDatesHelper("2017-02-18T03:08:00.128Z", "2017-02-18T03:08:00.129Z", true,
+                          "Date on file greater than date on db, has been modified")
+      billWIthDatesHelper("2017-02-18T03:08:00.129Z", "2017-02-18T03:08:00.128Z", false,
+                          "Date on file less than db, no modified")
+      billWIthDatesHelper("2017-02-18T03:08:00.128Z", "2017-02-18T03:08:00.128Z", false,
+                          "dates should be equals, not modified", File(
+            TestUtils.getTestResourcesData() + "/113/bills/hconres/hconres1/data-fromfdsys-lastmod.txt"))
+      billWIthDatesHelper("2017-02-18T03:08:00.129Z", "2017-02-18T03:08:00.128Z", false,
+                          "db modified after file", File(
+            TestUtils.getTestResourcesData() + "/113/bills/hconres/hconres1/data-fromfdsys-lastmod.txt"))
+      billWIthDatesHelper("2017-02-18T03:08:00.127Z", "2017-02-18T03:08:00.128Z", true,
+                          "db modified before file, true", File(
+            TestUtils.getTestResourcesData() + "/113/bills/hconres/hconres1/data-fromfdsys-lastmod.txt"))
    }
 
-   private fun billWIthDatesHelper(billFromDbDate: String, billFromFileDate: String, isModifiedExpected: Boolean, msg:String, f:File?=null) {
+   private fun billWIthDatesHelper(billFromDbDate: String, billFromFileDate: String,
+                                   isModifiedExpected: Boolean, msg: String,
+                                   f: File? = null) {
       val billFromDb = Bill(_id = ObjectId())//, lastModifiedString = billFromDbDate)
       billFromDb.setLastModified(DateUtils.parseLastModifiedDateString(billFromDbDate))
       val billFromFile = Bill(_id = ObjectId())//, lastModifiedString = billFromFileDate)
-      billFromFile.setLastModified(DateUtils.parseLastModifiedDateString(billFromFileDate))
-      val dateFromFile = testDb!!.getBillExternalModifiedTime(f,billFromFile)
-      assertEquals(msg,isModifiedExpected, testDb!!.billModifiedSinceLastTime(dateFromFile, billFromDb))
+      billFromFile.setLastModified(
+            DateUtils.parseLastModifiedDateString(billFromFileDate))
+      val dateFromFile = testDb!!.getBillExternalModifiedTime(f, billFromFile)
+      assertEquals(msg, isModifiedExpected,
+                   testDb!!.billModifiedSinceLastTime(dateFromFile, billFromDb))
    }
 
 }

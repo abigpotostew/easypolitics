@@ -8,6 +8,6 @@ import bz.stewart.bracken.db.database.Database
  * Created by stew on 6/4/17.
  */
 abstract class LegislatorMongoDb(dbName: String,
-                        collWriter: CollectionWriter<LegislatorData, Database<LegislatorData>>) : AbstractMongoDb<LegislatorData>(
+                                 collWriter: CollectionWriter<LegislatorData, Database<LegislatorData>>) : AbstractMongoDb<LegislatorData>(
       dbName, LegislatorData::class.java, collWriter) {
 }

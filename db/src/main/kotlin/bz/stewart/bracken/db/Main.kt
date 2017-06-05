@@ -2,8 +2,8 @@ package bz.stewart.bracken.db
 
 import bz.stewart.bracken.db.file.DataWalk
 import bz.stewart.bracken.db.file.parse.EmptyParser
-import bz.stewart.bracken.db.leglislators.ParsedArguments
 import bz.stewart.bracken.db.leglislators.LegislatorRuntime
+import bz.stewart.bracken.db.leglislators.ParsedArguments
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.mainBody
 import mu.KotlinLogging
@@ -17,50 +17,58 @@ private val logger = KotlinLogging.logger {}
 
 
 fun main(argv: Array<String>) = mainBody("easypolitics-db") {
-   logger.info({ "Easy Politics Database. Hello." })
    val mode = resolveMainMode(argv)
-   if (mode==MainMode.NONE){
+   if (mode == MainMode.NONE) {
       hardFail("First arg must be -b (bill mode) or -l (legislator mode).")
    }
-   val argvlist :MutableList<String> =argv.toMutableList()
-   argvlist.removeAt(0)
-   val argv = argvlist.toTypedArray()
-   mode.mainRun(argv)
-
+   logger.info(
+         { "Hello. Easy Politics Database Utility-- build and update bill and legislator databases. Currently using mongodb." })
+   logger.info({ "Executing in $mode mode." })
+   mode.mainRun(removeModeArg(argv))
 }
 
-fun hardFail(msg:String){
+fun removeModeArg(argv: Array<String>): Array<String> {
+   val argvlist: MutableList<String> = argv.toMutableList()
+   argvlist.removeAt(0)
+   return argvlist.toTypedArray()
+}
+
+fun hardFail(msg: String) {
    logger.error(msg)
    error(msg)
 }
 
-enum class MainMode(val flag:String){
+enum class MainMode(val flag: String) {
    NONE("") {
-      override fun mainRun(argv:Array<String>) {
+      override fun mainRun(argv: Array<String>) {
          //do nothing
       }
-   }, BILL("-b") {
-      override fun mainRun(argv:Array<String>) {
-         BillArguments(ArgParser(argv)).run{
+   },
+   BILL("-b") {
+      override fun mainRun(argv: Array<String>) {
+         BillArguments(ArgParser(argv)).run {
             //logger.info("Easy Politics Database.")
-            logger.info({ "Starting Bill mode with options: mode = $mode, data = $data, db = $dbName" })
+            logger.info(
+                  { "Starting Bill mode with options: mode = $mode, data = $data, db = $dbName" })
 
             val runtime = mode.getDbRuntime(this)
             try {
                runtime.validateArgs()
             } catch (e: IllegalArgumentException) {
-               hardFail("Input error: ${e.message}. Rerun with --help to see required parameters" )
+               hardFail(
+                     "Input error: ${e.message}. Rerun with --help to see required parameters")
             }
             runtime.run()
          }
       }
-   }, LEGISLATOR("-l") {
+   },
+   LEGISLATOR("-l") {
       override fun mainRun(argv: Array<String>) {
-         ParsedArguments(ArgParser(argv)).run{
+         ParsedArguments(ArgParser(argv)).run {
             logger.info({ "Starting Legislator mode with options: $this" })
             val legs = LegislatorRuntime(this)
             val validationMessage = invalidArgsMessage()
-            if(validationMessage!=null){
+            if (validationMessage != null) {
                val msg = "App args incorrect: $validationMessage"
                logger.error(msg)
                error(msg)
@@ -70,16 +78,16 @@ enum class MainMode(val flag:String){
       }
    };
 
-   abstract fun mainRun(argv:Array<String>)
+   abstract fun mainRun(argv: Array<String>)
 }
 
-private fun resolveMainMode(argv:Array<String>):MainMode{
-   if (argv.size < 1){
+private fun resolveMainMode(argv: Array<String>): MainMode {
+   if (argv.isEmpty()) {
       return MainMode.NONE
    }
    val modeFlag = argv[0]
-   for(mode in MainMode.values()) {
-      if (modeFlag.equals(mode.flag)){
+   for (mode in MainMode.values()) {
+      if (modeFlag == mode.flag) {
          return mode
       }
    }

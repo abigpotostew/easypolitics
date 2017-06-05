@@ -2,6 +2,7 @@ package bz.stewart.bracken.db.leglislators
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import mu.KLogging
 import java.nio.file.Files.newBufferedReader
 import java.nio.file.Path
 
@@ -9,7 +10,9 @@ import java.nio.file.Path
  * parse congress/legislators database form the json format
  * Created by stew on 6/4/17.
  */
-class ParserJson() {
+class ParserJson {
+   companion object : KLogging()
+
    val mapper = jacksonObjectMapper() //kotlin module mapper
 
    fun parseData(dataPath: Path): List<LegislatorData> {
@@ -19,11 +22,14 @@ class ParserJson() {
       }
    }
 
-   fun parseData(dataPaths:List<Path>):List<LegislatorData>{
+   fun parseData(dataPaths: List<Path>): List<LegislatorData> {
       val out = mutableListOf<LegislatorData>()
-      for(path in dataPaths){
-         out.addAll(parseData(path))
+      for (path in dataPaths) {
+         val parsed = parseData(path)
+         out.addAll(parsed)
+         logger.debug { "Parsed ${parsed.size} legislators from file '${path.fileName} full path: '$path'" }
       }
+      logger.debug { "Parsed ${out.size} legislator data total." }
       return out
    }
 }
