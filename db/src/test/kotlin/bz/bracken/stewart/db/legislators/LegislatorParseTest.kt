@@ -50,7 +50,8 @@ class LegislatorParseTest {
             LegislatorSocialInfo(id = IdData(bioguide = "R000600"), social = SocialData(twitter = "RepAmata")),
             LegislatorSocialInfo(id = IdData(bioguide = "B001283"), social = SocialData(twitter = "RepJBridenstine")),
             LegislatorSocialInfo(id = IdData(bioguide = "E000295"), social = SocialData(twitter = "SenJoniErnst")),
-            LegislatorSocialInfo(id = IdData(bioguide = "S000033"), social = SocialData(twitter = "SenSanders"))
+            LegislatorSocialInfo(id = IdData(bioguide = "S000033"), social = SocialData(twitter = "SenSanders")),
+            LegislatorSocialInfo(id = IdData(bioguide = "M000639"), social = SocialData(twitter = "SenatorMenendez"))
 
                                            )
       val finder = AssertAllFound(expected, true, {
