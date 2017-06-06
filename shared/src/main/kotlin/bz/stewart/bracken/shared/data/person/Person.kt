@@ -6,7 +6,16 @@ import bz.stewart.bracken.shared.data.party.Party
  * Created by stew on 1/23/17.
  */
 interface Person {
-    fun getId(): Int
-    fun getName(): String
-    fun getParty(): Party
+   fun getBioguideId(): String
+   fun getFirstName(): String
+   fun getLastName(): String
+   fun getMiddleName(): String?
+   fun getOfficialName(): String
+   fun getNickName(): String?
+   fun getParty(): Party
+   fun getRole(): LegislatorRole
+   fun getPhoneNumber(): String
+   fun getWebsite(): String?
+   fun getState(): String
+   fun getTwitter(): String
 }
