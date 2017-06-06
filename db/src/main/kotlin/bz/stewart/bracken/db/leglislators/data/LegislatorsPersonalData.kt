@@ -1,5 +1,6 @@
 package bz.stewart.bracken.db.leglislators.data
 
+import bz.stewart.bracken.shared.DateUtils
 import com.fasterxml.jackson.annotation.JsonInclude
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -94,3 +95,13 @@ data class LeadershipRoleData(
       val office: String? = null, //303 Cannon House Office Building
       val rss_url: String? = null //http://cantor.house.gov/rss.xml
                              )
+
+private val EMPTY_LEADER_ROLE_DATA = LeadershipRoleData(start = DateUtils.defaultDate(), end = DateUtils.defaultDate())
+public fun emptyLeadershipRoleDate():LeadershipRoleData{
+   return EMPTY_LEADER_ROLE_DATA
+}
+
+private val EMPTY_TERM_DATA = TermData(start = DateUtils.defaultDate(), end = DateUtils.defaultDate())
+public fun emptyTermDate():TermData{
+   return EMPTY_TERM_DATA
+}
