@@ -1,21 +1,19 @@
 package bz.stewart.bracken.rest.query
 
-import bz.stewart.bracken.db.bill.data.Bill
+import bz.stewart.bracken.rest.bills.BillDelegated
 import bz.stewart.bracken.rest.bills.BillExample
 import bz.stewart.bracken.rest.util.MathUtil
 import com.mongodb.BasicDBObject
-import com.mongodb.client.FindIterable
-import com.mongodb.client.MongoCollection
 import mu.KLogging
 import org.bson.conversions.Bson
 
 /**
  * Created by stew on 3/19/17.
  */
-class QueryBuilder(private val collection: MongoCollection<Bill>,
-                   private val exampleBill: BillExample,
-                   private val orderBy: String,
-                   limitIn: Int) {
+class BillQueryBuilder(private val db: MainDbAccess,
+                       private val exampleBill: BillExample,
+                       private val orderBy: String,
+                       limitIn: Int) {
    private val limit = MathUtil.clamp(limitIn, 0, 1000)
 
    private val SORT_DESCENDING = -1
@@ -56,7 +54,17 @@ class QueryBuilder(private val collection: MongoCollection<Bill>,
       return BasicDBObject(sortKey, sortOrder)
    }
 
-   fun find(): QueryResult {
+   /**
+    * execute the query (unvalidated at this point) with request limit and sort
+    */
+   fun find():QueryResult{
+      val queryRes :Collection<BillDelegated> = db.standardBillQuery(queryBson(),limit,getSort())
+      return BasicQueryResult(queryRes, limit)
+   }
+
+
+   /*fun find(): QueryResult {
+
       val queryOut: FindIterable<Bill>? = collection.find(queryBson())
 
       if (queryOut == null) {
@@ -80,7 +88,7 @@ class QueryBuilder(private val collection: MongoCollection<Bill>,
 //
 //      logger.info { "Finished" }
       return QueryResultImpl(queryOut, limit)
-   }
+   }*/
 }
 
 private fun NO_OP(): String {

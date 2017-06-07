@@ -2,7 +2,10 @@ package bz.stewart.bracken.rest.bills
 
 import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.bill.data.parse.DbDateSerializer
+import bz.stewart.bracken.db.leglislators.data.LegislatorData
+import bz.stewart.bracken.rest.legislators.DelegatedLegislator
 import bz.stewart.bracken.shared.data.*
+import bz.stewart.bracken.shared.data.person.Person
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 
@@ -12,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonInclude
  * Created by stew on 3/30/17.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class BillDelegated(private val bill: Bill) : PublicBill {
+class BillDelegated(private val bill: Bill,
+                    private val peopleMap: Map<String, LegislatorData> = emptyMap()) : PublicBill {
    override fun getCurrentStatusLabel(): String { //todo not working??
       return getCurrentStatusDescription()
    }
@@ -22,22 +26,24 @@ class BillDelegated(private val bill: Bill) : PublicBill {
    }
 
    override fun getResolutionType(): String {
-      return when(bill.bill_type.isBill){
+      return when (bill.bill_type.isBill) {
          true -> "bill"
          false -> "resolution"
       }
    }
+
    //NEW minimal data
    override fun getBillName(): String {
       return "${this.getBillId()} ${this.getOfficialTitle()}"
    }
+
    override fun id(): Int {
       return 1
    }
 
    //old data
    override fun getBillId(): String {
-      return  "${bill.bill_type.shortLabel()} ${bill.billNumber}"
+      return "${bill.bill_type.shortLabel()} ${bill.billNumber}"
    }
 
    //@JsonIgnore
@@ -64,7 +70,8 @@ class BillDelegated(private val bill: Bill) : PublicBill {
    }
 
    //@JsonIgnore
-   override fun getCosponsors(): Array<PublicSponsor> {
+   override fun getCosponsors(): Array<Person>? {
+      val p: LegislatorData = peopleMap.get(bill.billSponsor.bioguide_id) ?: return null
       return toPublicSponsorCollection(bill.cosponsorsArr).toTypedArray()
    }
 
@@ -78,7 +85,7 @@ class BillDelegated(private val bill: Bill) : PublicBill {
    }
 
    //@JsonSerialize(using = DbDateSerializer::class)
-   override fun getIntroducedAt(): String{ //TODO make this return type Any
+   override fun getIntroducedAt(): String { //TODO make this return type Any
       return DbDateSerializer().serializeDate(bill.introduced_at)
    }
 
@@ -110,8 +117,9 @@ class BillDelegated(private val bill: Bill) : PublicBill {
    }
 
    //@JsonIgnore
-   override fun getSponsor(): PublicSponsor {
-      return bill.billSponsor.toPublicSponsorDelegated()
+   override fun getSponsor(): Person? {
+      val p: LegislatorData = peopleMap.get(bill.billSponsor.bioguide_id) ?: return null
+      return DelegatedLegislator(p)
    }
 
    //@JsonIgnore
@@ -158,9 +166,6 @@ class BillDelegated(private val bill: Bill) : PublicBill {
 }
 
 class PublicBillDelegated(private val bill: PublicBill) : PublicBill by bill {
-   //   override fun getBillId(): String {
-//      return bill.bill_id
-//   }
 
 }
 
@@ -171,6 +176,14 @@ fun Bill.toPublicDelegated(): BillDelegated {
    return BillDelegated(this)
 }
 
-fun toPublicBillCollection(mongoQueryResult: Collection<Bill>): Collection<BillDelegated> {
+fun toPublicBillCollection(
+      mongoQueryResult: Collection<Bill>): Collection<BillDelegated> {
    return mongoQueryResult.map(Bill::toPublicDelegated)
+}
+
+fun toPublicBillCollection(mongoQueryResult: Collection<Bill>,
+                           people: Map<String, LegislatorData>): Collection<BillDelegated> {
+   return mongoQueryResult.map({
+                                  BillDelegated(it, people)
+                               })
 }

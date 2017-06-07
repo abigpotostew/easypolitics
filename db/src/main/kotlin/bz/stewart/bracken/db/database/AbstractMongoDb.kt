@@ -15,8 +15,13 @@ abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "",
                                            val clazz: Class<T>,
                                            val collWriter: CollectionWriter<T, Database<T>> = emptyDatabaseWriter()) : Database<T>() {
 
-   private var client: MongoClient? = null
-   protected var db: MongoDatabase? = null
+   /**
+    * do not use
+    */
+   internal var client: MongoClient? = null
+      private set
+   internal var db: MongoDatabase? = null
+      private set
    private var isOpen = false
    var databaseName: String = _databaseName
 
@@ -36,6 +41,7 @@ abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "",
    open fun openDatabase() {
       if (isDbOpen()) {
          logger.debug { "Mongo Db already open." }
+         return
       }
       try {
          client = KMongo.createClient()
@@ -97,5 +103,14 @@ abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "",
 
    override fun close() {
       closeDatabase()
+   }
+
+   /**
+    * hacky override, don't abuse this.
+    */
+   internal fun overrideDb(client:MongoClient, db: MongoDatabase){
+      this.client = client
+      this.db = db
+      isOpen = true
    }
 }

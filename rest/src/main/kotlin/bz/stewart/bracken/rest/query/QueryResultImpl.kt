@@ -22,6 +22,11 @@ class QueryResultImpl(mongoQueryResult: FindIterable<Bill>?, limit: Int) :QueryR
       set(v) { resultsColl = v }
 }
 
+class BasicQueryResult(results:Collection<BillDelegated>, limit:Int):QueryResult{
+   override var meta: Meta = Meta(limit, 0, results.count())
+   override var results: Collection<BillDelegated> = results
+}
+
 interface QueryResult {
    var meta :Meta
    var results :Collection<BillDelegated>

@@ -2,8 +2,7 @@ package bz.stewart.bracken.rest
 
 import bz.stewart.bracken.db.bill.database.mongodb.BillMongoDb
 import bz.stewart.bracken.db.bill.database.mongodb.ReadOnlyDatabase
-import bz.stewart.bracken.db.leglislators.LegislatorMongoDb
-import org.litote.kmongo.KMongo
+import bz.stewart.bracken.rest.query.MainDbAccess
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -43,27 +42,32 @@ class MongoConfiguration  {
 class MongoDbBeanProd:MongoDbBean(){
 
    var readDb:ReadOnlyDatabase?=null
-   var peopleMongoDb:LegislatorMongoDb?=null
+   var mainDbInst: MainDbAccess?=null
 
    override fun setup() {
       val dbName  = System.getProperty("bz.stewart.bracken.db.name")
       val collectionName= System.getProperty("bz.stewart.bracken.db.collection")
 
-      val client = KMongo.createClient() //get com.mongodb.MongoClient new instance
-      val database = client.getDatabase(dbName) //normal java driver usage
+      //val client = KMongo.createClient() //get com.mongodb.MongoClient new instance
+      //val database = client.getDatabase(dbName) //normal java driver usage
 
-      readDb = ReadOnlyDatabase(dbName, collectionName)
-      readDb?.openDatabase()
+      //readDb = ReadOnlyDatabase(dbName, collectionName)
+      //readDb?.openDatabase()
+
+      mainDbInst = MainDbAccess(dbName)
+      mainDbInst?.openDatabase()
    }
 
    override fun destroy() {
-      readDb?.closeDatabase()
+      //readDb?.closeDatabase()
+      mainDbInst?.closeDatabase()
    }
 
    override fun getBillDb(): BillMongoDb? {
       return readDb
    }
-   override fun getPeopleDb(): LegislatorMongoDb? {
-      TODO()
+
+   override fun getMainDb(): MainDbAccess? {
+      return mainDbInst
    }
 }

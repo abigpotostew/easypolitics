@@ -1,6 +1,7 @@
 package bz.stewart.bracken.shared.data
 
 /**
+ * * You should be using DelegatedLegislator instead
  * Created by stew on 5/17/17.
  */
 interface PublicSponsor {

@@ -2,7 +2,7 @@ package bz.stewart.bracken
 
 import bz.stewart.bracken.db.TestUtils
 import bz.stewart.bracken.db.bill.database.mongodb.BillMongoDb
-import bz.stewart.bracken.db.leglislators.LegislatorMongoDb
+import bz.stewart.bracken.rest.query.MainDbAccess
 import bz.stewart.bracken.rest.EasypoliticsRestApplication
 import bz.stewart.bracken.rest.MongoDbBean
 import bz.stewart.bracken.rest.MongoDbBeanProd
@@ -52,7 +52,7 @@ class TestMongoBean: MongoDbBean() {
       return billMongoDb
    }
 
-   override fun getPeopleDb(): LegislatorMongoDb? {
+   override fun getMainDb(): MainDbAccess? {
       TODO()
    }
 }

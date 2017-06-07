@@ -3,7 +3,7 @@ package bz.stewart.bracken.rest
 
 import bz.stewart.bracken.rest.bills.BillExample
 import bz.stewart.bracken.rest.bills.EMPTY_CONGRESS
-import bz.stewart.bracken.rest.query.QueryBuilder
+import bz.stewart.bracken.rest.query.BillQueryBuilder
 import bz.stewart.bracken.rest.query.QueryResult
 import bz.stewart.bracken.shared.data.BadStateException
 import bz.stewart.bracken.shared.data.BillType
@@ -28,7 +28,8 @@ class BillsController {
 
    @PostConstruct
    fun setupClient() {
-      billMongoDatabase!!.getBillDb()!!.openDatabase()
+      //billMongoDatabase!!.getBillDb()!!.openDatabase()
+      //todo isn't setup called by the bean??
    }
 
    @CrossOrigin(origins = arrayOf("http://localhost:8080",
@@ -67,8 +68,11 @@ class BillsController {
 
 
       //todo validate input. especially limit
-      return QueryBuilder(billMongoDatabase!!.getBillDb()!!.getTargetCollection()!!, queryExample, orderBy,
-                          limit!!).find()//QueryResultImpl(queryOut, limit)
+      //val billCollection = billMongoDatabase!!.getMainDb()!!.getFirstDb().getTargetCollection()!!
+      //val peopleCollection = billMongoDatabase!!.getMainDb()!!.getSecondDb().getTargetCollection()!!
+      return BillQueryBuilder(billMongoDatabase!!.getMainDb()!!,queryExample,orderBy, limit).find()
+//      return BillQueryBuilder(billMongoDatabase!!.getMainDb()!!, queryExample, orderBy,
+//                              limit).find()//QueryResultImpl(queryOut, limit)
 
    }
 
