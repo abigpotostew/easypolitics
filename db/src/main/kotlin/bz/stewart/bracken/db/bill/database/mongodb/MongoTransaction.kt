@@ -4,6 +4,7 @@ import bz.stewart.bracken.db.BillArguments
 import bz.stewart.bracken.db.RuntimeMode
 import bz.stewart.bracken.db.SetupDbRuntime
 import bz.stewart.bracken.db.bill.data.Bill
+import bz.stewart.bracken.db.database.AbstractMongoDb
 import bz.stewart.bracken.db.database.CollectionWriter
 import bz.stewart.bracken.db.database.Transaction
 import com.mongodb.MongoTimeoutException
@@ -37,7 +38,7 @@ class MongoTransaction(val args: BillArguments) : Transaction<Bill, AbstractMong
          false -> SingleBillWriter()
       }
       //val dbName = "congress1"
-      val collName = "bills115_load"
+      val collName = "bills"
       db = BillJsonDataDatabase(data, dbName, collName, mode, test, writer)
       SetupDbRuntime.logger.info { "Loading bill into database@$dbName in collection@$collName with mode@$mode and test@$test" }
       db!!.openDatabase()

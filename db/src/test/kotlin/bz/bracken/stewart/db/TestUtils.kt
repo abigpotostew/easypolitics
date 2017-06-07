@@ -37,6 +37,9 @@ class TestUtils {
          db.openDatabase()
          db.loadData(null)
          db.closeDatabase()
+
+         val personDbCollection = "legislator"
+
          return db
       }
    }

@@ -2,6 +2,7 @@ package bz.stewart.bracken.rest
 
 import bz.stewart.bracken.db.bill.database.mongodb.BillMongoDb
 import bz.stewart.bracken.db.bill.database.mongodb.ReadOnlyDatabase
+import bz.stewart.bracken.db.leglislators.LegislatorMongoDb
 import org.litote.kmongo.KMongo
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -40,7 +41,10 @@ class MongoConfiguration  {
 }
 
 class MongoDbBeanProd:MongoDbBean(){
+
    var readDb:ReadOnlyDatabase?=null
+   var peopleMongoDb:LegislatorMongoDb?=null
+
    override fun setup() {
       val dbName  = System.getProperty("bz.stewart.bracken.db.name")
       val collectionName= System.getProperty("bz.stewart.bracken.db.collection")
@@ -56,7 +60,10 @@ class MongoDbBeanProd:MongoDbBean(){
       readDb?.closeDatabase()
    }
 
-   override fun getDb(): BillMongoDb? {
+   override fun getBillDb(): BillMongoDb? {
       return readDb
+   }
+   override fun getPeopleDb(): LegislatorMongoDb? {
+      TODO()
    }
 }

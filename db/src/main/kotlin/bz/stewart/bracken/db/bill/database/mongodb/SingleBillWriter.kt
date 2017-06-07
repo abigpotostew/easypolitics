@@ -2,6 +2,7 @@ package bz.stewart.bracken.db.bill.database.mongodb
 
 //import org.litote.kmongo.MongoOperator
 import bz.stewart.bracken.db.bill.data.Bill
+import bz.stewart.bracken.db.database.AbstractMongoDb
 import bz.stewart.bracken.db.database.DefaultAbstractWriter
 
 /**

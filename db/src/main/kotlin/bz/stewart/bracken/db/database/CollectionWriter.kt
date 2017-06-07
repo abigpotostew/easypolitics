@@ -1,6 +1,5 @@
 package bz.stewart.bracken.db.database
 
-import bz.stewart.bracken.db.bill.database.mongodb.AbstractMongoDb
 import com.mongodb.client.MongoDatabase
 
 /**

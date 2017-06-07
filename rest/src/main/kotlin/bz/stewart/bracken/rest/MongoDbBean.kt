@@ -1,6 +1,7 @@
 package bz.stewart.bracken.rest
 
 import bz.stewart.bracken.db.bill.database.mongodb.BillMongoDb
+import bz.stewart.bracken.db.leglislators.LegislatorMongoDb
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
@@ -13,5 +14,6 @@ abstract class MongoDbBean{
    abstract fun setup()
    @PreDestroy
    abstract fun destroy()
-   abstract fun getDb(): BillMongoDb?
+   abstract fun getBillDb(): BillMongoDb?
+   abstract fun getPeopleDb(): LegislatorMongoDb?
 }

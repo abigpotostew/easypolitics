@@ -11,6 +11,6 @@ class LegislatorCreateDb(dbName: String,
                          writer: CollectionWriter<LegislatorData, Database<LegislatorData>>) : LegislatorMongoDb(
       dbName, writer) {
    override fun getCollectionName(): String {
-      return "current"
+      return "legislators"
    }
 }

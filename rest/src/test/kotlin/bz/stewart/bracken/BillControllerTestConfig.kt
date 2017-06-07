@@ -2,6 +2,7 @@ package bz.stewart.bracken
 
 import bz.stewart.bracken.db.TestUtils
 import bz.stewart.bracken.db.bill.database.mongodb.BillMongoDb
+import bz.stewart.bracken.db.leglislators.LegislatorMongoDb
 import bz.stewart.bracken.rest.EasypoliticsRestApplication
 import bz.stewart.bracken.rest.MongoDbBean
 import bz.stewart.bracken.rest.MongoDbBeanProd
@@ -36,17 +37,22 @@ class BillControllerTestConfig {
 
 class TestMongoBean: MongoDbBean() {
 
-   var mongoDb:BillMongoDb?=null
+   var billMongoDb:BillMongoDb?=null
+   //var peopleMongoDb:LegislatorMongoDb?=null
 
    override fun setup() {
-      this.mongoDb =  TestUtils.generateTestDb()
+      this.billMongoDb =  TestUtils.generateTestDb()
    }
 
    override fun destroy() {
-      mongoDb?.getTargetCollection()?.drop()
+      billMongoDb?.getTargetCollection()?.drop()
    }
 
-   override fun getDb(): BillMongoDb? {
-      return mongoDb
+   override fun getBillDb(): BillMongoDb? {
+      return billMongoDb
+   }
+
+   override fun getPeopleDb(): LegislatorMongoDb? {
+      TODO()
    }
 }

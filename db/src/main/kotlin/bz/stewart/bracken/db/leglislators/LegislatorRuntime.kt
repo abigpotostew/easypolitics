@@ -43,7 +43,8 @@ class LegislatorRuntime(private val args: LegislatorArguments) {
    }
 
    fun executeCurrentLegislators(socialMapper:SocialMapper) {
-      val collName = "current"
+
+      val collName = db?.getCollectionName()?:"legislators"
       val db: LegislatorCreateDb = db!!
       db.openDatabase()
       val writer = db.getWriter()

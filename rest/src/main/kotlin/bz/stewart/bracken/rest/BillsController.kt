@@ -9,7 +9,6 @@ import bz.stewart.bracken.shared.data.BadStateException
 import bz.stewart.bracken.shared.data.BillType
 import bz.stewart.bracken.shared.data.defaultBillTypeMatcher
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -25,11 +24,11 @@ import javax.annotation.PostConstruct
 class BillsController {
 
    @Autowired
-   var mongoDatabase: MongoDbBean? = null
+   var billMongoDatabase: MongoDbBean? = null
 
    @PostConstruct
    fun setupClient() {
-      mongoDatabase!!.getDb()!!.openDatabase()
+      billMongoDatabase!!.getBillDb()!!.openDatabase()
    }
 
    @CrossOrigin(origins = arrayOf("http://localhost:8080",
@@ -68,7 +67,7 @@ class BillsController {
 
 
       //todo validate input. especially limit
-      return QueryBuilder(mongoDatabase!!.getDb()!!.getTargetCollection()!!, queryExample, orderBy,
+      return QueryBuilder(billMongoDatabase!!.getBillDb()!!.getTargetCollection()!!, queryExample, orderBy,
                           limit!!).find()//QueryResultImpl(queryOut, limit)
 
    }

@@ -3,7 +3,7 @@ package bz.bracken.stewart.db.file
 import bz.stewart.bracken.db.RuntimeMode
 import bz.stewart.bracken.db.TestUtils
 import bz.stewart.bracken.db.bill.data.Bill
-import bz.stewart.bracken.db.bill.database.mongodb.AbstractMongoDb
+import bz.stewart.bracken.db.database.AbstractMongoDb
 import bz.stewart.bracken.db.bill.database.mongodb.BillJsonDataDatabase
 import bz.stewart.bracken.db.bill.database.mongodb.BillWriter
 import bz.stewart.bracken.db.file.FileUtils

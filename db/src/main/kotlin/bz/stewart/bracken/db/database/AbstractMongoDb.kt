@@ -1,9 +1,5 @@
-package bz.stewart.bracken.db.bill.database.mongodb
+package bz.stewart.bracken.db.database
 
-import bz.stewart.bracken.db.database.CollectionWriter
-import bz.stewart.bracken.db.database.Database
-import bz.stewart.bracken.db.database.DbItem
-import bz.stewart.bracken.db.database.emptyDatabaseWriter
 import com.mongodb.MongoClient
 import com.mongodb.MongoClientException
 import com.mongodb.MongoTimeoutException
@@ -37,7 +33,7 @@ abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "",
       return isOpen
    }
 
-   fun openDatabase() {
+   open fun openDatabase() {
       if (isDbOpen()) {
          logger.debug { "Mongo Db already open." }
       }
