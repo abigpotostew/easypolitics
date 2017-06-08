@@ -20,7 +20,7 @@ abstract class CompositeMongoDb <T: DbItem, S: DbItem>(_databaseName:String, _cl
 
    override fun openDatabase() {
       dbA.openDatabase()
-      dbB.overrideDb(dbB.client!!, dbA.db!!)
+      dbB.overrideDb(dbA.client!!, dbA.db!!)
    }
 
    fun getFirstDb():AbstractMongoDb<T>{

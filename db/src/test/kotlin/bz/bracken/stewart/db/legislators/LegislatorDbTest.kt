@@ -21,7 +21,7 @@ import java.util.*
 class LegislatorDbTest {
 
    val dbName = "legislators" + Date().time
-   val collectionName = "current"
+   val collectionName = "legislators"
    val currentDataPath = TestUtils.getTestResourcesDir(
          "/legislators-data/legislators-current.json")
    val socialDataPath = TestUtils.getTestResourcesDir(
@@ -38,8 +38,10 @@ class LegislatorDbTest {
    @After
    fun testTeardown() {
       writer?.after(db!!)
-      if (db != null && (db?.isDbOpen() ?: false)) {
-         db!!.openDatabase()
+      if (db != null ) {
+         if(! db!!.isDbOpen()) {
+            db!!.openDatabase()
+         }
          db?.dropDatabase()
          db?.closeDatabase()
       }

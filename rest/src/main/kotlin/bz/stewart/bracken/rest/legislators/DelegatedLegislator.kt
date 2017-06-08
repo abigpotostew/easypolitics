@@ -7,12 +7,12 @@ import bz.stewart.bracken.shared.data.defaultPartyTypeMatcher
 import bz.stewart.bracken.shared.data.defaultRoleTypeMatcher
 import bz.stewart.bracken.shared.data.party.Party
 import bz.stewart.bracken.shared.data.person.LegislatorRole
-import bz.stewart.bracken.shared.data.person.Person
+import bz.stewart.bracken.shared.data.person.PublicLegislator
 
 /**
  * Created by stew on 6/5/17.
  */
-class DelegatedLegislator (private val p:LegislatorData):Person{
+class DelegatedLegislator (private val p:LegislatorData): PublicLegislator {
 
    private val roles :List<TermData> = p.terms ?: emptyList()
    private val currentRole:TermData = roles.maxBy { it.end?.time ?: -1 } ?: emptyTermDate() //maybe null

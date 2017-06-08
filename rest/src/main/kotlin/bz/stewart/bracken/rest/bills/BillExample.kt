@@ -7,7 +7,7 @@ import bz.stewart.bracken.db.bill.data.Title
 import bz.stewart.bracken.db.bill.data.parse.DbDateSerializer
 import bz.stewart.bracken.shared.DateUtils
 import bz.stewart.bracken.shared.data.*
-import bz.stewart.bracken.shared.data.person.Person
+import bz.stewart.bracken.shared.data.person.PublicLegislator
 import java.util.*
 
 /**
@@ -92,7 +92,7 @@ class BillExample(val bill_id: String? = null,
       return congressNum == EMPTY_CONGRESS
    }
 
-   override fun getCosponsors(): Array<Person>? {
+   override fun getCosponsors(): Array<PublicLegislator>? {
       return emptyArray()
    }
 
@@ -133,7 +133,7 @@ class BillExample(val bill_id: String? = null,
       return short_title
    }
 
-   override fun getSponsor(): Person? {
+   override fun getSponsor(): PublicLegislator? {
       return null
    }
 

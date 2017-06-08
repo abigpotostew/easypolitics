@@ -5,7 +5,7 @@ import bz.stewart.bracken.db.bill.data.parse.DbDateSerializer
 import bz.stewart.bracken.db.leglislators.data.LegislatorData
 import bz.stewart.bracken.rest.legislators.DelegatedLegislator
 import bz.stewart.bracken.shared.data.*
-import bz.stewart.bracken.shared.data.person.Person
+import bz.stewart.bracken.shared.data.person.PublicLegislator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 
@@ -70,9 +70,18 @@ class BillDelegated(private val bill: Bill,
    }
 
    //@JsonIgnore
-   override fun getCosponsors(): Array<Person>? {
+   override fun getCosponsors(): Array<PublicLegislator>? {
+      val cosponsorData: List<DelegatedLegislator> = bill.cosponsorsArr
+            .map { peopleMap[it.bioguide_id] }
+            .filterNotNull()
+            .map { DelegatedLegislator(it) }
+      return cosponsorData.toTypedArray()
+   }
+
+   //@JsonIgnore
+   override fun getSponsor(): PublicLegislator? {
       val p: LegislatorData = peopleMap.get(bill.billSponsor.bioguide_id) ?: return null
-      return toPublicSponsorCollection(bill.cosponsorsArr).toTypedArray()
+      return DelegatedLegislator(p)
    }
 
    override fun getEnactedAs(): EnactedAs? {
@@ -114,12 +123,6 @@ class BillDelegated(private val bill: Bill,
 
    override fun getShortTitle(): String? {
       return bill.short_title
-   }
-
-   //@JsonIgnore
-   override fun getSponsor(): Person? {
-      val p: LegislatorData = peopleMap.get(bill.billSponsor.bioguide_id) ?: return null
-      return DelegatedLegislator(p)
    }
 
    //@JsonIgnore

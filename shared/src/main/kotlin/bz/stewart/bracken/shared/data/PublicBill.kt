@@ -1,5 +1,7 @@
 package bz.stewart.bracken.shared.data
 
+import bz.stewart.bracken.shared.data.person.PublicLegislator
+
 /**
  * Created by stew on 3/19/17.
  */
@@ -11,7 +13,7 @@ interface PublicBill {
    @BillRequired fun getByRequest(): String?
    fun getCommitteeReports(): Array<String>?  //ignore this is not documented
    @BillRequired fun getCongress(): Int
-   fun getCosponsors(): Array<PublicSponsor>?
+   fun getCosponsors(): Array<PublicLegislator>?
    fun getEnactedAs(): EnactedAs?
    fun getHistory(): PublicBillHistory?
    @BillRequired fun getIntroducedAt(): String? //rly a date
@@ -21,7 +23,7 @@ interface PublicBill {
    fun getPopularTitle(): String?
    fun getRelatedBills(): Array<PublicRelatedBill>?
    fun getShortTitle(): String?
-   @BillRequired fun getSponsor(): PublicSponsor?
+   @BillRequired fun getSponsor(): PublicLegislator?
    @BillRequired fun getCurrentStatus(): FixedStatus
    @BillRequired fun getCurrentStatusAt(): String //rly a date
    @BillRequired fun getCurrentStatusDescription(): String

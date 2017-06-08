@@ -62,18 +62,8 @@ class BillsController {
                         congressNum = congress
                        )
 
-
-      //val queryOut :FindIterable<Bill>? =
-      //mongoCollection?.find("{number:${number?.json}}")
-
-
-      //todo validate input. especially limit
-      //val billCollection = billMongoDatabase!!.getMainDb()!!.getFirstDb().getTargetCollection()!!
-      //val peopleCollection = billMongoDatabase!!.getMainDb()!!.getSecondDb().getTargetCollection()!!
+      //todo validate input
       return BillQueryBuilder(billMongoDatabase!!.getMainDb()!!,queryExample,orderBy, limit).find()
-//      return BillQueryBuilder(billMongoDatabase!!.getMainDb()!!, queryExample, orderBy,
-//                              limit).find()//QueryResultImpl(queryOut, limit)
-
    }
 
 }
