@@ -12,7 +12,10 @@ class FlexibleDateParser : com.fasterxml.jackson.databind.JsonDeserializer<Date>
            java.text.ParseException::class)
    override fun deserialize(jsonparser: com.fasterxml.jackson.core.JsonParser,
                             deserializationcontext: com.fasterxml.jackson.databind.DeserializationContext): java.util.Date {
-      val date = jsonparser.text
-      return DateUtils.flexibleDateParser(date)
+      val dateText = jsonparser.text
+      if(dateText.isNullOrBlank()){
+         return DateUtils.defaultDate()
+      }
+      return DateUtils.flexibleDateParser(dateText)
    }
 }
