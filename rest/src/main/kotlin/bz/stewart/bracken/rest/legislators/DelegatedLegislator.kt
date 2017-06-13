@@ -3,19 +3,19 @@ package bz.stewart.bracken.rest.legislators
 import bz.stewart.bracken.db.leglislators.data.LegislatorData
 import bz.stewart.bracken.db.leglislators.data.TermData
 import bz.stewart.bracken.db.leglislators.data.emptyTermDate
-import bz.stewart.bracken.shared.data.defaultPartyTypeMatcher
-import bz.stewart.bracken.shared.data.defaultRoleTypeMatcher
+import bz.stewart.bracken.shared.data.TypeHelperDefaults
 import bz.stewart.bracken.shared.data.party.Party
 import bz.stewart.bracken.shared.data.person.LegislatorRole
 import bz.stewart.bracken.shared.data.person.PublicLegislator
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 
 /**
  * Created by stew on 6/5/17.
  */
-class DelegatedLegislator (private val p:LegislatorData): PublicLegislator {
+class DelegatedLegislator(private val p: LegislatorData) : PublicLegislator {
 
-   private val roles :List<TermData> = p.terms ?: emptyList()
-   private val currentRole:TermData = roles.maxBy { it.end?.time ?: -1 } ?: emptyTermDate() //maybe null
+   private val roles: List<TermData> = p.terms ?: emptyList()
+   private val currentRole: TermData = roles.maxBy { it.end?.time ?: -1 } ?: emptyTermDate() //maybe null
 
    private val DEFAULT_NO_NAME = ""
    override fun getBioguideId(): String {
@@ -43,11 +43,12 @@ class DelegatedLegislator (private val p:LegislatorData): PublicLegislator {
    }
 
    override fun getParty(): Party {
-      return defaultPartyTypeMatcher(currentRole.party ?: "")
+      return TypeHelperDefaults.defaultPartyTypeMatcher(currentRole.party ?: "")
    }
 
+   @JsonSerialize(using = LegislatorRoleSerializer::class)
    override fun getRole(): LegislatorRole {
-      return defaultRoleTypeMatcher(currentRole.type ?: "")
+      return TypeHelperDefaults.defaultRoleTypeMatcher(currentRole.type ?: "")
    }
 
    override fun getPhoneNumber(): String {

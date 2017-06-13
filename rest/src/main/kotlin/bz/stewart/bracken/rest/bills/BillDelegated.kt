@@ -8,12 +8,16 @@ import bz.stewart.bracken.shared.data.*
 import bz.stewart.bracken.shared.data.person.PublicLegislator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonPropertyOrder
 
 /**
  * THIS IS THE DATA THAT WILL BE VISIBLE TO REST API
  * Transforms a database bill to a public bill.
  * Created by stew on 3/30/17.
  */
+@JsonPropertyOrder("billId", "number", "congress", "resolutionType", "billType",
+                   "shortTitle", "billName", "officialTitle", "currentStatus",
+                   "currentStatusAt", "introducedAt", "updatedAt", "sponsor", "subjects")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class BillDelegated(private val bill: Bill,
                     private val peopleMap: Map<String, LegislatorData> = emptyMap()) : PublicBill {

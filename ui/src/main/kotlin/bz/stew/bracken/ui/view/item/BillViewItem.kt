@@ -32,7 +32,7 @@ class BillViewItem(val billData: BillData) : ViewItem {
    }
 
    fun sponsorImageUrl(): String {
-      val twitterId = this.billData.sponsor.getTwitterId()
+      val twitterId = this.billData.sponsor.getTwitter()
       return "https://twitter.com/${twitterId}/profile_image?size=original"
    }
 }
