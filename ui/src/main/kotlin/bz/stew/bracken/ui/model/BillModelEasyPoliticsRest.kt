@@ -10,7 +10,6 @@ import bz.stew.bracken.ui.model.types.bill.BillData
 class BillModelEasyPoliticsRest : Model {
    private var bills: Collection<BillData> = listOf()
 
-
    override fun loadBillData(data: dynamic) {
       bills = EasyPoliticsParser(data).parse(this)
    }

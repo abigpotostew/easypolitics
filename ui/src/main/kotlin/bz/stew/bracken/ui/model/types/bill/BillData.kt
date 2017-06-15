@@ -15,7 +15,8 @@ import kotlin.js.Date
  * Created by stew on 1/23/17.
  */
 data class BillData(val uniqueId: Int = -1,
-                    val title: String = "",
+                    val officialTitle: String = "",
+                    val shortTitle:String = "",
                     val congress: Int = -1,
                     val bill_type: BillType = BillType.NONE,
                     val bill_resolution_type: BillResolutionType = BillResolutionType.NONE,
@@ -27,6 +28,7 @@ data class BillData(val uniqueId: Int = -1,
                     val intro_date: Date = Date(),
                     val sponsor: Legislator = emptyLegislator(),
                     val relatedBills: RelatedBills = RelatedBills(),
+                    val cosponsors: List<Legislator> = emptyList(),
                     val origData:dynamic = null) : ModelItem {
 
 
@@ -45,6 +47,10 @@ data class BillData(val uniqueId: Int = -1,
 
    fun lastUpdated(): Double {
       return this.status.lastMajorAction().date().getTime()
+   }
+
+   fun lastUpdatedDate(): Date {
+      return this.status.lastMajorAction().date()
    }
 
    override fun toString(): String {

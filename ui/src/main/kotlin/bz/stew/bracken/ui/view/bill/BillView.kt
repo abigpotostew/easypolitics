@@ -221,7 +221,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
       val bd = billView.billData
       this.internalBillId++
       val billId = billView.selector()
-      val name = bd.title
+      val name = bd.officialTitle
       val statusDescription = bd.status.description()
       val sponsorName = bd.sponsor.getOfficialName()
       val introDate = UIFormatter.prettyDate(bd.intro_date)

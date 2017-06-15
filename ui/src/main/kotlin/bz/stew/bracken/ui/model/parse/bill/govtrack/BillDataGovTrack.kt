@@ -204,7 +204,7 @@ class BillDataGovTrack(private val model: Model) : BillDataBuilder {
 
       return BillData(
             uniqueId = uniqueParsedId,
-            title = title,
+            officialTitle = title,
             congress = congress,
             bill_type = bill_type,
             bill_resolution_type = bill_resolution_type,

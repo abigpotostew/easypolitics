@@ -13,6 +13,12 @@ class BillViewItem(val billData: BillData) : ViewItem {
 
    //val billData:BillData=billData
 
+   fun trueTitle():String{
+      if(billData.shortTitle.isNullOrBlank()){
+         return billData.officialTitle
+      }
+      return billData.shortTitle
+   }
 
    fun shortLabel(): String {
       return this.billData.bill_type.shortLabel() + " " + this.billData.number

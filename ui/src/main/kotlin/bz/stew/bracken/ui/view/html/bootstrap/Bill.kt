@@ -32,14 +32,17 @@ class Bill(val billView: BillViewItem): Template(){
       val billId = billView.selector().suffix()
       val bd = billView.billData
       val sponsorName = bd.sponsor.getOfficialName()
-      val name = bd.title
+      val name = bd.officialTitle
       val introDate = UIFormatter.prettyDate(bd.intro_date)
+      val lastUpdatedDateString = UIFormatter.prettyDate(bd.lastUpdatedDate())
       val status: BillStatus = bd.status
       val statusLabel: String = status.label()
+      val shortTitle :String = bd.shortTitle
       val statusDescr: String = status.description()
       val link: String = bd.link
-      val sponsorParty = bd.sponsor.getParty() //TODO this is kinda janky using as a direct css identifier :(
+      val sponsorParty = bd.sponsor.getParty()
       val billSponsorProfileImg = billView.sponsorImageUrl()
+      val cosponsors = bd.cosponsors
 
       val gen = html {
          div (Classes.bill,{
@@ -60,22 +63,32 @@ class Bill(val billView: BillViewItem): Template(){
                         Classes.boots_card_subtitle)
                      +sponsorName
                   }
-                  h7 {
-                     ac(Classes.billStatus, Classes.boots_card_text,
-                        Classes.boots_card_subtitle)
-                     +statusLabel
-                  }
+//                  h7 {
+//                     ac(Classes.billStatus, Classes.boots_card_text,
+//                        Classes.boots_card_subtitle)
+//                     +statusLabel
+//                  }
                   p {
                      ac(Classes.billDescription, Classes.boots_card_text,
                         Classes.css_ml_ellipses)
-                     +name
+                     +billView.trueTitle()
                   }
                }
                div {
-                  ac(Classes.boots_card_footer)
-                  small {
-                     ac(Classes.billDate, Classes.boots_text_muted)
-                     +introDate
+                  ac(Classes.boots_card_footer, Classes.boots_row)
+                  div {
+                     ac(Classes.boots_col_md_6)
+                     small {
+                        ac(Classes.billDate, Classes.boots_text_muted)
+                        +introDate
+                     }
+                  }
+                  div {
+                     ac(Classes.boots_col_md_6, Classes.boots_text_right)
+                     small {
+                        ac(Classes.billDate, Classes.boots_text_muted)
+                        +lastUpdatedDateString
+                     }
                   }
                }
             }
@@ -89,7 +102,7 @@ class Bill(val billView: BillViewItem): Template(){
                      ac("nav nav-tabs  flex-column flex-sm-row card-header-tabs")
                      set("role","tablist")
                      var i = 0
-                     val tabs = listOf<String>("Bill","Contact","Related Bills","Pizza")
+                     val tabs = listOf<String>("Bill","Contact","Related Bills","Cosponsors")
                      (0..3).forEach {
                         li {
                            ac("flex-sm-fill text-sm-center nav-item")
@@ -172,7 +185,13 @@ class Bill(val billView: BillViewItem): Template(){
                   })
                   div(Classes.boots_tab_card,{
                      id = tabId(3)
-                     +"pizza3"
+                     ul{
+                        for (l in cosponsors){
+                           li {
+                              +l.getOfficialName()
+                           }
+                        }
+                     }
                   })
                })
             }

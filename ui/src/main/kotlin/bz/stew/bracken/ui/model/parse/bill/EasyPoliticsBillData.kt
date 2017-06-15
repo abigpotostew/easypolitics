@@ -3,6 +3,7 @@ package bz.stew.bracken.model.parse.bill
 import bz.stew.bracken.ui.extension.html.jsParseDate
 import bz.stew.bracken.ui.model.parse.bill.BillDataBuilder
 import bz.stew.bracken.ui.model.parse.bill.EasyPoliticsMajorAction
+import bz.stew.bracken.ui.model.parse.bill.EasyPoliticsParser
 import bz.stew.bracken.ui.model.types.bill.BillData
 import bz.stew.bracken.ui.model.types.bill.status.BillStatusData
 import bz.stewart.bracken.shared.data.*
@@ -13,7 +14,7 @@ import bz.stewart.bracken.shared.data.person.Legislator
 /**
  * Created by stew on 4/29/17.
  */
-class EasyPoliticsBillData : BillDataBuilder {
+class EasyPoliticsBillData(private val parser:EasyPoliticsParser) : BillDataBuilder {
 
    private fun resolveMajorActions(
          actionsArr: dynamic): Collection<EasyPoliticsMajorAction> {
@@ -38,23 +39,46 @@ class EasyPoliticsBillData : BillDataBuilder {
 
    private fun resolveLegislator(sponsor: dynamic): Legislator {
       val s = sponsor
-      return Legislator(bioguideId = s.bioguideId,
-                        firstName = s.firstName,
-                        lastName = s.lastName,
-                        middleName = s.middleName,
-                        officialName = s.officialName,
-                        nickName = s.nickName,
-                        party = matchVisibleType(Party.values(), s.party, VisibleTypeMatcher.CAPS),
-                        role = TypeHelperDefaults.defaultRoleTypeMatcher(s.role),
-                        state = s.state,
-                        twitterId = s.twitter,
-                        phoneNumber = s.phoneNumber,
-                        website = s.website)
+      val cachedLegislator:Legislator? = parser.legislatorCached(s.bioguideId)
+      if(cachedLegislator!=null){
+         return cachedLegislator
+      }
+      val parsed = Legislator(bioguideId = s.bioguideId,
+                              firstName = s.firstName,
+                              lastName = s.lastName,
+                              middleName = s.middleName,
+                              officialName = s.officialName,
+                              nickName = s.nickName,
+                              party = matchVisibleType(Party.values(), s.party,
+                                                       VisibleTypeMatcher.CAPS),
+                              role = TypeHelperDefaults.defaultRoleTypeMatcher(s.role),
+                              state = s.state,
+                              twitterId = s.twitter,
+                              phoneNumber = s.phoneNumber,
+                              website = s.website)
+      parser.saveLegislator(parsed)
+      return parsed
+   }
+
+   private fun resolveCosponsors(cosponsors:dynamic):List<Legislator>{
+      val out = mutableListOf<Legislator>()
+      if (cosponsors!=null){
+         val numCosponsor: Int = cosponsors.length
+         for (i in 0..numCosponsor) {
+            val data = cosponsors[i]
+            if(data!=null){
+               val p = resolveLegislator(data)
+               out.add(p)
+            }
+         }
+      }
+      return out
    }
 
    override fun build(govInput: dynamic): BillData {
       val gi = govInput
       val title = gi.officialTitle
+      val shortTitle = gi.shortTitle
       val uniqueParsedId: String = gi.billId
       val uniqueId: Int = uniqueParsedId.hashCode()
       val congress: Int = gi.congress
@@ -83,13 +107,21 @@ class EasyPoliticsBillData : BillDataBuilder {
       val intro_date = jsParseDate(gi.introducedAt) // todo this is just a number now
 
       val sponsor = resolveLegislator(gi.sponsor)
+      val cosponsors = resolveCosponsors(gi.cosponsors)
       //val relatedBills
 
-      return BillData(title = title, uniqueId = uniqueId, congress = congress,
+      return BillData(officialTitle = title,
+                      shortTitle = shortTitle,
+                      uniqueId = uniqueId,
+                      congress = congress,
                       bill_type = bill_type,
                       bill_resolution_type = bill_res_type,
-                      status = currentStatus, number = number, link = link,
-                      intro_date = intro_date, sponsor = sponsor,
+                      status = currentStatus,
+                      number = number,
+                      link = link,
+                      intro_date = intro_date,
+                      sponsor = sponsor,
+                      cosponsors = cosponsors,
                       origData = gi)
 //      return BillData(
 //            uniqueId = uniqueParsedId,

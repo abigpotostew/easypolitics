@@ -9,3 +9,4 @@ lib
 .pid.lock
 .DS_Store
 /ui/build/resources/main/index.html
+my.properties
