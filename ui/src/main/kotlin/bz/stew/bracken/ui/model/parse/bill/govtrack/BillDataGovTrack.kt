@@ -1,20 +1,20 @@
 package bz.stew.bracken.ui.model.parse.bill.govtrack
 
-import bz.stew.bracken.ui.model.parse.bill.BillDataBuilder
 import bz.stew.bracken.ui.extension.html.jsDate
+import bz.stew.bracken.ui.model.Model
+import bz.stew.bracken.ui.model.parse.bill.BillDataBuilder
 import bz.stew.bracken.ui.model.types.bill.BillData
 import bz.stew.bracken.ui.model.types.bill.BillProxy
 import bz.stew.bracken.ui.model.types.bill.MajorAction
-import bz.stew.bracken.ui.model.Model
 import bz.stew.bracken.ui.model.types.bill.RelatedBills
 import bz.stew.bracken.ui.model.types.bill.status.BillStatus
 import bz.stew.bracken.ui.model.types.bill.status.BillStatusData
-import bz.stewart.bracken.shared.data.FixedStatus
 import bz.stew.bracken.ui.model.types.bill.status.emptyBillStatus
 import bz.stew.bracken.ui.util.JsonUtil
 import bz.stew.bracken.ui.util.log.Log
 import bz.stewart.bracken.shared.data.BillResolutionType
 import bz.stewart.bracken.shared.data.BillType
+import bz.stewart.bracken.shared.data.FixedStatus
 import bz.stewart.bracken.shared.data.VisibleType
 import bz.stewart.bracken.shared.data.party.Party
 import bz.stewart.bracken.shared.data.person.Legislator
@@ -190,12 +190,12 @@ class BillDataGovTrack(private val model: Model) : BillDataBuilder {
                                      JsonUtil.niceString(gi.sponsor_role.party)) as Party
       val sponsorRole: LegislatorRole = resolveType(LegislatorRole.values(),
                                                     JsonUtil.niceString(gi.sponsor_role.role_type)) as LegislatorRole
-      sponsor = Legislator(gi.sponsor.id,
+      /*sponsor = Legislator(gi.sponsor.id,
                            gi.sponsor.name,
                            party,
                            sponsorRole,
                            gi.sponsor_role.state,
-                           gi.sponsor.twitterid)
+                           gi.sponsor.twitterid)*/
 
 
       relatedBills = resolveRelatedBills(gi.related_bills)

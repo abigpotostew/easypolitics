@@ -8,7 +8,6 @@ import bz.stew.bracken.ui.model.types.bill.status.BillStatusData
 import bz.stewart.bracken.shared.data.*
 import bz.stewart.bracken.shared.data.party.Party
 import bz.stewart.bracken.shared.data.person.Legislator
-import bz.stewart.bracken.shared.data.person.LegislatorRole
 
 @Suppress("UnsafeCastFromDynamic")
 /**
@@ -16,7 +15,8 @@ import bz.stewart.bracken.shared.data.person.LegislatorRole
  */
 class EasyPoliticsBillData : BillDataBuilder {
 
-   private fun resolveMajorActions(actionsArr: dynamic): Collection<EasyPoliticsMajorAction> {
+   private fun resolveMajorActions(
+         actionsArr: dynamic): Collection<EasyPoliticsMajorAction> {
       val out = mutableListOf<EasyPoliticsMajorAction>()
       val numActions: Int = actionsArr
       for (i in 0..numActions) {
@@ -36,6 +36,22 @@ class EasyPoliticsBillData : BillDataBuilder {
       return out
    }
 
+   private fun resolveLegislator(sponsor: dynamic): Legislator {
+      val s = sponsor
+      return Legislator(bioguideId = s.bioguideId,
+                        firstName = s.firstName,
+                        lastName = s.lastName,
+                        middleName = s.middleName,
+                        officialName = s.officialName,
+                        nickName = s.nickName,
+                        party = matchVisibleType(Party.values(), s.party, VisibleTypeMatcher.CAPS),
+                        role = TypeHelperDefaults.defaultRoleTypeMatcher(s.role),
+                        state = s.state,
+                        twitterId = s.twitter,
+                        phoneNumber = s.phoneNumber,
+                        website = s.website)
+   }
+
    override fun build(govInput: dynamic): BillData {
       val gi = govInput
       val title = gi.officialTitle
@@ -44,16 +60,19 @@ class EasyPoliticsBillData : BillDataBuilder {
       val congress: Int = gi.congress
 
       //val btVals = BillType.values()
-      val bill_type: BillType = defaultBillTypeMatcher(gi.billType)
-      val bill_res_type = matchVisibleType(BillResolutionType.values(), gi.resolutionType, VisibleTypeMatcher.LOWER)
+      val bill_type: BillType = TypeHelperDefaults.defaultBillTypeMatcher(gi.billType)
+      val bill_res_type = matchVisibleType(BillResolutionType.values(), gi.resolutionType,
+                                           VisibleTypeMatcher.LOWER)
 
       val majorActions = resolveMajorActions(gi.actionsArr)
       val resolvedFixedStatus = FixedStatus.valueOfDb(gi.currentStatus)
 
-      //todo ststus label and description not entered
+      //todo status label and description not entered
 
-      val currentStatus = BillStatusData(fixedStatus = resolvedFixedStatus, date = jsParseDate(gi.currentStatusAt),
-                                         majorActions = majorActions, description = gi.currentStatusDescription,
+      val currentStatus = BillStatusData(fixedStatus = resolvedFixedStatus,
+                                         date = jsParseDate(gi.currentStatusAt),
+                                         majorActions = majorActions,
+                                         description = gi.currentStatusDescription,
                                          label = gi.currentStatusLabel)
 
       val number = (gi.number as String).toInt()
@@ -62,13 +81,15 @@ class EasyPoliticsBillData : BillDataBuilder {
       val is_alive = true
       val is_current = true
       val intro_date = jsParseDate(gi.introducedAt) // todo this is just a number now
-      val sponsor = Legislator(0, gi.sponsor.name, Party.DEMON, role = LegislatorRole.NONE, state = "DEMON",
-                               twitterId = "The_Donald")//todo my data is just not here
+
+      val sponsor = resolveLegislator(gi.sponsor)
       //val relatedBills
 
-      return BillData(title = title, uniqueId = uniqueId, congress = congress, bill_type = bill_type,
+      return BillData(title = title, uniqueId = uniqueId, congress = congress,
+                      bill_type = bill_type,
                       bill_resolution_type = bill_res_type,
-                      status = currentStatus, number = number, link = link, intro_date = intro_date, sponsor = sponsor,
+                      status = currentStatus, number = number, link = link,
+                      intro_date = intro_date, sponsor = sponsor,
                       origData = gi)
 //      return BillData(
 //            uniqueId = uniqueParsedId,

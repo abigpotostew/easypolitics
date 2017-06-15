@@ -7,7 +7,7 @@ import bz.stewart.bracken.rest.query.BillQueryBuilder
 import bz.stewart.bracken.rest.query.QueryResult
 import bz.stewart.bracken.shared.data.BadStateException
 import bz.stewart.bracken.shared.data.BillType
-import bz.stewart.bracken.shared.data.defaultBillTypeMatcher
+import bz.stewart.bracken.shared.data.TypeHelperDefaults
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -39,18 +39,20 @@ class BillsController {
          @RequestParam(value = "number", required = false) number: String? = null,
          @RequestParam(value = "bill_id", required = false) billId: String? = null,
          @RequestParam(value = "bill_type", required = false) billType: String? = null,
-         @RequestParam(value = "congress", required = false) congress: Int = EMPTY_CONGRESS,
+         @RequestParam(value = "congress",
+                       required = false) congress: Int = EMPTY_CONGRESS,
 
          //meta stuff
          @RequestParam(value = "order_by", required = false,
                        defaultValue = "-current_status_date") orderBy: String = "-current_status_date",
-         @RequestParam(value = "limit", required = false, defaultValue = "100") limit: Int = 100
+         @RequestParam(value = "limit", required = false,
+                       defaultValue = "100") limit: Int = 100
          /*@RequestParam(defaultValue = "") billId:String=""*/): QueryResult {
       //congress=115&order_by=-current_status_date&limit=200
 
       //todo move this to input validator
       val matchedBillType = try {
-         defaultBillTypeMatcher(billType ?: "")
+         TypeHelperDefaults.defaultBillTypeMatcher(billType ?: "")
       } catch (e: BadStateException) {
          BillType.NONE
       }
@@ -62,18 +64,9 @@ class BillsController {
                         congressNum = congress
                        )
 
-
-      //val queryOut :FindIterable<Bill>? =
-      //mongoCollection?.find("{number:${number?.json}}")
-
-
-      //todo validate input. especially limit
-      //val billCollection = billMongoDatabase!!.getMainDb()!!.getFirstDb().getTargetCollection()!!
-      //val peopleCollection = billMongoDatabase!!.getMainDb()!!.getSecondDb().getTargetCollection()!!
-      return BillQueryBuilder(billMongoDatabase!!.getMainDb()!!,queryExample,orderBy, limit).find()
-//      return BillQueryBuilder(billMongoDatabase!!.getMainDb()!!, queryExample, orderBy,
-//                              limit).find()//QueryResultImpl(queryOut, limit)
-
+      //todo validate input
+      return BillQueryBuilder(billMongoDatabase!!.getMainDb()!!, queryExample, orderBy,
+                              limit).find()
    }
 
 }

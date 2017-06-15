@@ -3,6 +3,7 @@ package bz.stewart.bracken.rest.query
 import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.rest.bills.BillDelegated
 import bz.stewart.bracken.rest.bills.toPublicBillCollection
+import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.mongodb.client.FindIterable
 
 /**
@@ -27,6 +28,7 @@ class BasicQueryResult(results:Collection<BillDelegated>, limit:Int):QueryResult
    override var results: Collection<BillDelegated> = results
 }
 
+@JsonPropertyOrder("meta", "results")
 interface QueryResult {
    var meta :Meta
    var results :Collection<BillDelegated>

@@ -56,6 +56,7 @@ class BillQueryBuilder(private val db: MainDbAccess,
 
    /**
     * execute the query (unvalidated at this point) with request limit and sort
+    * TODO validate input first
     */
    fun find():QueryResult{
       val queryRes :Collection<BillDelegated> = db.standardBillQuery(queryBson(),limit,getSort())

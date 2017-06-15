@@ -10,6 +10,8 @@ import com.mongodb.BasicDBObject
 import com.mongodb.client.FindIterable
 import org.bson.conversions.Bson
 import org.litote.kmongo.MongoOperator
+import org.litote.kmongo.find
+import org.litote.kmongo.formatJson
 
 class MainDbAccess(_databaseName: String) : CompositeMongoDb<Bill, LegislatorData>(
       _databaseName, Bill::class.java, "bills", LegislatorData::class.java,
@@ -56,19 +58,25 @@ class MainDbAccess(_databaseName: String) : CompositeMongoDb<Bill, LegislatorDat
       val iter = strings.iterator()
       val strBuilder = StringBuilder("[ \"${iter.next()}\"")
       for (str in iter) {
-         strBuilder.append(", \"${iter.next()}\"")
+         strBuilder.append(", \"${str}\"")
       }
+      strBuilder.append("]")
       return strBuilder.toString()
    }
 
-   private fun getPeopleQuery(bioGuideIds: Set<String>): Bson {
+   private fun getPeopleQuery(bioGuideIds: Set<String>): String{
       val inList = BasicDBObject()
       inList.put("${MongoOperator.`in`}", toJsonArray(bioGuideIds))
 
       val topQuery = BasicDBObject()
       topQuery.put("id.bioguide", inList)
 
-      return topQuery
+      val out =
+"""
+{"id.bioguide": {${MongoOperator.`in`}: ${toJsonArray(bioGuideIds)} }}
+""".formatJson()
+
+      return out//topQuery
    }
 
    private fun collectPeople(bills: FindIterable<Bill>): Set<String> {

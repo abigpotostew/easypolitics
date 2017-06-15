@@ -51,12 +51,26 @@ dependencies {
 	compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}")
 	//compile("org.jetbrains.kotlin:kotlin-nosql-mongodb:0.1-SNAPSHOT")
-	compile project(':db')
+	compile (project(':db')){
+        //exclude module: 'log4j-over-slf4j'
+        exclude module: 'log4j-over-slf4j'
+        exclude module: 'jcl-over-slf4j'
+        exclude module: 'jcl-to-slf4j'
+    }
 	compile 'org.litote.kmongo:kmongo:3.3.5'
 
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile project(':db').sourceSets.test.output
+
+
+    runtime (project(':db')){
+        exclude module: 'log4j-over-slf4j'
+        exclude module: 'jcl-over-slf4j'
+        exclude module: 'jcl-to-slf4j'
+    }
+
+	//runtime startdb
 
 	//compile project(':shared')
 }
@@ -78,15 +92,22 @@ assemble {
 	dependsOn copySharedCode
 }
 
+//run {
+//	//dependsOn projects.db.startdb
+//}
+//test {
+//}
 
 bootRun{
+	//dependsOn projects.db.startdb
    //debug = true
 	//run {
-		jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.db.name=congress2', '-Dbz.stewart.bracken.db.collection=bills115_load']
+		jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.db.name=congress2']//, '-Dbz.stewart.bracken.db.collection=bills'
 	//}
 }
 
 test{
+	//dependsOn projects.db.startdb
 	jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=y']
 }
 

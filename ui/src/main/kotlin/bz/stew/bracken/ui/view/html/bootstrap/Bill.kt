@@ -2,13 +2,13 @@ package bz.stew.bracken.ui.view.html.bootstrap
 
 import bz.stew.bracken.ui.extension.kotlinx.ac
 import bz.stew.bracken.ui.model.types.bill.status.BillStatus
-import bz.stewart.bracken.shared.data.MajorStatus
-import bz.stewart.bracken.shared.data.party.Party
 import bz.stew.bracken.ui.util.ui.UIFormatter
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.Template
 import bz.stew.bracken.ui.view.html.cssClass
 import bz.stew.bracken.ui.view.item.BillViewItem
+import bz.stewart.bracken.shared.data.MajorStatus
+import bz.stewart.bracken.shared.data.party.Party
 import kotlinx.html.*
 
 /**
@@ -31,7 +31,7 @@ class Bill(val billView: BillViewItem): Template(){
 
       val billId = billView.selector().suffix()
       val bd = billView.billData
-      val sponsorName = bd.sponsor.getName()
+      val sponsorName = bd.sponsor.getOfficialName()
       val name = bd.title
       val introDate = UIFormatter.prettyDate(bd.intro_date)
       val status: BillStatus = bd.status
