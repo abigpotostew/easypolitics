@@ -41,27 +41,30 @@
  ******************************************/
 .bill.party-republican > .billGridContent {
     /*background-color: rgb(220, 127, 123);*/
+    border-color: rgb(220, 127, 123);
 }
 
 .bill.party-democrat > .billGridContent {
     /*background-color: rgb(158, 164, 227);*/
+    border-color:rgb(158, 164, 227);
 }
 
 .bill.party-independent > .billGridContent {
     /*background-color: rgb(241, 255, 137);*/
+    border-color: rgb(241, 255, 137);
 }
 
 
 .bill.party-republican .billGridContent .card-header ,.bill.republican .billGridContent .card-footer {
-    background-color: rgb(220, 127, 123);
+    /*background-color: rgb(220, 127, 123);*/
 }
 
 .bill.party-democrat .billGridContent .card-header ,.bill.democrat .billGridContent .card-footer {
-    background-color: rgb(158, 164, 227);
+    /*background-color: rgb(158, 164, 227);*/
 }
 
 .bill.party-independent .billGridContent .card-header ,.bill.independent .billGridContent .card-footer{
-    background-color: rgb(241, 255, 137);
+    /*background-color: rgb(241, 255, 137);*/
 }
 
 /******************************************

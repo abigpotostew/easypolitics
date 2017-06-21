@@ -20,10 +20,13 @@ enum class Classes(labelValue:String, addClasses: List<Classes> = emptyList()):C
    boots_tab_card("", listOf(boots_card_block,boots_tab_pane)),
 
    boots_text_muted("text-muted"),
+   boots_text_right("text-right"),
+
    boots_tab_content("tab-content"),
    boots_container_fluid("container-fluid"),
    boots_row("row"),
    boots_col("col"),
+   boots_col_md_6("col-md-6"),
    boots_button_group("btn-group"),
    boots_mr2("mr-2"),
    boots_secondary_button("btn btn-secondary"),
