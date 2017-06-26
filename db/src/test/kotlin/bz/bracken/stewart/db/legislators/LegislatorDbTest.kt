@@ -22,10 +22,8 @@ class LegislatorDbTest {
 
    val dbName = "legislators" + Date().time
    val collectionName = "legislators"
-   val currentDataPath = TestUtils.getTestResourcesDir(
-         "/legislators-data/legislators-current.json")
-   val socialDataPath = TestUtils.getTestResourcesDir(
-         "/legislators-data/legislators-social-media.json")
+   val currentDataPath = TestUtils.getTestLegislatorsCurrentData()
+   val socialDataPath = TestUtils.getTestLegislatorsSocialData()
    var writer: CollectionWriter<LegislatorData, Database<LegislatorData>>? = null
    var db: LegislatorCreateDb? = null
 

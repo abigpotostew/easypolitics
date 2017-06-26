@@ -1,19 +1,24 @@
 package bz.stewart.bracken
 
+import bz.stewart.bracken.rest.query.BasicQueryResult
 import bz.stewart.bracken.rest.query.QueryResultImpl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
+import org.junit.Test
+import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.context.annotation.Configuration
+import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.web.util.UriComponentsBuilder
 
 
 
 //disabling because it's not fckin working
-//@RunWith(SpringRunner::class)
-//@SpringBootTest(classes = arrayOf(BillControllerTestConfig::class), webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@RunWith(SpringRunner::class)
+@SpringBootTest(classes = arrayOf(BillControllerTestConfig::class), webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BillControllerTests {
 
    @Autowired
@@ -47,7 +52,7 @@ class BillControllerTests {
    }
 
 
-   //@Test
+   @Test
    fun `CRa aaazY test name dawgie`() {
 
       //api/v1/
@@ -63,7 +68,7 @@ class BillControllerTests {
       val body = //restTemplate.getForObject(uri2, QueryResultImpl::class.java, mapOf(Pair("congress", "115")))
       restTemplate.getForObject(uri2, QueryResultImpl::class.java)
 
-      assertThat(body).isEqualTo("")
+      //assertThat(body).isEqualTo("")
       // Then
       //assertThat(body).isEqualTo("Hello, $name")
 

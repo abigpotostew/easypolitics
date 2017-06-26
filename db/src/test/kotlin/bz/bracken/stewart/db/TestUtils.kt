@@ -3,6 +3,9 @@ package bz.stewart.bracken.db
 import bz.stewart.bracken.db.bill.database.mongodb.BillJsonDataDatabase
 import bz.stewart.bracken.db.bill.database.mongodb.BillMongoDb
 import bz.stewart.bracken.db.bill.database.mongodb.SingleBillWriter
+import bz.stewart.bracken.db.leglislators.LegislatorArguments
+import bz.stewart.bracken.db.leglislators.LegislatorRuntime
+import bz.stewart.bracken.db.leglislators.MockLegislatorArgs
 import java.io.File
 import java.util.*
 
@@ -29,16 +32,31 @@ class TestUtils {
          return "$resourceDir$addPath"
       }
 
+      fun getTestLegislatorsCurrentData():String{
+         return getTestResourcesDir(
+               "/legislators-data/legislators-current.json")
+      }
+
+      fun getTestLegislatorsSocialData():String{
+         return getTestResourcesDir(
+               "/legislators-data/legislators-social-media.json")
+      }
+
       fun generateTestDb(): BillMongoDb {
          val collectionName = "billsTest_"+ Date().time
+         val dbName = "congress" + Date().time
          val writer = SingleBillWriter()
-         val db = BillJsonDataDatabase(File(getTestResourcesData()), "congress1", collectionName, RuntimeMode.RESET, false,
+         val db = BillJsonDataDatabase(File(getTestResourcesData()), dbName, collectionName, RuntimeMode.RESET, false,
                                        writer!!)
          db.openDatabase()
          db.loadData(null)
          db.closeDatabase()
 
-         val personDbCollection = "legislator"
+         val legislator = LegislatorRuntime(MockLegislatorArgs(_files = mutableListOf(File(getTestLegislatorsCurrentData())),
+               _testMode = false,
+               _dbName = dbName,
+               _socialFile = File(getTestLegislatorsSocialData())))
+         legislator.execute() //build legislator db
 
          return db
       }

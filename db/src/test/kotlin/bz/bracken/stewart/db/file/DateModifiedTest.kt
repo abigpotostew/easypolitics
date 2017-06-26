@@ -58,7 +58,7 @@ class DateModifiedTest {
 
       str = ""
       out = DateUtils.parseLastModifiedDateString(str)
-      assertTrue(out == null)
+      assertEquals(out, DateUtils.defaultDate())
    }
 
    @Test
