@@ -11,7 +11,7 @@ import com.mongodb.client.FindIterable
  */
 class QueryResultImpl(mongoQueryResult: FindIterable<Bill>?, limit: Int) :QueryResult{
    private var queryMeta = Meta(limit, 0, mongoQueryResult?.count() ?: 0)
-   private var resultsColl :Collection<BillDelegated> = toPublicBillCollection(
+   private var resultsColl :Collection<BillDelegated>? = toPublicBillCollection(
          mongoQueryResult?.take(queryMeta.limit) ?: emptyList())
 
    override var meta
@@ -23,15 +23,15 @@ class QueryResultImpl(mongoQueryResult: FindIterable<Bill>?, limit: Int) :QueryR
       set(v) { resultsColl = v }
 }
 
-class BasicQueryResult(results:Collection<BillDelegated>, limit:Int):QueryResult{
-   override var meta: Meta = Meta(limit, 0, results.count())
-   override var results: Collection<BillDelegated> = results
+class BasicQueryResult(results:Collection<BillDelegated>?, limit:Int?):QueryResult{
+   override var meta: Meta = Meta(limit ?: 0, 0, results?.count() ?: 0)
+   override var results: Collection<BillDelegated>? = results
 }
 
 @JsonPropertyOrder("meta", "results")
 interface QueryResult {
    var meta :Meta
-   var results :Collection<BillDelegated>
+   var results :Collection<BillDelegated>?
 }
 
 @Suppress("unused")

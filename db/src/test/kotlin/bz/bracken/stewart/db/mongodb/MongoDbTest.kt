@@ -23,7 +23,7 @@ import java.util.*
  */
 class MongoDbTest {
 
-   val dbName = "congress1"
+   val dbName = "congress1" + Date().time
    val collectionName = "bills_test_" + Date().time
 
    var writer: SingleBillWriter? = null

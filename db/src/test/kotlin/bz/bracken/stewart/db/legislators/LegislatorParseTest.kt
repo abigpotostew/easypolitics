@@ -1,6 +1,7 @@
 package bz.bracken.stewart.db.legislators
 
 import bz.bracken.stewart.db.AssertAllFound
+import bz.stewart.bracken.db.TestUtils
 import bz.stewart.bracken.db.TestUtils.Methods.getTestResourcesDir
 import bz.stewart.bracken.db.leglislators.ParserLegislatorJson
 import bz.stewart.bracken.db.leglislators.ParserSocialJson
@@ -19,7 +20,7 @@ class LegislatorParseTest {
 
    @Test
    fun testJsonParse() {
-      val currentData = getTestResourcesDir("/legislators-data/legislators-current.json")
+      val currentData = TestUtils.getTestLegislatorsCurrentData()
       val parsed = ParserLegislatorJson().parseData(
             File(currentData).toPath())
 

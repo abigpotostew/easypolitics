@@ -39,13 +39,22 @@ class TestMongoBean: MongoDbBean() {
 
    var billMongoDb:BillMongoDb?=null
    //var peopleMongoDb:LegislatorMongoDb?=null
+   var mainAccess:MainDbAccess? = null
 
    override fun setup() {
-      this.billMongoDb =  TestUtils.generateTestDb()
+      val testDb = TestUtils.generateTestDb()
+      this.billMongoDb =  testDb
+      this.mainAccess = MainDbAccess(testDb.getDbName())
    }
 
    override fun destroy() {
-      billMongoDb?.getTargetCollection()?.drop()
+      val db:BillMongoDb? = billMongoDb
+      if(db != null) {
+         db.openDatabase()
+         db.getTargetCollection()?.drop()
+         db.dropDatabase()
+         db.closeDatabase()
+      }
    }
 
    override fun getBillDb(): BillMongoDb? {
@@ -53,6 +62,6 @@ class TestMongoBean: MongoDbBean() {
    }
 
    override fun getMainDb(): MainDbAccess? {
-      TODO()
+      return mainAccess
    }
 }

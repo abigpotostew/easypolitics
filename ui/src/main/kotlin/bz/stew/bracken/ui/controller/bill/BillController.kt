@@ -7,14 +7,14 @@ import bz.stew.bracken.ui.model.BillModelGovTrack
 import bz.stew.bracken.ui.model.Model
 import bz.stew.bracken.ui.model.index.*
 import bz.stew.bracken.ui.model.types.bill.BillData
-import bz.stewart.bracken.shared.data.FixedStatus
-import bz.stewart.bracken.shared.data.MajorStatus
 import bz.stew.bracken.ui.service.RequestCallback
 import bz.stew.bracken.ui.service.ServerRequestDispatcher
 import bz.stew.bracken.ui.util.JsonUtil
 import bz.stew.bracken.ui.view.bill.BillView
 import bz.stew.bracken.ui.view.html.bootstrap.BootstrapTemplates
 import bz.stew.bracken.view.HtmlSelector
+import bz.stewart.bracken.shared.data.FixedStatus
+import bz.stewart.bracken.shared.data.MajorStatus
 import bz.stewart.bracken.shared.data.party.Party
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSelectElement
@@ -25,7 +25,8 @@ import org.w3c.dom.events.EventTarget
  * Created by stew on 1/25/17.
  */
 
-class BillController(rootElmt: HtmlSelector, model: Model = BillModelGovTrack()) : Controller(
+class BillController(rootElmt: HtmlSelector,
+                     model: Model = BillModelGovTrack()) : Controller(
       BillView(rootElmt, BootstrapTemplates()),
       model) {
 
@@ -65,13 +66,13 @@ class BillController(rootElmt: HtmlSelector, model: Model = BillModelGovTrack())
          introducedDateFilter(it, IndexOperation.LessThanOrEqual)
       })
       this.view.getElement(BillFilters.LASTMAJORSTATUS.htmlSelector()).addEventListener("change",
-                                                                                        this::billMajorStatusFilter)
+            this::billMajorStatusFilter)
    }
 
    fun stopListening() {
       this.view.getElement(BillFilters.PARTY.htmlSelector()).removeEventListener("change", this::partyFilter)
       this.view.getElement(BillFilters.FIXEDSTATUS.htmlSelector()).removeEventListener("change",
-                                                                                       this::billStatusFilter)
+            this::billStatusFilter)
    }
 
    fun introducedDateFilter(event: Event,
@@ -84,7 +85,7 @@ class BillController(rootElmt: HtmlSelector, model: Model = BillModelGovTrack())
             0.0
          }
          val validDate = niceClamp(inputDate, INTRO_DATE_INDEX.minKey(), INTRO_DATE_INDEX.maxKey(),
-                                   operator == IndexOperation.GreaterThanOrEqual)
+               operator == IndexOperation.GreaterThanOrEqual)
          println("VALUE IS: $validDate")
          (this.view as BillView).showSelectedBills(
                INTRO_DATE_INDEX.instancesByOperator(operator, validDate))
@@ -169,7 +170,7 @@ class BillController(rootElmt: HtmlSelector, model: Model = BillModelGovTrack())
                   onDownload(controller)
                }
             }
-                                           )
+      )
    }
 }
 

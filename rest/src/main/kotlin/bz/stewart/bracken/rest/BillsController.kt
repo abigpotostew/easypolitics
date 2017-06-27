@@ -50,6 +50,7 @@ class BillsController {
          /*@RequestParam(defaultValue = "") billId:String=""*/): QueryResult {
       //congress=115&order_by=-current_status_date&limit=200
 
+      println("PPPPPPIIIIIIZZZZZZZZZZ?AAAAAAA")
       //todo move this to input validator
       val matchedBillType = try {
          TypeHelperDefaults.defaultBillTypeMatcher(billType ?: "")
@@ -63,7 +64,6 @@ class BillsController {
                         bill_type = matchedBillType,
                         congressNum = congress
                        )
-
       //todo validate input
       return BillQueryBuilder(billMongoDatabase!!.getMainDb()!!, queryExample, orderBy,
                               limit).find()
