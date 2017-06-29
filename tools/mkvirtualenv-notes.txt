@@ -1,0 +1,9 @@
+on mac:
+- https://pip.readthedocs.io/en/stable/installing/
+- install python from brew, i'm using 2.7.13
+- add to .bash_profile:
+    export PATH=/usr/bin:/usr/sbin:/bin:/usr/local/bin:/sbin:/opt/x11/bin:$PATH
+- install virtualenv and virtualenvwrapper
+- sudo -s
+- source /usr/local/bin/virtualenvwrapper.sh
+- mkvirtualenv <name>

@@ -70,7 +70,7 @@ dependencies {
 
     //compile project(':shared')
 
-    //runtime "org.slf4j:slf4j-log4j12:1.7.24" //todo figure out how to exclude this from rest
+    runtime "org.slf4j:slf4j-log4j12:1.7.24" //todo figure out how to exclude this from rest
 
 
     //compile files(sharedSrc)

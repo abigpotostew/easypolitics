@@ -5,9 +5,11 @@ import bz.stewart.bracken.rest.bills.BillExample
 import bz.stewart.bracken.rest.bills.EMPTY_CONGRESS
 import bz.stewart.bracken.rest.query.BillQueryBuilder
 import bz.stewart.bracken.rest.query.QueryResult
+import bz.stewart.bracken.rest.query.emptyQueryResult
 import bz.stewart.bracken.shared.data.BadStateException
 import bz.stewart.bracken.shared.data.BillType
 import bz.stewart.bracken.shared.data.TypeHelperDefaults
+import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,6 +24,8 @@ import javax.annotation.PostConstruct
 //@ConfigurationProperties//todo
 @RestController
 class BillsController {
+
+   companion object: KLogging()
 
    @Autowired
    var billMongoDatabase: MongoDbBean? = null
@@ -50,7 +54,6 @@ class BillsController {
          /*@RequestParam(defaultValue = "") billId:String=""*/): QueryResult {
       //congress=115&order_by=-current_status_date&limit=200
 
-      println("PPPPPPIIIIIIZZZZZZZZZZ?AAAAAAA")
       //todo move this to input validator
       val matchedBillType = try {
          TypeHelperDefaults.defaultBillTypeMatcher(billType ?: "")
@@ -58,15 +61,25 @@ class BillsController {
          BillType.NONE
       }
 
+
       val queryExample =
             BillExample(billNumber = number,
                         bill_id = billId,
                         bill_type = matchedBillType,
                         congressNum = congress
                        )
+
+      logger.info{"Request: $queryExample\n\tOrder: $orderBy\n\tLimit: $limit"}
+
+
       //todo validate input
-      return BillQueryBuilder(billMongoDatabase!!.getMainDb()!!, queryExample, orderBy,
-                              limit).find()
+      val result = try {
+         BillQueryBuilder(billMongoDatabase!!.getMainDb()!!, queryExample, orderBy,
+               limit).find()
+      } catch (e:Exception){
+         emptyQueryResult()
+      }
+      return result
    }
 
 }

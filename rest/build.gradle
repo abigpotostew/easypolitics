@@ -43,9 +43,16 @@ sourceSets {
 
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-	compile("org.springframework.boot:spring-boot-starter-data-rest")
-	compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+    compile("org.springframework.boot:spring-boot-starter-web"){
+		//exclude group: 'ch.qos.logback', module: 'logback-classic'
+		//exclude group: 'org.slf4j', module:'jcl-over-slf4j'
+	}
+	compile("org.springframework.boot:spring-boot-starter-data-rest"){
+		exclude group: 'org.slf4j', module: 'jcl-over-slf4j'
+	}
+	compile("org.springframework.boot:spring-boot-starter-data-mongodb"){
+		exclude group: 'org.slf4j', module: 'jcl-over-slf4j'
+	}
 	//compile('org.springframework.boot:spring-boot-starter')
 	//compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 	compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
@@ -56,6 +63,7 @@ dependencies {
         exclude module: 'log4j-over-slf4j'
         exclude module: 'jcl-over-slf4j'
         exclude module: 'jcl-to-slf4j'
+		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 	compile 'org.litote.kmongo:kmongo:3.3.5'
 
@@ -65,9 +73,10 @@ dependencies {
 
 
     runtime (project(':db')){
-        exclude module: 'log4j-over-slf4j'
-        exclude module: 'jcl-over-slf4j'
-        exclude module: 'jcl-to-slf4j'
+//        exclude module: 'log4j-over-slf4j'
+//        exclude module: 'jcl-over-slf4j'
+//        exclude module: 'jcl-to-slf4j'
+		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 
 	//runtime startdb

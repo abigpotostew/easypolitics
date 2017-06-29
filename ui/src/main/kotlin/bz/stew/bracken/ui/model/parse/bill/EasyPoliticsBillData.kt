@@ -6,9 +6,11 @@ import bz.stew.bracken.ui.model.parse.bill.EasyPoliticsMajorAction
 import bz.stew.bracken.ui.model.parse.bill.EasyPoliticsParser
 import bz.stew.bracken.ui.model.types.bill.BillData
 import bz.stew.bracken.ui.model.types.bill.status.BillStatusData
+import bz.stew.bracken.ui.util.log.Log
 import bz.stewart.bracken.shared.data.*
 import bz.stewart.bracken.shared.data.party.Party
 import bz.stewart.bracken.shared.data.person.Legislator
+import bz.stewart.bracken.shared.data.person.emptyLegislator
 
 @Suppress("UnsafeCastFromDynamic")
 /**
@@ -37,8 +39,11 @@ class EasyPoliticsBillData(private val parser:EasyPoliticsParser) : BillDataBuil
       return out
    }
 
-   private fun resolveLegislator(sponsor: dynamic): Legislator {
+   private fun resolveLegislator(sponsor: dynamic): Legislator? {
       val s = sponsor
+      if(s==null){
+         return null
+      }
       val cachedLegislator:Legislator? = parser.legislatorCached(s.bioguideId)
       if(cachedLegislator!=null){
          return cachedLegislator
@@ -61,6 +66,10 @@ class EasyPoliticsBillData(private val parser:EasyPoliticsParser) : BillDataBuil
    }
 
    private fun resolveCosponsors(cosponsors:dynamic):List<Legislator>{
+      if(cosponsors==null){
+         println("nope")
+         return emptyList()
+      }
       val out = mutableListOf<Legislator>()
       if (cosponsors!=null){
          val numCosponsor: Int = cosponsors.length
@@ -68,7 +77,7 @@ class EasyPoliticsBillData(private val parser:EasyPoliticsParser) : BillDataBuil
             val data = cosponsors[i]
             if(data!=null){
                val p = resolveLegislator(data)
-               out.add(p)
+               out.add(p ?: emptyLegislator())
             }
          }
       }
@@ -106,7 +115,12 @@ class EasyPoliticsBillData(private val parser:EasyPoliticsParser) : BillDataBuil
       val is_current = true
       val intro_date = jsParseDate(gi.introducedAt) // todo this is just a number now
 
-      val sponsor = resolveLegislator(gi.sponsor)
+      val parsedSponsor = resolveLegislator(gi.sponsor)
+      if (parsedSponsor==null){
+         Log.error("sponsor is null for bill: $uniqueParsedId of congress $congress")
+      }
+      val sponsor = parsedSponsor ?: emptyLegislator()
+
       val cosponsors = resolveCosponsors(gi.cosponsors)
       //val relatedBills
 

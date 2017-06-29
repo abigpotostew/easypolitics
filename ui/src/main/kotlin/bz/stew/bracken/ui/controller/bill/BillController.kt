@@ -1,14 +1,13 @@
 package bz.stew.bracken.ui.controller.bill
 
-import bz.stew.bracken.ui.controller.Controller
+import bz.stew.bracken.ui.controller.StandardController
 import bz.stew.bracken.ui.controller.bill.filter.BillFilters
+import bz.stew.bracken.ui.controller.bill.query.BillRestQuery
 import bz.stew.bracken.ui.extension.niceClamp
 import bz.stew.bracken.ui.model.BillModelGovTrack
 import bz.stew.bracken.ui.model.Model
 import bz.stew.bracken.ui.model.index.*
 import bz.stew.bracken.ui.model.types.bill.BillData
-import bz.stew.bracken.ui.service.RequestCallback
-import bz.stew.bracken.ui.service.ServerRequestDispatcher
 import bz.stew.bracken.ui.util.JsonUtil
 import bz.stew.bracken.ui.view.bill.BillView
 import bz.stew.bracken.ui.view.html.bootstrap.BootstrapTemplates
@@ -26,7 +25,7 @@ import org.w3c.dom.events.EventTarget
  */
 
 class BillController(rootElmt: HtmlSelector,
-                     model: Model = BillModelGovTrack()) : Controller(
+                     model: Model = BillModelGovTrack()) : StandardController(
       BillView(rootElmt, BootstrapTemplates()),
       model) {
 
@@ -151,26 +150,45 @@ class BillController(rootElmt: HtmlSelector,
       }
    }
 
-   fun downloadBillsLoadData(requestUrl: String,
-                             onDownload: (Controller) -> Unit) {
+   /**
+    * Main point to load new data from remote endpoint
+    */
+   fun downloadBillsLoadData(requestUrl: BillRestQuery,
+                             onDownload: (StandardController) -> Unit) {
 
-      val controller: Controller = this
-      ServerRequestDispatcher().sendRequest(
-            requestUrl,
-            object : RequestCallback() {
-               override fun onLoad(response: String) {
-                  var parse: dynamic
-                  try {
-                     parse = JsonUtil.parse(response)
-                     controller.model.loadBillData(parse)
-                  } catch (e: Throwable) {
-                     error("Error parsing json response from data source: \n\t" + e.toString())
 
-                  }
-                  onDownload(controller)
-               }
-            }
-      )
+      this.loadEndpoint(requestUrl, {
+         val controller = it.controller as StandardController
+         val response = it.response
+         var parse: dynamic
+         try {
+            parse = JsonUtil.parse(response)
+            controller.model.loadBillData(parse)
+         } catch (e: Throwable) {
+            error("Error parsing json response from data source: \n\t" + e.toString())
+         }
+         onDownload(controller)
+      })
+
+//         val controller: Controller = this
+//         ServerRequestDispatcher().sendRequest(
+//               requestUrl,
+//               object : RequestCallback() {
+//                  override fun onLoad(response: String) {
+//                     var parse: dynamic
+//                     try {
+//                        parse = JsonUtil.parse(response)
+//                        controller.model.loadBillData(parse)
+//                     } catch (e: Throwable) {
+//                        error("Error parsing json response from data source: \n\t" + e.toString())
+//
+//                     }
+//                     onDownload(controller)
+//                  }
+//               }
+//         )
+//      }
+
    }
 }
 

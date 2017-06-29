@@ -28,6 +28,10 @@ class BasicQueryResult(results:Collection<BillDelegated>?, limit:Int?):QueryResu
    override var results: Collection<BillDelegated>? = results
 }
 
+fun emptyQueryResult():QueryResult{
+   return BasicQueryResult(results = null, limit=null)
+}
+
 @JsonPropertyOrder("meta", "results")
 interface QueryResult {
    var meta :Meta
