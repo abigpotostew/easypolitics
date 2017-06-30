@@ -13,8 +13,14 @@ import org.bson.conversions.Bson
 class BillQueryBuilder(private val db: MainDbAccess,
                        private val exampleBill: BillExample,
                        private val orderBy: String,
-                       limitIn: Int) {
-   private val limit = MathUtil.clamp(limitIn, 0, 1000)
+                       limitIn: Int,
+                       offset: Int) {
+
+   private val MAX_OFFSET = 100000
+   private val MAX_RETURNED = 1000
+
+   private val limit = MathUtil.clamp(limitIn, 0, MAX_RETURNED)
+   private val offset = MathUtil.clamp(offset, 0, MAX_OFFSET)
 
    private val SORT_DESCENDING = -1
    private val SORT_ASCENDING = 1
@@ -59,7 +65,7 @@ class BillQueryBuilder(private val db: MainDbAccess,
     * TODO validate input first
     */
    fun find():QueryResult{
-      val queryRes :Collection<BillDelegated> = db.standardBillQuery(queryBson(),limit,getSort())
+      val queryRes :Collection<BillDelegated> = db.standardBillQuery(queryBson(), limit, getSort(), offset)
       return BasicQueryResult(queryRes, limit)
    }
 

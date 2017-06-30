@@ -14,19 +14,20 @@ class BillModelGovTrack : Model {
    private val bills: MutableMap<Int, BillData> = mutableMapOf()
    private var latestBillData: dynamic = null
 
-   override fun loadBillData(data: dynamic) {
+   override fun loadBillData(data: dynamic, append: Boolean) {
 
       val parsed = GovTrackBillParser(data).parse(this)
       parsed.forEach { bills.put(it.uniqueId, it) }
 
       this.latestBillData = data;
+      indexData()
    }
 
    override fun getBillData(): List<BillData> {
       return this.bills.values.toList()
    }
 
-   override fun indexData() {
+   private fun indexData() {
       for (idx in ALL_INDEX_DEFS) {
          idx.indexInstances(this.bills.values)
       }

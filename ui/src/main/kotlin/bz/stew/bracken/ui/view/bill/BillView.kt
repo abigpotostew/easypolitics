@@ -5,6 +5,7 @@ import bz.stew.bracken.ui.controller.bill.filter.BillFilters
 import bz.stew.bracken.ui.extension.html.eachChildClass
 import bz.stew.bracken.ui.extension.html.eachChildId
 import bz.stew.bracken.ui.extension.html.elementFixedOffset
+import bz.stew.bracken.ui.extension.html.removeAllChildrenNodes
 import bz.stew.bracken.ui.extension.jquery.*
 import bz.stew.bracken.ui.model.types.bill.BillData
 import bz.stew.bracken.ui.model.types.bill.status.BillStatus
@@ -48,17 +49,25 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
 
    //var generatedFilterKeys:Map<BillFilters,Collection<BillViewItem>> = mapOf<BillFilters,Collection<BillViewItem>>()
 
-   fun initiateModelData(bills: List<BillData>) {
+   fun appendModelData(bills: List<BillData>) {
       for (b: BillData in bills) {
-         //billViews.add(BillViewItem(b))
-         billViews.put(b.uniqueId, BillViewItem(b))
+         val existing = billViews.get(b.uniqueId)
+         if(existing==null) {
+            //billViews.add(BillViewItem(b))
+            billViews.put(b.uniqueId, BillViewItem(b))
+         }
       }
    }
 
-   //TODO define these filters in another place
+   /**
+    * Each call replaces the html values in the filter with those passed in. Repeatable.
+    * TODO define these filters in another place
+    */
+   //
    fun loadStatusFilter(filterEntry: BillFilters,
                         allStatus: Set<FixedStatus>) {
       val parent = getElement(filterEntry.htmlSelector())
+      parent.removeAllChildrenNodes()
       //TODO sort these
       for (fs: FixedStatus in allStatus) {
          val eco = mapOf(Pair("value", fs.ordinal.toString()))
@@ -70,6 +79,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
    fun loadMajorStatusFilter(filterEntry: BillFilters,
                              allMajorStatus: Set<MajorStatus>) {
       val parent = getElement(filterEntry.htmlSelector())
+      parent.removeAllChildrenNodes()
       //TODO sort these
       for (fs: MajorStatus in allMajorStatus) {
          val eco = mapOf(Pair("value", fs.ordinal.toString()))
@@ -117,18 +127,20 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
    }
 
    //Only call this once. generates
-   fun generateAndDisplayAllBills() {
+   fun generateAndDisplayAllBills(resetVisible:Boolean = true) {
       var billListJQ: JQuery = getJq(rootElementSelector)
 
       val sortedList = this.billViews.values.sorted()
 
-      this.visibleBills.clear()
+      if(resetVisible) {
+         this.visibleBills.clear()
+      }
 
       Log.debug { "Showing #${sortedList.size} bills" }
       updateBillCountText(sortedList.size)
 
       for (i: ViewItem in sortedList) {
-         if (i is BillViewItem) {
+         if (i is BillViewItem && !this.visibleBills.contains(i)) {
             //add bill to html
             try {
                if (GENERATE_FROM_TEMPLATE) {

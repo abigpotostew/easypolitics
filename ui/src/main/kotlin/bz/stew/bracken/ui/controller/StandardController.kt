@@ -14,17 +14,22 @@ import bz.stew.bracken.view.View
 abstract class StandardController(override val view: View,
                                   override val model: Model) : Controller {
 
+   protected var lastSuccessfulQuery: BillRestQuery? = null
+   protected var inProgressQuery:BillRestQuery? = null
+
    abstract fun onParseError()
 
    override fun loadEndpoint(requestUrl: BillRestQuery, onDownload: (ServiceResponse) -> Unit) {
+      inProgressQuery = requestUrl
       val controller: StandardController = this
       ServerRequestDispatcher().sendRequest(
             requestUrl.toString(),
             object : RequestCallback() {
                override fun onLoad(response: String) {
+                  lastSuccessfulQuery = inProgressQuery
+                  inProgressQuery = null
                   onDownload(ServiceResponse(controller, response))
                }
             })
    }
-
 }

@@ -18,11 +18,12 @@ class MainDbAccess(_databaseName: String) : CompositeMongoDb<Bill, LegislatorDat
       "legislators"), StandardDbAccess {
    override fun standardBillQuery(query: BasicDBObject,
                                   limitRequest: Int,
-                                  sortRequest: Bson
-                                 ): Collection<BillDelegated> {
+                                  sortRequest: Bson,
+                                  offset: Int
+   ): Collection<BillDelegated> {
 
       val limit = MathUtil.clamp(limitRequest, 0, 1000)
-      val queryBillOut = queryBills(query, limit, sortRequest)
+      val queryBillOut = queryBills(query, limit, sortRequest, offset)
       if (queryBillOut == null) {
          return emptyList()
       }
@@ -93,13 +94,18 @@ class MainDbAccess(_databaseName: String) : CompositeMongoDb<Bill, LegislatorDat
    private fun queryBills(
          query: BasicDBObject,
          limit: Int,
-         sortRequest: Bson): FindIterable<Bill>? {
+         sortRequest: Bson,
+         offset: Int): FindIterable<Bill>? {
 
 
       val db = getFirstDb()
       val queryBillOut: FindIterable<Bill> = getFirstDb().queryCollection(
             db.getCollectionName(), {
-         find(query)
+         val res = find(query)
+         if(offset!= 0){ //TODO: this is not an efficient pagination technique, use the sort by info such as only bills with date later than the last bill from prior query.
+            res.skip(offset)
+         }
+         res
       }) ?: return null
 
       queryBillOut.limit(limit)

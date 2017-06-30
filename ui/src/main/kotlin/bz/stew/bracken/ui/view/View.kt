@@ -3,6 +3,7 @@ package bz.stew.bracken.view
 import bz.stew.bracken.ui.extension.jquery.children
 import bz.stew.bracken.ui.extension.jquery.get
 import bz.stew.bracken.ui.extension.jquery.remove
+import bz.stew.bracken.ui.model.ModelItem
 import bz.stew.bracken.ui.view.html.Identifier
 import jquery.JQuery
 import jquery.jq
@@ -43,4 +44,5 @@ open abstract class View(val rootElementSelector: HtmlSelector = HtmlSelector(Id
       return jq(selector.text())
    }
 
+   //abstract  fun <K : ModelItem> appendModelData(data:List<K>)
 }

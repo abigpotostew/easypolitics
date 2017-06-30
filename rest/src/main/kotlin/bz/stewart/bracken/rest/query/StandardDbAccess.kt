@@ -9,5 +9,5 @@ import org.bson.conversions.Bson
  */
 interface StandardDbAccess {
    fun standardBillQuery(query: BasicDBObject, limitRequest: Int,
-                         sortRequest: Bson): Collection<BillDelegated>
+                         sortRequest: Bson, offset: Int = 0): Collection<BillDelegated>
 }

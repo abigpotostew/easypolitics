@@ -25,14 +25,13 @@ fun main(args: Array<String>) {
    controller.view.clearRoot()
 
    controller.downloadBillsLoadData(
-         BillRestQuery(congress = 115),
+         BillRestQuery(congress = 115, limit = 1),
          //"http://localhost:8080/api/v1/bills?congress=115&order_by=-current_status_date&limit=200", //use BillModelEasyPoliticsRest
          //"https://www.govtrack.us/api/v2/bill?congress=115&order_by=-current_status_date&limit=2",
          {
-            controller.showBills()
+            controller.startupSetupUi()
             controller.view.setLoading(false);
             println("done loading")
-            //printMajorActionData(controller)
          })
 
 

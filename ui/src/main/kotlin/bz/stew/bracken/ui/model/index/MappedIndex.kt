@@ -43,4 +43,9 @@ abstract class MappedIndex<K,I> (private val allKey:K?){
         return forwardMap.keys.union(setOf())
         //TODO cache this list
     }
+
+    fun reset(){
+        forwardMap.clear()
+        reverseMap.clear()
+    }
 }

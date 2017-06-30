@@ -1,9 +1,8 @@
-#!/usr/bin/env bash
+### # !/usr/bin/env bash
 function prop {
     grep "${1}" my.properties|cut -d'=' -f2
 }
 
-set -e
 
 THIS_PWD=$(pwd)
 CONGRESS=$(prop 'CONGRESS_GIT')
@@ -12,6 +11,7 @@ cd $CONGRESS
 
 source /usr/local/bin/virtualenvwrapper.sh
 workon congress
+set -e
 ./run fdsys --collections=BILLSTATUS
 ./run bills
 
