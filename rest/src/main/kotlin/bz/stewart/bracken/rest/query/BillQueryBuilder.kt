@@ -54,7 +54,7 @@ class BillQueryBuilder(private val db: MainDbAccess,
       val sortKey = "status_at"
       val sortOrder =  when (orderBy) {
          "-current_status_date" -> SORT_DESCENDING
-         "+current_status_date" -> SORT_ASCENDING
+         " current_status_date" -> SORT_ASCENDING
          else -> SORT_DESCENDING
       }
       return BasicDBObject(sortKey, sortOrder)
