@@ -7,6 +7,7 @@ import org.bson.types.ObjectId
 import java.util.*
 
 /**
+ * Database schema for legislator read from the json file.
  * Created by stew on 5/21/17.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
