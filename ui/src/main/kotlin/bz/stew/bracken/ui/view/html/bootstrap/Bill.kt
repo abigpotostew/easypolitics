@@ -4,6 +4,7 @@ import bz.stew.bracken.ui.extension.kotlinx.ac
 import bz.stew.bracken.ui.model.types.bill.status.BillStatus
 import bz.stew.bracken.ui.util.ui.UIFormatter
 import bz.stew.bracken.ui.view.html.Classes
+import bz.stew.bracken.ui.view.html.HtmlRenderOutput
 import bz.stew.bracken.ui.view.html.Template
 import bz.stew.bracken.ui.view.html.cssClass
 import bz.stew.bracken.ui.view.item.BillViewItem
@@ -16,7 +17,7 @@ import kotlinx.html.*
  * Created by stew on 3/5/17.
  */
 
-class Bill(val billView: BillViewItem) : Template() {
+class Bill(val billView: BillViewItem) : Template {
 
    private fun mapPartyClass(party: Party): Classes {
       return when (party) {
@@ -27,7 +28,7 @@ class Bill(val billView: BillViewItem) : Template() {
       }
    }
 
-   override fun render(): String {
+   override fun render(): HtmlRenderOutput {
       val template = this
 
       val billId = billView.selector().suffix()
@@ -125,7 +126,7 @@ class Bill(val billView: BillViewItem) : Template() {
                div(Classes.boots_tab_content, {
                   val contentBuilders = arrayListOf<HtmlBodyTag.(Bill) -> Unit>(
                         { overviewTabContent(it) },
-                        { contactTabContent(it)},
+                        { contactTabContent(it) },
                         { detailsTabContent(it) },
                         { textTabContent(it) })
                   for (i in 0..3) {
@@ -134,8 +135,8 @@ class Bill(val billView: BillViewItem) : Template() {
                         if (i == 0) {
                            ac("active")
                            set("role", "tabpanel")
-                           contentBuilders[i](template)
                         }
+                        contentBuilders[i](template)
                      }
 
 //                     div(Classes.boots_tab_card, {
@@ -155,7 +156,7 @@ class Bill(val billView: BillViewItem) : Template() {
 
       //todo tracker
       //todo link
-      return gen
+      return StandardHtmlRenderOutput(gen)
    }
 
    private fun tabId(i: Int): String {
@@ -177,15 +178,23 @@ private fun HtmlBodyTag.overviewTabContent(template: Bill) {
    div(Classes.boots_container_fluid, {
       div(Classes.boots_row, {
          div(Classes.boots_col, {
-            h6 {
+            h6{
+               ac(Classes.billStatus, Classes.boots_card_text,
+                     Classes.boots_card_subtitle)
+               +billView.shortLabel()
+               +": "
+               +name
+            }
+            h7 {
                ac(Classes.billStatus, Classes.boots_card_text,
                      Classes.boots_card_subtitle)
                +sponsorName
             }
-            p(cssClass(Classes.billDescription, Classes.boots_card_text), {
-               +name
-            })
+//            p(cssClass(Classes.billDescription, Classes.boots_card_text), {
+//               +name
+//            })
             p(cssClass(Classes.billDate, Classes.boots_card_text), {
+               +"Introduced "
                +introDate
             })
             p(Classes.billStatusDescription, {
@@ -195,7 +204,7 @@ private fun HtmlBodyTag.overviewTabContent(template: Bill) {
                a {
                   target = "_blank"
                   href = DirectLink(link)
-                  +"View on GovTrack.us"
+                  +"View on official data source"
                }
             })
             //todo the tracker thing here
@@ -222,25 +231,28 @@ private fun HtmlBodyTag.overviewTabContent(template: Bill) {
    })
 }
 
-private fun HtmlBodyTag.contactTabContent(template:Bill){
-
+private fun HtmlBodyTag.contactTabContent(template: Bill) {
    val sponsor = template.billView.billData.sponsor
-   +"This bill was sponsored by ${sponsor.getRole().shortLabel()}${sponsor.getOfficialName()} [${sponsor.getState()}]"
-   +"pizza1"
+   +"Contact tab"
+   br()
+   LegislatorProfile(sponsor).renderIn(this)
 }
 
-private fun HtmlBodyTag.detailsTabContent(template:Bill){
+private fun HtmlBodyTag.detailsTabContent(template: Bill) {
    val cosponsors = template.billView.billData.cosponsors
-   ul {
-      for (l in cosponsors) {
-         li {
-            +l.getOfficialName()
+   p(Classes.billCosponsors) {
+      +"Cosponsored by:"
+      ul {
+         for (l in cosponsors) {
+            li {
+               +l.getOfficialName()
+            }
          }
       }
    }
 }
 
-private fun HtmlBodyTag.textTabContent(template:Bill){
+private fun HtmlBodyTag.textTabContent(template: Bill) {
 
    +"pizza"
 }

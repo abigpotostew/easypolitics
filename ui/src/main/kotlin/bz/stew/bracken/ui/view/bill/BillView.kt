@@ -219,7 +219,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
 
    fun generateFromTemplate(billView: BillViewItem,
                             parentJq: JQuery): HTMLElement {
-      val billString = templater.renderBill(billView)
+      val billString = templater.renderBill(billView).getHtml()
       val billNode = jq(billString)
       parentJq.append(billNode)
       return billNode.get(0)

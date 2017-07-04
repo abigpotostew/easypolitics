@@ -34,6 +34,10 @@ class Legislator(private val bioguideId: String,
       return officialName
    }
 
+   fun getFullTitle():String{
+      return "${getRole().shortLabel()} ${getOfficialName()} [${getState()}"
+   }
+
    override fun getNickName(): String? {
       return nickName
    }

@@ -62,6 +62,7 @@ enum class Classes(labelValue:String, addClasses: List<Classes> = emptyList()):C
    billExpandedSponsorData("billExpandedSponsorData"),
    billTracker("billTracker", listOf(boots_button_group, boots_mr2)),
 
+   billCosponsors("billCosponsors"),
    billExpandedSponsorImg("billExpandedSponsorImg", listOf(boots_card_img_top)),
    //CLASS_BILL_(""),
 ;
