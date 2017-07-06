@@ -254,6 +254,7 @@ open class TD(containingTag: TR) : HtmlBodyTag(containingTag, "td")
 
 inline fun HtmlBodyTag.table(c: String, contents: TABLE.() -> Unit) = contentTag(TABLE(this), c, contents)
 inline fun HtmlBodyTag.table(contents: TABLE.() -> Unit) = contentTag(TABLE(this), contents)
+inline fun HtmlBodyTag.table(c: CssClass, contents: TABLE.() -> Unit) = contentTag(TABLE(this), c.label(), contents)
 
 inline fun TABLE.tbody(c: String, contents: TBODY.() -> Unit) = contentTag(TBODY(this), c, contents)
 inline fun TABLE.tbody(contents: TBODY.() -> Unit) = contentTag(TBODY(this), contents)
@@ -272,6 +273,7 @@ inline fun TR.th(contents: TH.() -> Unit) = contentTag(TH(this), contents)
 
 inline fun TR.td(c: String, contents: TD.() -> Unit) = contentTag(TD(this), c, contents)
 inline fun TR.td(contents: TD.() -> Unit) = contentTag(TD(this), contents)
+inline fun TR.td(c: CssClass, contents: TD.() -> Unit) = contentTag(TD(this), c.label(), contents)
 
 
 inline fun HtmlBodyTag.form(c: String, contents: FORM.() -> Unit) = contentTag(FORM(this), c, contents)

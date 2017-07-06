@@ -44,7 +44,7 @@ class BillsController {
          @RequestParam(value = "bill_id", required = false) billId: String? = null,
          @RequestParam(value = "bill_type", required = false) billType: String? = null,
          @RequestParam(value = "congress",
-                       required = false) congress: Int = EMPTY_CONGRESS,
+                       required = false) congress: Int? = EMPTY_CONGRESS,
 
          //meta stuff
          @RequestParam(value = "order_by", required = false,
@@ -52,7 +52,7 @@ class BillsController {
          @RequestParam(value = "limit", required = false,
                        defaultValue = "100") limit: Int = 100,
          @RequestParam(value = "offset", required = false,
-               defaultValue = "0") offset: Int = 0
+               defaultValue = "0") offset: Int? = 0
          /*@RequestParam(defaultValue = "") billId:String=""*/): QueryResult {
       //congress=115&order_by=-current_status_date&limit=200
 
@@ -68,7 +68,7 @@ class BillsController {
             BillExample(billNumber = number,
                         bill_id = billId,
                         bill_type = matchedBillType,
-                        congressNum = congress
+                        congressNum = congress!!
                        )
 
       logger.info{"Request: $queryExample\n\tOrder: $orderBy\n\tLimit: $limit\n\tOffset: $offset"}
@@ -77,7 +77,7 @@ class BillsController {
       //todo validate input
       val result = try {
          BillQueryBuilder(billMongoDatabase!!.getMainDb()!!, queryExample, orderBy,
-               limit, offset).find()
+               limit, offset!!).find()
       } catch (e:Exception){
          emptyQueryResult()
       }

@@ -37,6 +37,10 @@ enum class Classes(labelValue:String, addClasses: List<Classes> = emptyList()):C
 
    css_ml_ellipses("multiline-ellipses5"),
 
+   boots_dlHorizontal("row"),
+   boots_dlHorizontalDt_small("col-sm-3"),
+   boots_dlHorizontalDd_small("col-sm-9"),
+
 
    partyRep("party-republican"),
    partyDem("party-democrat"),
@@ -64,6 +68,12 @@ enum class Classes(labelValue:String, addClasses: List<Classes> = emptyList()):C
 
    billCosponsors("billCosponsors"),
    billExpandedSponsorImg("billExpandedSponsorImg", listOf(boots_card_img_top)),
+
+   voteTable("voteTable"),
+   voteCell("voteCell"),
+   voteDem("voteDem"),
+   voteRep("voteRep"),
+   voteInd("voteInd"),
    //CLASS_BILL_(""),
 ;
 

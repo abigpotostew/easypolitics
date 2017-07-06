@@ -102,7 +102,9 @@ class Bill(val billView: BillViewItem) : Template {
                      ac("nav nav-tabs  flex-column flex-sm-row card-header-tabs")
                      set("role", "tablist")
                      var i = 0
-                     val tabNames = listOf<String>("Overview", "Contact", "Details", "Text")
+                     val tabNames = listOf<String>("Overview", "Contact", "Details",
+                           //"Votes",
+                           "Text")
                      (0..3).forEach {
                         li {
                            ac("flex-sm-fill text-sm-center nav-item")
@@ -128,7 +130,9 @@ class Bill(val billView: BillViewItem) : Template {
                         { overviewTabContent(it) },
                         { contactTabContent(it) },
                         { detailsTabContent(it) },
-                        { textTabContent(it) })
+                        //{ VotesTemplate(it).renderIn(this) },
+                        { textTabContent(it) }
+                  )
                   for (i in 0..3) {
                      div(Classes.boots_tab_card) {
                         id = tabId(i)
@@ -138,16 +142,6 @@ class Bill(val billView: BillViewItem) : Template {
                         }
                         contentBuilders[i](template)
                      }
-
-//                     div(Classes.boots_tab_card, {
-//                        id = tabId(1)
-//                     })
-//                     div(Classes.boots_tab_card, {
-//                        id = tabId(2)
-//                     })
-//                     div(Classes.boots_tab_card, {
-//                        id = tabId(3)
-//                     })
                   }
                })
             }
@@ -178,7 +172,7 @@ private fun HtmlBodyTag.overviewTabContent(template: Bill) {
    div(Classes.boots_container_fluid, {
       div(Classes.boots_row, {
          div(Classes.boots_col, {
-            h6{
+            h6 {
                ac(Classes.billStatus, Classes.boots_card_text,
                      Classes.boots_card_subtitle)
                +billView.shortLabel()
@@ -233,8 +227,6 @@ private fun HtmlBodyTag.overviewTabContent(template: Bill) {
 
 private fun HtmlBodyTag.contactTabContent(template: Bill) {
    val sponsor = template.billView.billData.sponsor
-   +"Contact tab"
-   br()
    LegislatorProfile(sponsor).renderIn(this)
 }
 
@@ -251,7 +243,6 @@ private fun HtmlBodyTag.detailsTabContent(template: Bill) {
       }
    }
 }
-
 private fun HtmlBodyTag.textTabContent(template: Bill) {
 
    +"pizza"

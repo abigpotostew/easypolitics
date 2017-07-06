@@ -227,6 +227,22 @@
 }
 
 /******************************************
+ Vote styles
+ ******************************************/
+.voteCell{
+    padding: 5px;
+}
+.voteDem{
+    background-color: rgb(158, 164, 227);
+}
+.voteInd{
+    background-color: rgb(241, 255, 137);
+}
+.voteRep{
+    background-color: rgb(220, 127, 123);
+}
+
+/******************************************
  Hovering styles
  ******************************************/
 .hvr-fade {
@@ -262,3 +278,28 @@
 .nav>li {
     float: left;
 }
+
+/*#content dt {*/
+    /*margin-bottom: .22em;*/
+/*}*/
+
+/*dl.dl-horizontal dt {*/
+        /*width: 90px;*/
+        /*font-weight: normal;*/
+    /*}*/
+
+        /*.dl-horizontal dt {*/
+            /*float: left;*/
+            /*width: 160px;*/
+            /*overflow: hidden;*/
+            /*clear: left;*/
+            /*text-align: right;*/
+            /*text-overflow: ellipsis;*/
+            /*white-space: nowrap;*/
+        /*}*/
+        /*dt {*/
+            /*font-weight: 700;*/
+        /*}*/
+        /*dd, dt {*/
+            /*line-height: 1.42857143;*/
+        /*}*/
