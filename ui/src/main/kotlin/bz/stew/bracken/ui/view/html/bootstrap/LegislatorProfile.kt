@@ -1,6 +1,6 @@
 package bz.stew.bracken.ui.view.html.bootstrap
 
-import bz.stew.bracken.ui.extension.kotlinx.renderDescriptionList
+import bz.stew.bracken.ui.extension.kotlinx.horzizontalDescriptionList
 import bz.stew.bracken.ui.view.html.SubTemplate
 import bz.stewart.bracken.shared.data.person.Legislator
 import kotlinx.html.*
@@ -18,7 +18,7 @@ class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
          }
 
          val contentMap = contentMap()
-         this.renderDescriptionList(content = contentMap)
+         this.horzizontalDescriptionList(content = contentMap)
 //         template.renderTwitter(this)
 //         template.renderPhone(this)
 //         template.renderWebsite(this)

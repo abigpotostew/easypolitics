@@ -226,6 +226,10 @@
     width:20rem;
 }
 
+.billExpandedTabContent{
+    margin-left:0em;
+}
+
 /******************************************
  Vote styles
  ******************************************/

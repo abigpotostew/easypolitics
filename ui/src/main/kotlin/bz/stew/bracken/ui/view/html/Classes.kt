@@ -73,6 +73,10 @@ enum class Classes(labelValue:String, addClasses: List<Classes> = emptyList()):C
    voteCell("voteCell"),
    voteDem("voteDem"),
    voteRep("voteRep"),
+   boots_container("container"),
+
+   billExpandedTabContent("billExpandedTabContent"),
+
    voteInd("voteInd"),
    //CLASS_BILL_(""),
 ;

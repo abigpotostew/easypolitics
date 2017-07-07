@@ -1,6 +1,7 @@
 package bz.stew.bracken.ui.view.html.bootstrap
 
 import bz.stew.bracken.ui.extension.kotlinx.ac
+import bz.stew.bracken.ui.extension.kotlinx.horzizontalDescriptionList
 import bz.stew.bracken.ui.model.types.bill.status.BillStatus
 import bz.stew.bracken.ui.util.ui.UIFormatter
 import bz.stew.bracken.ui.view.html.Classes
@@ -140,7 +141,10 @@ class Bill(val billView: BillViewItem) : Template {
                            ac("active")
                            set("role", "tabpanel")
                         }
-                        contentBuilders[i](template)
+                        div(Classes.boots_container){
+                           ac(Classes.billExpandedTabContent)
+                           contentBuilders[i](template)
+                        }
                      }
                   }
                })
@@ -169,7 +173,7 @@ private fun HtmlBodyTag.overviewTabContent(template: Bill) {
    val billSponsorProfileImg = billView.sponsorImageUrl()
    val link: String = bd.link
 
-   div(Classes.boots_container_fluid, {
+   //div(Classes.boots_container, {
       div(Classes.boots_row, {
          div(Classes.boots_col, {
             h6 {
@@ -222,7 +226,7 @@ private fun HtmlBodyTag.overviewTabContent(template: Bill) {
             })
          })
       })
-   })
+   //})
 }
 
 private fun HtmlBodyTag.contactTabContent(template: Bill) {
@@ -232,17 +236,22 @@ private fun HtmlBodyTag.contactTabContent(template: Bill) {
 
 private fun HtmlBodyTag.detailsTabContent(template: Bill) {
    val cosponsors = template.billView.billData.cosponsors
-   p(Classes.billCosponsors) {
-      +"Cosponsored by:"
-      ul {
-         for (l in cosponsors) {
-            li {
-               +l.getOfficialName()
+   //div(Classes.boots_container) {
+      p(Classes.billCosponsors) {
+         val cosponsors: (HtmlBodyTag) -> Unit = {
+            it.ul {
+               for (l in cosponsors) {
+                  li {
+                     +l.getOfficialName()
+                  }
+               }
             }
          }
+         this.horzizontalDescriptionList(mapOf(Pair("Cosponsored by:", cosponsors)))
       }
-   }
+   //}
 }
+
 private fun HtmlBodyTag.textTabContent(template: Bill) {
 
    +"pizza"

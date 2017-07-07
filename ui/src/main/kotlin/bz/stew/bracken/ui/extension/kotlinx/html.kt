@@ -30,7 +30,7 @@ fun HtmlBodyTag.ac(vararg ts: Classes){
 	}
 }
 
-fun HtmlBodyTag.renderDescriptionList(content: Map<String, (HtmlBodyTag) -> Unit>) {
+fun HtmlBodyTag.horzizontalDescriptionList(content: Map<String, (HtmlBodyTag) -> Unit>) {
 	dl {
 		ac(Classes.boots_dlHorizontal)
 		for ((k, v) in content) {
