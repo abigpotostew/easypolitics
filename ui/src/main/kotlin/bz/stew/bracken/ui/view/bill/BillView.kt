@@ -27,6 +27,7 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
+import kotlin.js.Math
 
 /**
  * Created by stew on 1/25/17.
@@ -184,32 +185,33 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
 
       if (active != null) {
          //close prior one
-         val aniOpen: Animation = makeAnimation(OPEN_HEIGHT,
-                                                OPEN_HEIGHT_UNITS,
+         val child = jq(active).children(".billExpanded")
+         val openHeight = jq(child).height().toInt()
+         console.log("going up: ",openHeight)
+         val aniOpen: Animation = makeAnimation(openHeight,
+                                                "px",
                                                 true
                                                )
          aniOpen.run(OPEN_SPEED,
                      active)
-         jq(active).children(".billExpanded").hide(HIDE_SPEED)
+         child.hide(HIDE_SPEED)
          if (this.activeCell == bill) {
             this.activeCell = null
             return
          }
       }
 
-
-
       this.activeCell = bill
       val child: JQuery = jq(bill).children(".billExpanded")
       //TODO made this centered, and the width of the number of bills across the screen
       child.css("transform",
                 "translateX(-" + document.elementFixedOffset(bill).x + "px)")
-      //println(document.elementFixedOffset(bill).x)
-      child.show(OPEN_SPEED)
-      val aniOpen: Animation = makeAnimation(OPEN_HEIGHT, OPEN_HEIGHT_UNITS)
+
+      val openHeight = child.actual("height").toInt() /// MUST be before .show
+      val aniOpen: Animation = makeAnimation(openHeight, "px")
       aniOpen.run(OPEN_SPEED,
                   bill)
-
+      child.show(OPEN_SPEED)
    }
 
    fun makeCellActive(billSelector: HtmlSelector) {

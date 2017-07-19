@@ -40,6 +40,11 @@ enum class Classes(labelValue:String, addClasses: List<Classes> = emptyList()):C
    boots_dlHorizontal("row"),
    boots_dlHorizontalDt_small("col-sm-3"),
    boots_dlHorizontalDd_small("col-sm-9"),
+   boots_colSm4("col-sm-4"),
+   boots_colLg4("col-lg-4"),
+   boots_colMd4("col-md-4"),
+   boots_colMd6("col-md-6"),
+   boots_4_6_12("col-sm-12", listOf(boots_colLg4, boots_colMd6)),
 
 
    partyRep("party-republican"),

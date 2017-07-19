@@ -1,0 +1,315 @@
+
+/******************************************
+ variables styles
+ ******************************************/
+$color-republican: rgb(220, 127, 123);
+$color-democrat: rgb(158, 164, 227);
+$color-independent: rgb(241, 255, 137);
+/******************************************
+ page styles
+ ******************************************/
+#members, #bills{
+
+  /*width: 90%;*/
+  /*margin: auto;*/
+}
+
+
+/******************************************
+ Grid styles
+ ******************************************/
+.person, .bill {
+  /*display: inline-block;*/
+  /*outline-style: double;*/
+  /*outline-color: black;*/
+  /*margin: 10px;*/
+  /*max-width: 300px;*/
+  /**/
+  /*width: 300px;*/
+  /*height: 300px;*/
+
+  /* current */
+  /*min-width: 300px;*/
+  /*max-height: 300px;*/
+  /*vertical-align: top;*/
+  /*overflow: hidden;*/
+  /**/
+  /**/
+  padding-bottom: 10px;
+  position:relative;
+
+  /* center bills on page without jacking up the top and bottom margins from the expand box*/
+  margin: 0 auto 0 auto;
+}
+
+/******************************************
+ Party specific collapsed styles
+ ******************************************/
+.bill.party-republican > .billGridContent {
+  /*background-color: rgb(220, 127, 123);*/
+  border-color: $color-republican;
+}
+
+.bill.party-democrat > .billGridContent {
+  /*background-color: rgb(158, 164, 227);*/
+  border-color:$color-democrat;
+}
+
+.bill.party-independent > .billGridContent {
+  /*background-color: rgb(241, 255, 137);*/
+  border-color: $color-independent;
+}
+
+
+.bill.party-republican .billGridContent .card-header ,.bill.republican .billGridContent .card-footer {
+  /*background-color: rgb(220, 127, 123);*/
+}
+
+.bill.party-democrat .billGridContent .card-header ,.bill.democrat .billGridContent .card-footer {
+  /*background-color: rgb(158, 164, 227);*/
+}
+
+.bill.party-independent .billGridContent .card-header ,.bill.independent .billGridContent .card-footer{
+  /*background-color: rgb(241, 255, 137);*/
+}
+
+/******************************************
+ Bill collapsed styles
+ ******************************************/
+
+/*.bill .billDate{*/
+/*font-size: x-small;*/
+/*position: absolute;*/
+/*bottom: 3px;*/
+/*right: 3px;*/
+/*}*/
+
+.bill .billDescription{
+  /*max-height: 40%;
+  width: 94%;
+  height:40%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;*/
+  overflow: hidden;
+}
+
+.billStatus{
+  text-overflow: ellipsis;
+}
+
+/*
+ This controls the width and height of main grid!
+ */
+.billGridContent {
+  max-width: 36rem;
+  min-width: 36rem;
+  min-height: 16.5rem;
+}
+
+
+/******************************************
+ Multi line ellipses
+ ******************************************/
+.multiline-ellipses3{
+  overflow: hidden;
+
+  /* for set '...' in absolute position */
+  position: relative;
+  /* use this value to count block height */
+  line-height: 1.2em;
+  /* max-height = line-height (1.2) * lines max number (3) */
+  max-height: 4.6em;
+  /* fix problem when last visible word doesn't adjoin right side  */
+  text-align: inherit;
+  /* place for '...' */
+  /*margin-right: -1em;*/
+  /*padding-right: 1em;*/
+}
+
+.multiline-ellipses3:before {
+  /* points in the end */
+  content: '...';
+  /* absolute position */
+  position: absolute;
+  /* set position to right bottom corner of block */
+  right: 0;
+  bottom: 0;
+}
+/* hide ... if we have text, which is less than or equal to max lines */
+.multiline-ellipses3:after {
+  /* points in the end */
+  content: '';
+  /* absolute position */
+  position: absolute;
+  /* set position to right bottom corner of text */
+  right: 0;
+  /* set width and height */
+  width: 1em;
+  height: 1em;
+  margin-top: 0.2em;
+  /* bg color = bg color under block */
+  background: white;
+}
+
+.multiline-ellipses5{
+  overflow: hidden;
+
+  /* for set '...' in absolute position */
+  position: relative;
+  /* use this value to count block height */
+  line-height: 1.2em;
+  /* max-height = line-height (1.2) * lines max number (3) */
+  max-height: 6em;
+  /* fix problem when last visible word doesn't adjoin right side  */
+  text-align: inherit;
+  /* place for '...' */
+  /*margin-right: -1em;*/
+  /*padding-right: 1em;*/
+}
+
+.multiline-ellipses5:before {
+  /* points in the end */
+  content: '...';
+  /* absolute position */
+  position: absolute;
+  /* set position to right bottom corner of block */
+  right: 0;
+  bottom: 0;
+}
+/* hide ... if we have text, which is less than or equal to max lines */
+.multiline-ellipses5:after {
+  /* points in the end */
+  content: '';
+  /* absolute position */
+  position: absolute;
+  /* set position to right bottom corner of text */
+  right: 0;
+  /* set width and height */
+  width: 1em;
+  height: 1em;
+  margin-top: 0.2em;
+  /* bg color = bg color under block */
+  background: white;
+}
+
+
+
+/******************************************
+ Bill Expanded styles
+ ******************************************/
+
+.billExpanded{
+  display: none;
+  /*padding: 20px 100px 20px 100px;*/
+  /*margin:auto;*/
+  background-color: aquamarine;
+
+  position: absolute;
+  width: 95vw;
+  top: 275px;
+  //height:30rem; /* Right now this value is manually kept in sync with BillView.kt constant */
+  /*padding: 10px;*/
+
+  color: black;
+}
+
+.billExpanded>.billDate{
+  /*font-size: smaller;*/
+
+}
+
+.billExpanded>.billDescription{
+  overflow: hidden;
+}
+
+.billExpandedSponsorImg{
+  width: 15rem;
+  height: 15rem;
+}
+
+.billExpandedSponsorData{
+  width:20rem;
+}
+
+.billExpandedTabContent{
+  margin-left:0em;
+}
+
+/******************************************
+ Vote styles
+ ******************************************/
+.voteCell{
+  padding: 5px;
+}
+.voteDem{
+  background-color: $color-democrat;
+}
+.voteInd{
+  background-color: $color-independent;
+}
+.voteRep{
+  background-color: $color-republican;
+}
+
+/******************************************
+ Hovering styles
+ ******************************************/
+.hvr-fade {
+  /*display: inline-block;*/
+  /*vertical-align: middle;*/
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  overflow: hidden;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: color, background-color;
+  transition-property: color, background-color;
+}
+.hvr-fade:hover, .hvr-fade:focus, .hvr-fade:active {
+  background-color: #2098D1;
+  color: white;
+}
+
+
+
+/******************************************
+ Bootstrap tweaks
+ ******************************************/
+.navbar .container-fluid>.navbar-header {
+  float: left;
+  margin-right: 10px;
+}
+.navbar .navbar-nav {
+  float: left;
+  margin: 5px;
+}
+.nav>li {
+  float: left;
+}
+
+/*#content dt {*/
+/*margin-bottom: .22em;*/
+/*}*/
+
+/*dl.dl-horizontal dt {*/
+/*width: 90px;*/
+/*font-weight: normal;*/
+/*}*/
+
+/*.dl-horizontal dt {*/
+/*float: left;*/
+/*width: 160px;*/
+/*overflow: hidden;*/
+/*clear: left;*/
+/*text-align: right;*/
+/*text-overflow: ellipsis;*/
+/*white-space: nowrap;*/
+/*}*/
+/*dt {*/
+/*font-weight: 700;*/
+/*}*/
+/*dd, dt {*/
+/*line-height: 1.42857143;*/
+/*}*/

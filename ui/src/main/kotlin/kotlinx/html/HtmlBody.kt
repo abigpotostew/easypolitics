@@ -69,6 +69,7 @@ inline fun HtmlBodyTag.button(c: CssClass, contents: BUTTON.() -> Unit) = conten
 
 inline fun HtmlBodyTag.dl(c: String, contents: DL.() -> Unit) = contentTag(DL(this), c, contents)
 inline fun HtmlBodyTag.dl(contents: DL.() -> Unit) = contentTag(DL(this), contents)
+inline fun HtmlBodyTag.dl(c: CssClass, contents: DL.() -> Unit) = contentTag(DL(this), c, contents)
 
 inline fun DL.dt(c: String, contents: DT.() -> Unit) = contentTag(DT(this), c, contents)
 inline fun DL.dt(contents: DT.() -> Unit) = contentTag(DT(this), contents)

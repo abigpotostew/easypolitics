@@ -38,7 +38,7 @@ inline fun JQuery.children(): JQuery = asDynamic().children()
 inline fun JQuery.children(selector: String): JQuery = asDynamic().children(selector)
 
 
-inline fun JQuery.first(): HTMLElement = asDynamic().first()
+inline fun JQuery.first(): JQuery = asDynamic().first()
 
 
 inline fun JQuery.remove(): JQuery = asDynamic().remove()
@@ -49,6 +49,8 @@ inline fun JQuery.remove(selector: String): JQuery = asDynamic().remove(selector
 inline fun JQuery.css(prop:String, value:String):JQuery= asDynamic().css(prop, value)
 
 inline fun JQuery.velocity(prop:String, opts:dynamic?):JQuery=asDynamic().velcity(prop,opts)
+
+inline fun JQuery.actual(prop:String):Number=asDynamic().actual(prop)
 
 //@JsName("$")
 //external fun jq(selector: String): JQuery = noImpl

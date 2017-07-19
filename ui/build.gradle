@@ -1,16 +1,5 @@
 //group 'bz.stewart.bracken'
 
-version '1.0-SNAPSHOT'
-
-String projName = "easypolitics-ui" //${project.name}
-String confidence = "internal"
-String buildRootDir = "${projectDir}/build"
-String buildOutDir = "${buildRootDir}/${confidence}/${projName}"
-
-String sharedSrc = "../shared/src/main/kotlin"
-String genTargetDir = "$buildOutDir/gen"
-
-String resourcesDir = "src/main/resources"
 
 buildscript {
     ext.kotlin_version = project.kotlin_version
@@ -22,20 +11,48 @@ buildscript {
     }
 }
 
-//////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+// PLUGINS
+///////////////////////////////////////////////////////////////////////////
 
+plugins {
+    id "org.kravemir.gradle.sass" version "1.2.2"
+}
 apply plugin: 'kotlin2js'
+
+
+///////////////////////////////////////////////////////////////////////////
+// BUILD LOCATIONS
+///////////////////////////////////////////////////////////////////////////
+version '1.0-SNAPSHOT'
+String projName = "easypolitics-ui" //${project.name}
+String confidence = "internal"
+String buildRootDir = "${projectDir}/build"
+String buildOutDir = "${buildRootDir}/${confidence}/${projName}"
+
+String sharedSrc = "../shared/src/main/kotlin"
+String genTargetDir = "$buildOutDir/gen"
+
+String resourcesDir = "src/main/resources"
+
+
+///////////////////////////////////////////////////////////////////////////
+// BUILD LOGIC
+///////////////////////////////////////////////////////////////////////////
+sass {
+    main {
+        srcDir = file("$projectDir/src/main/sass")
+        outDir = file("$buildOutDir")
+    }
+}
 
 repositories {
     mavenCentral()
-//    maven{
-//        url "http://nexus.yested.net/nexus/content/repositories/releases/"
-//    }
 }
 compileKotlin2Js {
     kotlinOptions.metaInfo = true
     kotlinOptions.outputFile = "${buildOutDir}/${projName}.js"
-    kotlinOptions.sourceMap = true
+    kotlinOptions.sourceMap = false
     //kotlinOptions.suppressWarnings = false
     kotlinOptions.verbose = true
 
@@ -43,48 +60,25 @@ compileKotlin2Js {
     //kotlin.incremental=true //only re-build changed files
 }
 
-
 sourceSets {
     main.kotlin.srcDirs += 'src/main/kotlin'
     main.kotlin.srcDirs += genTargetDir
-    //main.kotlin.srcDirs += project(':shared').sourceSets.main.kotlin.srcDirs//doesn't work
-    //main.kotlin.srcDirs += "../shared/src/main"// this also seems to jack up my rest build
 }
 
 dependencies {
-    //compile project(':shared')
-    //compile "org.jetbrains.kotlin:kotlin-js-library:${project.kotlin_version}" //for kot<1.1
-    compile "org.jetbrains.kotlin:kotlin-stdlib-js:${project.kotlin_stdlib_js_version}" //for kot>=1.1
-    //compile "net.yested:Yested:0.0.98"
-
-    //compile 
-    //compile
-    //compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    //testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
-    //testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-
-    //runtime ([copyJsResources])
-
-    //compile project(':shared')
-
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:${project.kotlin_stdlib_js_version}"
 }
 
-task copyJsResources(dependsOn:build){
+task copyJsResources(dependsOn:[build, mainSass]) {
 
-    doFirst{
+    doFirst {
         println("COPYING resources from $resourcesDir into build directory $buildOutDir")
-    }
-
-    dependencies{
-        //build
-        //compile files(resourcesDir)//, '${resourcesDir}/index.html') //using an html file here breaks intellij
     }
     doLast {
         copy {
             from resourcesDir
             into "${buildOutDir}"
-            exclude {details -> details.isDirectory()}
-            eachFile { println ("Copying resource for build: ${it.file}" )}
+            exclude { details -> details.isDirectory() }
         }
         //copy kotlin.js into lib folder
         configurations.compile.each { File file ->
@@ -94,25 +88,19 @@ task copyJsResources(dependsOn:build){
                 into "${buildOutDir}/lib"
                 include { fileTreeElement ->
                     def path = fileTreeElement.path
-                    path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+                    path.endsWith(".js") && (path.startsWith("META-INF/resources/")
+                            || !path.startsWith("META-INF/"))
                 }
             }
         }
-
         println("Copied kotlin.js from jar")
         println("Finished copying resources into build folder...")
     }
-
-
 }
-
-//task copyKotlinJsLib(dependsOn: [build]){
-//
-//}
 
 tasks.build.doLast() {
     tasks.copyJsResources.execute()
-    //tasks.copyKotlinJsLib.execute()
+    tasks.mainSass.execute()
 
     println("Finished build!")
 }
@@ -130,20 +118,16 @@ tasks.clean.doLast{
     tasks.cleaner.execute()
 }
 
-
-
 task copySharedCode(type: Copy){
     doFirst{
-        println("Copying shared code into $genTargetDir")
+        println("Copying shared code into $genTargetDir...")
     }
     from sharedSrc
     into genTargetDir
-    eachFile { println ("Copying: ${it.file}" )}
     doLast{
-        println("finished copying '$sharedSrc' into '$genTargetDir'.")
+        println("Finished copying '$sharedSrc' into '$genTargetDir'.")
     }
 }
-
 
 assemble {
     dependsOn copySharedCode
