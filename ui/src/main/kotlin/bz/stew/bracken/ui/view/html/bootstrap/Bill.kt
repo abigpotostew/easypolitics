@@ -4,10 +4,8 @@ import bz.stew.bracken.ui.extension.kotlinx.ac
 import bz.stew.bracken.ui.extension.kotlinx.horzizontalDescriptionList
 import bz.stew.bracken.ui.model.types.bill.status.BillStatus
 import bz.stew.bracken.ui.util.ui.UIFormatter
-import bz.stew.bracken.ui.view.html.Classes
-import bz.stew.bracken.ui.view.html.HtmlRenderOutput
-import bz.stew.bracken.ui.view.html.Template
-import bz.stew.bracken.ui.view.html.cssClass
+import bz.stew.bracken.ui.view.html.*
+import bz.stew.bracken.ui.view.html.bootstrap.mixins.*
 import bz.stew.bracken.ui.view.item.BillViewItem
 import bz.stewart.bracken.shared.data.MajorStatus
 import bz.stewart.bracken.shared.data.party.Party
@@ -100,7 +98,7 @@ class Bill(val billView: BillViewItem) : Template {
                div {
                   ac(Classes.boots_card_header)
                   ul {
-                     ac("nav nav-tabs  flex-column flex-sm-row card-header-tabs")
+                     ac("nav flex-column flex-sm-row nav-pills card-header-pills")
                      set("role", "tablist")
                      var i = 0
                      val tabNames = listOf<String>("Overview", "Contact", "Details",
@@ -127,12 +125,13 @@ class Bill(val billView: BillViewItem) : Template {
                   }
                }
                div(Classes.boots_tab_content, {
-                  val contentBuilders = arrayListOf<HtmlBodyTag.(Bill) -> Unit>(
-                        { overviewTabContent(it) },
-                        { contactTabContent(it) },
-                        { detailsTabContent(it) },
-                        //{ VotesTemplate(it).renderIn(this) },
-                        { textTabContent(it) }
+                  val tabTemplates = arrayListOf<SubTemplate>(
+                         BillOverview(template) ,
+                         BillContact(sponsor),
+                         //detailsTabContent(it)
+                           BillDetailsTab(template)
+                        ,
+                         Paragraph("pizza")
                   )
                   for (i in 0..3) {
                      div(Classes.boots_tab_card) {
@@ -143,7 +142,7 @@ class Bill(val billView: BillViewItem) : Template {
                         }
                         div(Classes.boots_container){
                            ac(Classes.billExpandedTabContent)
-                           contentBuilders[i](template)
+                           tabTemplates[i].renderIn(this)
                         }
                      }
                   }
@@ -162,134 +161,15 @@ class Bill(val billView: BillViewItem) : Template {
    }
 }
 
-private fun HtmlBodyTag.overviewTabContent(template: Bill) {
-   val billView = template.billView
-   val bd = billView.billData
-   val sponsorName = bd.sponsor.getOfficialName()
-   val name = bd.officialTitle
-   val introDate = UIFormatter.prettyDate(bd.intro_date)
-   val status: BillStatus = bd.status
-   val statusDescr: String = status.description()
-   val billSponsorProfileImg = billView.sponsorImageUrl()
-   val link: String = bd.link
-
-   //div(Classes.boots_container, {
-      div(Classes.boots_row, {
-         div(Classes.boots_col, {
-            h6 {
-               ac(Classes.billStatus, Classes.boots_card_text,
-                     Classes.boots_card_subtitle)
-               +billView.shortLabel()
-               +": "
-               +name
-            }
-            h7 {
-               ac(Classes.billStatus, Classes.boots_card_text,
-                     Classes.boots_card_subtitle)
-               +sponsorName
-            }
-//            p(cssClass(Classes.billDescription, Classes.boots_card_text), {
-//               +name
-//            })
-            p(cssClass(Classes.billDate, Classes.boots_card_text), {
-               +"Introduced "
-               +introDate
-            })
-            p(Classes.billStatusDescription, {
-               +statusDescr
-            })
-            p(Classes.billLinkContainer, {
-               a {
-                  target = "_blank"
-                  href = DirectLink(link)
-                  +"View on official data source"
-               }
-            })
-            //todo the tracker thing here
-            buildTracker(template)
-         })
-         div("col-3", {
-            div(cssClass(Classes.card, Classes.billExpandedSponsorData), {
-               img(Classes.billExpandedSponsorImg, {
-                  alt = "Bill sponsor"
-                  src = DirectLink(billSponsorProfileImg)
-               })
-               div(Classes.boots_card_block, {
-                  h5(cssClass(Classes.billSponsor, Classes.boots_card_title), {
-                     +sponsorName
-                  })
-                  p(Classes.boots_card_text, {
-                     +"pizza"
-                  })
-
-               })
-            })
-         })
-      })
-   //})
-}
-
 private fun HtmlBodyTag.contactTabContent(template: Bill) {
    val sponsor = template.billView.billData.sponsor
    LegislatorProfile(sponsor).renderIn(this)
 }
 
-private fun HtmlBodyTag.detailsTabContent(template: Bill) {
-   val cosponsors = template.billView.billData.cosponsors
-   //div(Classes.boots_container) {
-      p(Classes.billCosponsors) {
-         val cosponsors: (HtmlBodyTag) -> Unit = {
-            it.ul {
-               for (l in cosponsors) {
-                  li {
-                     +l.getOfficialName()
-                  }
-               }
-            }
-         }
-         this.horzizontalDescriptionList(mapOf(Pair("Cosponsored by:", cosponsors)))
-      }
-   //}
-}
 
 private fun HtmlBodyTag.textTabContent(template: Bill) {
 
    +"pizza"
 }
 
-//Do i have to make this an extension function??
-private fun HtmlBodyTag.buildTracker(template: Bill) {
-   val lastMajorStatus = template.billView.billData.status.lastMajorStatus()
-   //val lastMajorStatusIdx = lastMajorStatus.lowercaseName()
-
-   val displayList = listOf(MajorStatus.INTRODUCED, MajorStatus.PASSED_HOUSE, MajorStatus.PASSED_SENATE,
-         MajorStatus.SIGNED_PRESIDENT, MajorStatus.LAW)
-   div(Classes.billTracker, {
-      set("role", "group")
-      (displayList).forEach {
-         button(cssClass(Classes.boots_secondary_button, mapMajorStatusClass(it)), {
-            if (it == lastMajorStatus) {
-               setMostRecentTrackerButton()//set("style", "background-color:yellow;")
-            }
-            +it.niceFormat()
-         })
-      }
-
-   })
-}
-
-private inline fun HtmlBodyTag.setMostRecentTrackerButton() {
-   set("style", "background-color:yellow;")
-}
-
 //todo, there will be lots of these map to css class functions, need a place to put them
-private fun mapMajorStatusClass(status: MajorStatus): Classes {
-   return when (status) {
-      MajorStatus.INTRODUCED -> Classes.trackerIntro
-      MajorStatus.PASSED_HOUSE -> Classes.trackerHouse
-      MajorStatus.PASSED_SENATE -> Classes.trackerSenate
-      MajorStatus.SIGNED_PRESIDENT -> Classes.trackerPresident
-      MajorStatus.LAW -> Classes.trackerLaw
-      else -> Classes.EMPTY
-   }
-}

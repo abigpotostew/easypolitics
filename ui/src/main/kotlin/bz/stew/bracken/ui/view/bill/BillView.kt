@@ -27,7 +27,6 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
-import kotlin.js.Math
 
 /**
  * Created by stew on 1/25/17.
@@ -53,7 +52,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
    fun appendModelData(bills: List<BillData>) {
       for (b: BillData in bills) {
          val existing = billViews.get(b.uniqueId)
-         if(existing==null) {
+         if (existing == null) {
             //billViews.add(BillViewItem(b))
             billViews.put(b.uniqueId, BillViewItem(b))
          }
@@ -128,12 +127,12 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
    }
 
    //Only call this once. generates
-   fun generateAndDisplayAllBills(resetVisible:Boolean = true) {
+   fun generateAndDisplayAllBills(resetVisible: Boolean = true) {
       var billListJQ: JQuery = getJq(rootElementSelector)
 
       val sortedList = this.billViews.values.sorted()
 
-      if(resetVisible) {
+      if (resetVisible) {
          this.visibleBills.clear()
       }
 
@@ -146,8 +145,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
             try {
                if (GENERATE_FROM_TEMPLATE) {
                   this.generateFromTemplate(i, billListJQ)
-               }
-               else {
+               } else {
                   this.generateBillView(i, billListJQ)
                }
                this.initiateBill(i)
@@ -187,13 +185,12 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
          //close prior one
          val child = jq(active).children(".billExpanded")
          val openHeight = jq(child).height().toInt()
-         console.log("going up: ",openHeight)
          val aniOpen: Animation = makeAnimation(openHeight,
-                                                "px",
-                                                true
-                                               )
+               "px",
+               true
+         )
          aniOpen.run(OPEN_SPEED,
-                     active)
+               active)
          child.hide(HIDE_SPEED)
          if (this.activeCell == bill) {
             this.activeCell = null
@@ -205,12 +202,12 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
       val child: JQuery = jq(bill).children(".billExpanded")
       //TODO made this centered, and the width of the number of bills across the screen
       child.css("transform",
-                "translateX(-" + document.elementFixedOffset(bill).x + "px)")
+            "translateX(-" + document.elementFixedOffset(bill).x + "px)")
 
       val openHeight = child.actual("height").toInt() /// MUST be before .show
       val aniOpen: Animation = makeAnimation(openHeight, "px")
       aniOpen.run(OPEN_SPEED,
-                  bill)
+            bill)
       child.show(OPEN_SPEED)
    }
 
@@ -266,16 +263,16 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
 
       //could clean up thiss interface
       billHtml.eachChildClass("billTitle",
-                              { this.innerHTML = billView.shortLabel() })
+            { this.innerHTML = billView.shortLabel() })
       billHtml.eachChildClass("billSponsor",
-                              { this.innerHTML = sponsorName })
+            { this.innerHTML = sponsorName })
       billHtml.eachChildClass("billDescription",
-                              { this.innerHTML = name })
+            { this.innerHTML = name })
       billHtml.eachChildClass("billStatus",
-                              { this.innerHTML = "Status: " + statusLabel })
+            { this.innerHTML = "Status: " + statusLabel })
       billHtml.eachChildClass("billDate", { this.innerHTML = introDate })
       billHtml.eachChildClass("billStatusDescription",
-                              { this.innerHTML = statusDescr })
+            { this.innerHTML = statusDescr })
 
       //billJq.children(".billExpanded").get(0).eachChildClass("billtitle",{it?.innerHTML = billView.shortLabel()})
 

@@ -1,11 +1,10 @@
 package bz.stew.bracken.ui.extension.kotlinx
 
 import bz.stew.bracken.ui.view.html.Classes
-import kotlinx.html.*
-
-/**
- * Created by stew on 3/5/17.
- */
+import kotlinx.html.HtmlBodyTag
+import kotlinx.html.dd
+import kotlinx.html.dl
+import kotlinx.html.dt
 
 fun HtmlBodyTag.ac(newClass: String) {
    this.addClass(newClass)
@@ -28,18 +27,15 @@ fun HtmlBodyTag.ac(vararg ts: Classes) {
 }
 
 fun HtmlBodyTag.horzizontalDescriptionList(content: Map<String, (HtmlBodyTag) -> Unit>) {
-   div(Classes.boots_row) {
-      dl(Classes.boots_4_6_12) {
-         ac(Classes.boots_dlHorizontal)
-         for ((k, v) in content) {
-            dt {
-               //ac(Classes.boots_dlHorizontalDt_small)
-               +k
-            }
-            dd {
-               //ac(Classes.boots_dlHorizontalDd_small)
-               v(this)
-            }
+   dl(Classes.boots_row) {
+      for ((k, v) in content) {
+         dt {
+            ac(Classes.boots_colSm2, Classes.boots_colXl1)
+            +k
+         }
+         dd {
+            ac(Classes.boots_colSm10, Classes.boots_colXl11)
+            v(this)
          }
       }
    }
