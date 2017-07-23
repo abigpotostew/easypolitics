@@ -14,6 +14,7 @@ class DateUtils {
 
       private val logger = KotlinLogging.logger {}
 
+
       private val iso8601_1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX")//this is the one I use in rest to write out to json
       private val iso8601_2 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
       private val RFC822_1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
@@ -97,7 +98,7 @@ class DateUtils {
       }
 
       fun standardWriteFormat(): DateFormat {
-         return iso8601_1
+         return iso8601_2//iso8601_1
       }
 
       /**

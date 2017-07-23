@@ -24,6 +24,9 @@ abstract class AbstractJacksonParser< T : DbItem>(val clazz:Class<T>): Parser {
       return data.readText()
    }
 
+   /**
+    * Use jackson to parse the file into an object
+    */
    fun readMap(data:File):T{
       return mapJson(readJsonFile(data))
    }

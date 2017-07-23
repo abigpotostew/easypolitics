@@ -9,6 +9,7 @@ enum class Classes(labelValue:String, addClasses: List<Classes> = emptyList()):C
    EMPTY(""),
 
    boots_hvr_fade("hvr-fade"),
+   //boots_hvr_fade("hvr-bubble-float-bottom"),
    boots_card_header("card-header"),
    boots_card_block("card-block"),
    boots_card_text("card-text"),

@@ -1,1 +1,5 @@
-I'm switching gears to use KotlinJS for my frontend development because it's nice to have a compiler and an IDE experience.
+
+
+Dependencies:
+1. Hover sass version (http://ianlunn.github.io/Hover/)
+-- drop the scss folder here ui/src/main/sass/hover/

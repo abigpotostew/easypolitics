@@ -1,3 +1,5 @@
+//@import 'hover/hover';
+
 
 /******************************************
  variables styles
@@ -18,6 +20,9 @@ $color-independent: rgb(241, 255, 137);
 /******************************************
  Grid styles
  ******************************************/
+//.bill {
+//  //@include bubble-float-bottom;
+//}
 .person, .bill {
   /*display: inline-block;*/
   /*outline-style: double;*/
@@ -40,6 +45,7 @@ $color-independent: rgb(241, 255, 137);
 
   /* center bills on page without jacking up the top and bottom margins from the expand box*/
   margin: 0 auto 0 auto;
+
 }
 
 /******************************************
@@ -92,6 +98,7 @@ $color-independent: rgb(241, 255, 137);
   overflow: hidden;
   text-overflow: ellipsis;*/
   overflow: hidden;
+
 }
 
 .billStatus{
@@ -105,6 +112,7 @@ $color-independent: rgb(241, 255, 137);
   max-width: 36rem;
   min-width: 36rem;
   min-height: 16.5rem;
+  //@include hvr-fade;
 }
 
 
@@ -267,10 +275,20 @@ $color-independent: rgb(241, 255, 137);
   -webkit-transition-property: color, background-color;
   transition-property: color, background-color;
 }
-.hvr-fade:hover, .hvr-fade:focus, .hvr-fade:active {
-  background-color: #2098D1;
-  color: white;
+.party-republican {
+  .hvr-fade:hover, .hvr-fade:focus, .hvr-fade:active {
+    background-color: $color-republican;
+    color: black;
+  }
 }
+.party-democrat {
+  .hvr-fade:hover, .hvr-fade:focus, .hvr-fade:active {
+    background-color: $color-democrat;
+    color: black;
+  }
+}
+
+//@import 'hover/hover';
 
 
 

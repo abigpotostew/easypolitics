@@ -32,7 +32,6 @@ class DateModifiedTest {
       testDb = BillJsonDataDatabase(File(TestUtils.getTestResourcesData()), "congress1",
                                     "test1235", RuntimeMode.NONE,
                                     true,
-            /*emptyDatabaseWriter<Bill,AbstractMongoDb<Bill>>()*/
                                     writer = object : BillWriter() {
                                        override fun write(element: Bill,
                                                           collection: String,

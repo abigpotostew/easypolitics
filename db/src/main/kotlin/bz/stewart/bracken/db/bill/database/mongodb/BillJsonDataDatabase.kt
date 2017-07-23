@@ -20,7 +20,7 @@ import java.util.*
  * Created by stew on 3/9/17.
  */
 class BillJsonDataDatabase(val dataRoot: File, dbName: String,
-                           private val collName: String,
+                           private val collName: String = "bills",
                            val runtimeMode: RuntimeMode = RuntimeMode.NONE,
                            val testRun: Boolean = true,
                            writer: BillWriter) : BillMongoDb(dbName,
@@ -91,7 +91,7 @@ class BillJsonDataDatabase(val dataRoot: File, dbName: String,
                                       try {// TODO skip this query if in reset mode?
                                          parent.queryCollection(collName, {
                                             val found = find(
-                                                  "{getBillId:${bill.bill_id.json} }".formatJson())
+                                                  "{bill_id:${bill.bill_id.json} }".formatJson())
                                             existingBill = found.first()
                                          })
                                       } catch (e: JSONParseException) {

@@ -11,3 +11,4 @@ lib
 /ui/build/resources/main/index.html
 my.properties
 *~
+ui/src/main/sass/hover/

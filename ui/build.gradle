@@ -69,6 +69,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:${project.kotlin_stdlib_js_version}"
 }
 
+
 task copyJsResources(dependsOn:[build, mainSass]) {
 
     doFirst {
@@ -95,6 +96,15 @@ task copyJsResources(dependsOn:[build, mainSass]) {
         }
         println("Copied kotlin.js from jar")
         println("Finished copying resources into build folder...")
+    }
+}
+
+mainSass{
+    doFirst{
+        println("Compiling Sass...")
+    }
+    doLast{
+        println("Finished compiling Sass!")
     }
 }
 

@@ -42,12 +42,15 @@ class TestUtils {
                "/legislators-data/legislators-social-media.json")
       }
 
-      fun generateTestDb(): BillMongoDb {
-         val collectionName = "billsTest_"+ Date().time
+      fun generateTestBillWriteDb(runtimeMode: RuntimeMode, testRun:Boolean = false): BillJsonDataDatabase {
+         //val collectionName = "billsTest_"+ Date().time
          val dbName = "congress" + Date().time
          val writer = SingleBillWriter()
-         val db = BillJsonDataDatabase(File(getTestResourcesData()), dbName, collectionName, RuntimeMode.RESET, false,
-                                       writer!!)
+         val db = BillJsonDataDatabase(dataRoot = File(getTestResourcesData()),
+                                       dbName = dbName,
+                                       runtimeMode = runtimeMode,
+                                       testRun = testRun,
+                                       writer = writer)
          db.openDatabase()
          db.loadData(null)
          db.closeDatabase()

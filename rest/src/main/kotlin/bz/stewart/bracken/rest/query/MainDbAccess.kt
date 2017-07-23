@@ -13,14 +13,19 @@ import org.litote.kmongo.MongoOperator
 import org.litote.kmongo.find
 import org.litote.kmongo.formatJson
 
-class MainDbAccess(_databaseName: String) : CompositeMongoDb<Bill, LegislatorData>(
-      _databaseName, Bill::class.java, "bills", LegislatorData::class.java,
-      "legislators"), StandardDbAccess {
+class MainDbAccess(_databaseName: String) :
+      CompositeMongoDb<Bill, LegislatorData>(
+            _databaseName,
+            Bill::class.java,
+            "bills",
+            LegislatorData::class.java,
+            "legislators"),
+      StandardDbAccess {
    override fun standardBillQuery(query: BasicDBObject,
                                   limitRequest: Int,
                                   sortRequest: Bson,
                                   offset: Int
-   ): Collection<BillDelegated> {
+                                 ): Collection<BillDelegated> {
 
       val limit = MathUtil.clamp(limitRequest, 0, 1000)
       val queryBillOut = queryBills(query, limit, sortRequest, offset)
@@ -65,7 +70,7 @@ class MainDbAccess(_databaseName: String) : CompositeMongoDb<Bill, LegislatorDat
       return strBuilder.toString()
    }
 
-   private fun getPeopleQuery(bioGuideIds: Set<String>): String{
+   private fun getPeopleQuery(bioGuideIds: Set<String>): String {
       val inList = BasicDBObject()
       inList.put("${MongoOperator.`in`}", toJsonArray(bioGuideIds))
 
@@ -73,7 +78,7 @@ class MainDbAccess(_databaseName: String) : CompositeMongoDb<Bill, LegislatorDat
       topQuery.put("id.bioguide", inList)
 
       val out =
-"""
+            """
 {"id.bioguide": {${MongoOperator.`in`}: ${toJsonArray(bioGuideIds)} }}
 """.formatJson()
 
@@ -102,7 +107,7 @@ class MainDbAccess(_databaseName: String) : CompositeMongoDb<Bill, LegislatorDat
       val queryBillOut: FindIterable<Bill> = getFirstDb().queryCollection(
             db.getCollectionName(), {
          val res = find(query)
-         if(offset!= 0){ //TODO: this is not an efficient pagination technique, use the sort by info such as only bills with date later than the last bill from prior query.
+         if (offset != 0) { //TODO: this is not an efficient pagination technique, use the sort by info such as only bills with date later than the last bill from prior query.
             res.skip(offset)
          }
          res
