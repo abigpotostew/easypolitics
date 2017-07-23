@@ -11,7 +11,7 @@ abstract class Attribute<T>(val name: String) {
     operator fun getValue(tag: HtmlTag, property: KProperty<*>): T {
         return decode(tag[name])
     }
-    operator open fun setValue(tag: HtmlTag, property: KProperty<*>, value: T) {
+    open operator fun setValue(tag: HtmlTag, property: KProperty<*>, value: T) {
         tag[name] = encode(value)
     }
 
@@ -67,7 +67,7 @@ class TickerAttribute(name: String) : Attribute<Boolean>(name) {
         return if (s == null) false else true
     }
 
-    operator override fun setValue(tag: HtmlTag, property: KProperty<*>, value: Boolean) {
+    override operator fun setValue(tag: HtmlTag, property: KProperty<*>, value: Boolean) {
         if (value == true) {
             super.setValue(tag, property, value)
         } else {
@@ -90,7 +90,7 @@ interface StringEnum<T : Enum<T>> {
     val value: String
 }
 
-class EnumAttribute<T>(name: String, val klass: KClass<T>, val values:Array<T>) : Attribute<T>(name)
+class EnumAttribute<T>(name: String, val klass: KClass<T>, val values: Array<T>) : Attribute<T>(name)
     where T : StringEnum<T>, T : Enum<T>
 {
     override fun encode(t: T): String? {

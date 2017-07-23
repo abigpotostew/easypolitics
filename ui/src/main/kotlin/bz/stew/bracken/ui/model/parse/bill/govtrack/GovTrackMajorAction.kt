@@ -15,7 +15,6 @@ class GovTrackMajorAction(date: String,
                           private val description: String = "none",
                           private val xml: String = "none") : MajorAction {
 
-
    private val date = resolveDate(date)
 
    private fun resolveDate(dateString: String): Date {

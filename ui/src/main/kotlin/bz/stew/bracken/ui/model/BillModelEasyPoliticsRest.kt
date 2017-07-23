@@ -1,7 +1,6 @@
 package bz.stew.bracken.ui.model
 
 import bz.stew.bracken.ui.model.index.ALL_INDEX_DEFS
-import bz.stew.bracken.ui.model.index.resetAllIndex
 import bz.stew.bracken.ui.model.parse.bill.EasyPoliticsParser
 import bz.stew.bracken.ui.model.types.bill.BillData
 
@@ -15,10 +14,10 @@ class BillModelEasyPoliticsRest : Model {
 
    override fun loadBillData(data: dynamic, append: Boolean) {
       val newData = EasyPoliticsParser(data).parse(this)
-      if (append){
+      if (append) {
          bills = bills.plus(newData)
          indexBills(newData)
-      }else{
+      } else {
          bills = newData
          indexData()
       }
@@ -28,7 +27,7 @@ class BillModelEasyPoliticsRest : Model {
       return bills.toList()
    }
 
-   private fun indexBills(bills:Collection<BillData>){
+   private fun indexBills(bills: Collection<BillData>) {
       for (idx in ALL_INDEX_DEFS) {
          idx.indexInstances(bills)
       }

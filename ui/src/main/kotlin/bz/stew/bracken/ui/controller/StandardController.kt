@@ -1,6 +1,5 @@
 package bz.stew.bracken.ui.controller
 
-
 import bz.stew.bracken.ui.controller.bill.query.BillRestQuery
 import bz.stew.bracken.ui.model.Model
 import bz.stew.bracken.ui.service.RequestCallback
@@ -15,7 +14,7 @@ abstract class StandardController(override val view: View,
                                   override val model: Model) : Controller {
 
    protected var lastSuccessfulQuery: BillRestQuery? = null
-   protected var inProgressQuery:BillRestQuery? = null
+   protected var inProgressQuery: BillRestQuery? = null
 
    abstract fun onParseError()
 

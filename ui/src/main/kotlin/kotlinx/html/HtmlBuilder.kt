@@ -43,7 +43,7 @@ fun html(content: HtmlBodyTag.() -> Unit) = buildString {
 
 fun String.htmlEscapeTo(builder: StringBuilder) {
     this.forEach {
-        when(it) {
+        when (it) {
             '<' -> builder.append("&lt;")
             '>' -> builder.append("&gt;")
             '\"' -> builder.append("&quot;")
@@ -166,7 +166,7 @@ abstract class HtmlTag(containingTag: HtmlTag?, val tagName: String, val renderS
 
 }
 
-open class TransparentTag(containtingTag: HtmlTag?): HtmlBodyTag(containtingTag, "\$\$transaprent\$\$", contentStyle = ContentStyle.propagate) {
+open class TransparentTag(containtingTag: HtmlTag?) : HtmlBodyTag(containtingTag, "\$\$transaprent\$\$", contentStyle = ContentStyle.propagate) {
     override fun renderElement(builder: StringBuilder, indent: String) {
         for (child in children) {
             child.renderElement(builder, indent)
@@ -181,8 +181,7 @@ class RawHtml(containingTag: HtmlTag?, private val html: String) : HtmlElement(c
             builder.append(html)
             if (indent != "")
                 builder.append("\n")
-        }
-        else {
+        } else {
             builder.append(html)
         }
     }

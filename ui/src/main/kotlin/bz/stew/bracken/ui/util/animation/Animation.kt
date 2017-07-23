@@ -6,7 +6,6 @@ import org.w3c.dom.HTMLElement
 import kotlin.browser.window
 import kotlin.js.Date
 
-
 /**
  * Created by stew on 1/25/17.
  */
@@ -143,8 +142,7 @@ abstract class Animation {
          requestNextAnimationFrame(currentRunId,
                                    Date().getTime(),
                                    duration)
-      }
-      else {
+      } else {
          onComplete()
       }
    }
@@ -169,8 +167,7 @@ abstract class Animation {
                requestNextAnimationFrame(runId,
                                          startTime,
                                          duration)
-            }
-            else {
+            } else {
                onComplete()
             }
          }

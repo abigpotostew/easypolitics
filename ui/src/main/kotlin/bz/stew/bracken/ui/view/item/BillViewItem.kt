@@ -13,8 +13,8 @@ class BillViewItem(val billData: BillData) : ViewItem {
 
    //val billData:BillData=billData
 
-   fun trueTitle():String{
-      if(billData.shortTitle.isNullOrBlank()){
+   fun trueTitle(): String {
+      if (billData.shortTitle.isNullOrBlank()) {
          return billData.officialTitle
       }
       return billData.shortTitle

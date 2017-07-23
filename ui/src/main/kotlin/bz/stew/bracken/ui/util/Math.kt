@@ -13,9 +13,9 @@ class Math {
                           c: Double,
                           d: Double): Double {
             var ti: Double = t / (d / 2)
-            if (t < 1) return c / 2 * ti * ti + b;
-            ti--;
-            return -(c.toDouble()) / 2 * (ti * (t - 2) - 1) + b;
+            if (t < 1) return c / 2 * ti * ti + b
+            ti--
+            return -(c.toDouble()) / 2 * (ti * (t - 2) - 1) + b
         }
 
     }

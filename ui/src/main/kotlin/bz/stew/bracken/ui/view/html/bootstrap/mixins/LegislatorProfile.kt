@@ -41,14 +41,13 @@ class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
 //      }
 //   }
 
-   private fun contentMap(): Map<String,(HtmlBodyTag) -> Unit> {
+   private fun contentMap(): Map<String, (HtmlBodyTag) -> Unit> {
       val map = LinkedHashMap<String, (HtmlBodyTag) -> Unit>()
       map.put("Website", this::renderWebsite)
       map.put("Twitter", this::renderTwitter)
       map.put("Phone", this::renderPhone)
       return map
    }
-
 
    private fun renderWebsite(root: HtmlBodyTag) {
       val l = legislator

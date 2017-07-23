@@ -48,7 +48,6 @@ abstract class HtmlBodyTag(containingTag: HtmlTag?, name: String, renderStyle: R
     }
 }
 
-
 inline fun <T : HtmlBodyTag> contentTag(tag: T, c: CssClass, contents: T.() -> Unit) {
     tag.addClass(c.label())
     tag.contents()
@@ -188,7 +187,6 @@ open class BLOCKQUOTE(containingTag: HtmlBodyTag) : HtmlBodyTag(containingTag, "
     var cite: Link by Attributes.cite
 }
 
-
 open class DL(containingTag: HtmlBodyTag) : HtmlBodyTag(containingTag, "dl")
 open class DD(containingTag: DL) : HtmlBodyTag(containingTag, "dd", contentStyle = ContentStyle.propagate)
 open class DT(containingTag: DL) : HtmlBodyTag(containingTag, "dt", contentStyle = ContentStyle.propagate)
@@ -275,7 +273,6 @@ inline fun TR.th(contents: TH.() -> Unit) = contentTag(TH(this), contents)
 inline fun TR.td(c: String, contents: TD.() -> Unit) = contentTag(TD(this), c, contents)
 inline fun TR.td(contents: TD.() -> Unit) = contentTag(TD(this), contents)
 inline fun TR.td(c: CssClass, contents: TD.() -> Unit) = contentTag(TD(this), c.label(), contents)
-
 
 inline fun HtmlBodyTag.form(c: String, contents: FORM.() -> Unit) = contentTag(FORM(this), c, contents)
 inline fun HtmlBodyTag.form(contents: FORM.() -> Unit) = contentTag(FORM(this), contents)

@@ -9,14 +9,13 @@ import bz.stewart.bracken.shared.data.person.Legislator
 import bz.stewart.bracken.shared.data.person.emptyLegislator
 import kotlin.js.Date
 
-
 /**
  * This contains data for a unique bill. this should be pooled in future, but needs to maintain updated status
  * Created by stew on 1/23/17.
  */
 data class BillData(val uniqueId: Int = -1,
                     val officialTitle: String = "",
-                    val shortTitle:String = "",
+                    val shortTitle: String = "",
                     val congress: Int = -1,
                     val bill_type: BillType = BillType.NONE,
                     val bill_resolution_type: BillResolutionType = BillResolutionType.NONE,
@@ -29,13 +28,11 @@ data class BillData(val uniqueId: Int = -1,
                     val sponsor: Legislator = emptyLegislator(),
                     val relatedBills: RelatedBills = RelatedBills(),
                     val cosponsors: List<Legislator> = emptyList(),
-                    val origData:dynamic = null) : ModelItem {
-
+                    val origData: dynamic = null) : ModelItem {
 
    override fun billStatus(): BillStatus {
       return this.status
    }
-
 
 //    override fun lastMajorAction(): MajorAction {
 //        return this.status.lastMajorAction()

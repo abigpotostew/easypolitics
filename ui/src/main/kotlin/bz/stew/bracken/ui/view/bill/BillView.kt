@@ -91,7 +91,6 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
       jq(COUNT_TEXT_HTML_SELECTOR.text()).get(0).innerHTML = "Showing ${billCount} bills"
    }
 
-
    fun showSelectedBills(bills: Collection<BillData>) {
       this.visibleBills.clear()
       for (b: BillData in bills) {
@@ -100,7 +99,6 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
       }
 
       Log.debug { "Showing #${bills.size} bills" }
-
 
       updateBillCountText(bills.size)
 
@@ -347,7 +345,6 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
       //finally, make it display something
       billJq.fadeIn("slow")
    }
-
 
 }
 

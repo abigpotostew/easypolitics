@@ -6,7 +6,6 @@ package kotlinx.html
 
 import kotlin.js.Math
 
-
 /** Container class for HSL values */
 class HslValues(var hue: Double, var saturation: Double, var lightness: Double) {
 
@@ -20,7 +19,6 @@ class HslValues(var hue: Double, var saturation: Double, var lightness: Double) 
         saturation = Math.min(1.0, Math.max(0.0, l))
     }
 }
-
 
 /** A general color class that stores colors as floating point RGBA values.
  */
@@ -93,11 +91,9 @@ class Color(var red: Double, var green: Double, var blue: Double, var alpha: Dou
 
     var alphaInt: Int
         get() = (alpha * 255.0).toInt()
-        set(value) { alpha = value.toDouble() / 255.0}
+        set(value) { alpha = value.toDouble() / 255.0 }
 
     private fun Int.twoDigitHex(): String = (if (this < 16) "0" else "") + this.toString()//Integer.toHexString(this)
-
-
 
     val hexString: String
         get() = "#${redInt.twoDigitHex()}${greenInt.twoDigitHex()}${blueInt.twoDigitHex()}"
@@ -106,12 +102,10 @@ class Color(var red: Double, var green: Double, var blue: Double, var alpha: Dou
         if (alpha < 1.0) {
             return "rgba($redInt, $greenInt, $blueInt, $alpha"
                   //"${java.lang.String.format(Locale.ENGLISH, "%.3f", alpha)})"
-        }
-        else {
+        } else {
             return hexString
         }
     }
-
 
     /** Generate HSL values based the current RGB values. */
     fun toHsl(): HslValues {
@@ -155,15 +149,15 @@ class Color(var red: Double, var green: Double, var blue: Double, var alpha: Dou
         } else {
             fun hue2rgb(p: Double, q: Double, _t: Double): Double {
                 var t = _t
-                if(t < 0.0)
+                if (t < 0.0)
                     t += 1.0
-                if(t > 1.0)
+                if (t > 1.0)
                     t -= 1.0
-                if(t < 1.0 / 6.0)
+                if (t < 1.0 / 6.0)
                     return p + (q - p) * 6.0 * t
-                if(t < 0.5)
+                if (t < 0.5)
                     return q
-                if(t < 2.0 / 3.0)
+                if (t < 2.0 / 3.0)
                     return p + (q - p) * (2.0 / 3.0 - t) * 6.0
                 return p
             }
@@ -178,7 +172,6 @@ class Color(var red: Double, var green: Double, var blue: Double, var alpha: Dou
             blue = hue2rgb(p, q, hsl.hue - 1.0 / 3.0)
         }
     }
-
 
     /** Increases the lightness of the color by the given amount (should be between 0 and 1). */
     fun lighten(dl: Double): Color {

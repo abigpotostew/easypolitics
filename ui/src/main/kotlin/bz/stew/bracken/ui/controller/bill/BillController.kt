@@ -6,7 +6,11 @@ import bz.stew.bracken.ui.controller.bill.query.BillRestQuery
 import bz.stew.bracken.ui.extension.niceClamp
 import bz.stew.bracken.ui.model.BillModelGovTrack
 import bz.stew.bracken.ui.model.Model
-import bz.stew.bracken.ui.model.index.*
+import bz.stew.bracken.ui.model.index.INTRO_DATE_INDEX
+import bz.stew.bracken.ui.model.index.IndexOperation
+import bz.stew.bracken.ui.model.index.MAJOR_STATUS_INDEX
+import bz.stew.bracken.ui.model.index.PARTY_INDEX
+import bz.stew.bracken.ui.model.index.STATUS_INDEX
 import bz.stew.bracken.ui.model.types.bill.BillData
 import bz.stew.bracken.ui.util.JsonUtil
 import bz.stew.bracken.ui.util.log.Log
@@ -27,185 +31,180 @@ import org.w3c.dom.events.EventTarget
  */
 
 class BillController(rootElmt: HtmlSelector,
-                     model: Model = BillModelGovTrack()) : StandardController(
-      BillView(rootElmt, BootstrapTemplates()),
-      model) {
+    model: Model = BillModelGovTrack()) : StandardController(
+    BillView(rootElmt, BootstrapTemplates()),
+    model) {
 
+    /*override fun loadData(dataRequest: DataRequest, onComplete: (Controller) -> Unit) {
+        val controller = this
+        downloadBillsLoadData(dataRequest.request(), {
+            controller.generateAndDisplayAllBills()
+            controller.view.setLoading(false);
+            println("done loading")
+        })
+    }*/
 
-   /*override fun loadData(dataRequest: DataRequest, onComplete: (Controller) -> Unit) {
-       val controller = this
-       downloadBillsLoadData(dataRequest.request(), {
-           controller.generateAndDisplayAllBills()
-           controller.view.setLoading(false);
-           println("done loading")
-       })
-   }*/
+    override fun onParseError() {
+        throw RuntimeException("") //To change body of created functions use File | Settings | File Templates.
+    }
 
-   override fun onParseError() {
-      throw RuntimeException("") //To change body of created functions use File | Settings | File Templates.
-   }
+    fun applyFilter(filter: BillFilters,
+        selectVal: Any?) {
+        val filtered: List<BillData> = (this.model).getBillData().filter {
+            filter.predicate(it, selectVal)
+        }
+        (this.view as BillView).showSelectedBills(filtered)
 
-   fun applyFilter(filter: BillFilters,
-                   selectVal: Any?) {
-      val filtered: List<BillData> = (this.model).getBillData().filter {
-         filter.predicate(it, selectVal)
-      }
-      (this.view as BillView).showSelectedBills(filtered)
+    }
 
-   }
-
-   /**
-    * Start listening to the forms
-    */
-   fun startListeningFilterForms() {
-      this.view.getElement(BillFilters.PARTY.htmlSelector()).addEventListener("change", this::partyFilter)
-      this.view.getElement(BillFilters.FIXEDSTATUS.htmlSelector()).addEventListener("change", this::billStatusFilter)
-      this.view.getElement(BillFilters.DATEINTROSTART.htmlSelector()).addEventListener("change", {
-         introducedDateFilter(it, IndexOperation.GreaterThanOrEqual)
-      })
-      this.view.getElement(BillFilters.DATEINTROEND.htmlSelector()).addEventListener("change", {
-         introducedDateFilter(it, IndexOperation.LessThanOrEqual)
-      })
-      this.view.getElement(BillFilters.LASTMAJORSTATUS.htmlSelector()).addEventListener("change",
+    /**
+     * Start listening to the forms
+     */
+    fun startListeningFilterForms() {
+        this.view.getElement(BillFilters.PARTY.htmlSelector()).addEventListener("change", this::partyFilter)
+        this.view.getElement(BillFilters.FIXEDSTATUS.htmlSelector()).addEventListener("change", this::billStatusFilter)
+        this.view.getElement(BillFilters.DATEINTROSTART.htmlSelector()).addEventListener("change", {
+            introducedDateFilter(it, IndexOperation.GreaterThanOrEqual)
+        })
+        this.view.getElement(BillFilters.DATEINTROEND.htmlSelector()).addEventListener("change", {
+            introducedDateFilter(it, IndexOperation.LessThanOrEqual)
+        })
+        this.view.getElement(BillFilters.LASTMAJORSTATUS.htmlSelector()).addEventListener("change",
             this::billMajorStatusFilter)
 
-      this.view.getElement(HtmlSelector(identifier = Identifier.ID, selectorText = "loadNextPageBtn")).addEventListener("click",{
-         nextPageQuery()
-      })
-   }
+        this.view.getElement(HtmlSelector(identifier = Identifier.ID, selectorText = "loadNextPageBtn")).addEventListener("click", {
+            nextPageQuery()
+        })
+    }
 
-   fun stopListening() {
-      this.view.getElement(BillFilters.PARTY.htmlSelector()).removeEventListener("change", this::partyFilter)
-      this.view.getElement(BillFilters.FIXEDSTATUS.htmlSelector()).removeEventListener("change",
+    fun stopListening() {
+        this.view.getElement(BillFilters.PARTY.htmlSelector()).removeEventListener("change", this::partyFilter)
+        this.view.getElement(BillFilters.FIXEDSTATUS.htmlSelector()).removeEventListener("change",
             this::billStatusFilter)
-   }
+    }
 
-   fun introducedDateFilter(event: Event,
-                            operator: IndexOperation) {
-      val target: EventTarget? = event.target
-      if (target != null && target is HTMLInputElement) {
-         val inputDate: Double = try {
-            target.valueAsNumber
-         } catch (e: IllegalArgumentException) {
-            0.0
-         }
-         val validDate = niceClamp(inputDate, INTRO_DATE_INDEX.minKey(), INTRO_DATE_INDEX.maxKey(),
-               operator == IndexOperation.GreaterThanOrEqual)
-         println("VALUE IS: $validDate")
-         (this.view as BillView).showSelectedBills(
-               INTRO_DATE_INDEX.instancesByOperator(operator, validDate))
-      }
-   }
+    fun introducedDateFilter(event: Event,
+        operator: IndexOperation) {
+        val target: EventTarget? = event.target
+        if (target != null && target is HTMLInputElement) {
+            val inputDate: Double = try {
+                target.valueAsNumber
+            } catch (e: IllegalArgumentException) {
+                0.0
+            }
+            val validDate = niceClamp(inputDate, INTRO_DATE_INDEX.minKey(), INTRO_DATE_INDEX.maxKey(),
+                operator == IndexOperation.GreaterThanOrEqual)
+            println("VALUE IS: $validDate")
+            (this.view as BillView).showSelectedBills(
+                INTRO_DATE_INDEX.instancesByOperator(operator, validDate))
+        }
+    }
 
-   fun partyFilter(event: Event) {
-      val target: EventTarget? = event.target
-      if (target != null && target is HTMLSelectElement) {
-         val party: Party = try {
-            Party.valueOf(target.value)
-         } catch (e: IllegalArgumentException) {
-            Party.NONE
-         }
-         //this.applyFilter(BillFilters.PARTY, party)
-         (this.view as BillView).showSelectedBills(PARTY_INDEX.instancesWith(party))
-      }
-   }
+    fun partyFilter(event: Event) {
+        val target: EventTarget? = event.target
+        if (target != null && target is HTMLSelectElement) {
+            val party: Party = try {
+                Party.valueOf(target.value)
+            } catch (e: IllegalArgumentException) {
+                Party.NONE
+            }
+            //this.applyFilter(BillFilters.PARTY, party)
+            (this.view as BillView).showSelectedBills(PARTY_INDEX.instancesWith(party))
+        }
+    }
 
-   fun billMajorStatusFilter(event: Event) {
-      //TODO make this filtering more generic
-      val target: EventTarget? = event.target
-      if (target != null && target is HTMLSelectElement) {
-         val majorStatus: MajorStatus = try {
-            MajorStatus.valueAt(target.value.toInt())
+    fun billMajorStatusFilter(event: Event) {
+        //TODO make this filtering more generic
+        val target: EventTarget? = event.target
+        if (target != null && target is HTMLSelectElement) {
+            val majorStatus: MajorStatus = try {
+                MajorStatus.valueAt(target.value.toInt())
 
-         } catch(e: IllegalArgumentException) {
-            throw RuntimeException("you fuxed up the status filter for select value of ${target.value}")
-         } catch(e: NumberFormatException) {
-            throw RuntimeException("you fuxed up the status filter for select value of ${target.value}")
-         }
-         (this.view as BillView).showSelectedBills(MAJOR_STATUS_INDEX.instancesWith(majorStatus))
-      }
-   }
+            } catch (e: IllegalArgumentException) {
+                throw RuntimeException("you fuxed up the status filter for select value of ${target.value}")
+            } catch (e: NumberFormatException) {
+                throw RuntimeException("you fuxed up the status filter for select value of ${target.value}")
+            }
+            (this.view as BillView).showSelectedBills(MAJOR_STATUS_INDEX.instancesWith(majorStatus))
+        }
+    }
 
-   fun billStatusFilter(event: Event) {
-      //TODO make this filtering more generic
-      val target: EventTarget? = event.target
-      if (target != null && target is HTMLSelectElement) {
-         val fixedStatus: FixedStatus = try {
-            FixedStatus.valueAt(target.value.toInt())
+    fun billStatusFilter(event: Event) {
+        //TODO make this filtering more generic
+        val target: EventTarget? = event.target
+        if (target != null && target is HTMLSelectElement) {
+            val fixedStatus: FixedStatus = try {
+                FixedStatus.valueAt(target.value.toInt())
 
-         } catch(e: IllegalArgumentException) {
-            throw RuntimeException("you fuxed up the status filter for select value of ${target.value}")
-         } catch(e: NumberFormatException) {
-            throw RuntimeException("you fuxed up the status filter for select value of ${target.value}")
-         }
-         (this.view as BillView).showSelectedBills(STATUS_INDEX.instancesWith(fixedStatus))
-      }
-   }
+            } catch (e: IllegalArgumentException) {
+                throw RuntimeException("you fuxed up the status filter for select value of ${target.value}")
+            } catch (e: NumberFormatException) {
+                throw RuntimeException("you fuxed up the status filter for select value of ${target.value}")
+            }
+            (this.view as BillView).showSelectedBills(STATUS_INDEX.instancesWith(fixedStatus))
+        }
+    }
 
-   /**
-    * First time only setup.
-    */
-   fun startupSetupUi() {
+    /**
+     * First time only setup.
+     */
+    fun startupSetupUi() {
 
+        if (this.view is BillView) {
+            this.view.appendModelData((this.model).getBillData())
 
-      if (this.view is BillView) {
-         this.view.appendModelData((this.model).getBillData())
+            //todo make this filtering more generic
+            this.view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
+            this.view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
+            this.view.generateAndDisplayAllBills()
+            startListeningFilterForms()
+        }
+    }
 
-         //todo make this filtering more generic
-         this.view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
-         this.view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
-         this.view.generateAndDisplayAllBills()
-         startListeningFilterForms()
-      }
-   }
+    fun nextPageQuery() {
+        val lastQuery = lastSuccessfulQuery
+        if (inProgressQuery != null || lastQuery == null) {
+            Log.warning("Can't query to next page since no prior successful query or a query is in progress.")
+            return
+        }
+        val nextQuery = lastQuery.nextPage()
+        this.loadEndpoint(nextQuery, {
+            val controller = it.controller as StandardController
+            val view = controller.view as BillView //todo this is janky and should be proply typed
+            val response = it.response
+            var parse: dynamic
+            try {
+                parse = JsonUtil.parse(response)
+                controller.model.loadBillData(parse, true)
+                view.appendModelData((this.model).getBillData())
+                view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
+                view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
+                view.generateAndDisplayAllBills(false)
+            } catch (e: Throwable) {
+                error("Error parsing json response from data source while querying for next page: \n\t" + e.toString())
+            }
+        })
 
-   fun nextPageQuery(){
-      val lastQuery = lastSuccessfulQuery
-      if (inProgressQuery != null || lastQuery == null){
-         Log.warning("Can't query to next page since no prior successful query or a query is in progress.")
-         return
-      }
-      val nextQuery = lastQuery.nextPage()
-      this.loadEndpoint(nextQuery, {
-         val controller = it.controller as StandardController
-         val view = controller.view as BillView //todo this is janky and should be proply typed
-         val response = it.response
-         var parse: dynamic
-         try {
-            parse = JsonUtil.parse(response)
-            controller.model.loadBillData(parse, true)
-            view.appendModelData((this.model).getBillData())
-            view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
-            view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
-            view.generateAndDisplayAllBills(false)
-         } catch (e: Throwable) {
-            error("Error parsing json response from data source while querying for next page: \n\t" + e.toString())
-         }
-      })
+    }
 
+    /**
+     * Main point to load new data from remote endpoint
+     */
+    fun downloadBillsLoadData(requestUrl: BillRestQuery,
+        onDownload: (StandardController) -> Unit) {
 
-   }
-
-   /**
-    * Main point to load new data from remote endpoint
-    */
-   fun downloadBillsLoadData(requestUrl: BillRestQuery,
-                             onDownload: (StandardController) -> Unit) {
-
-
-
-      this.loadEndpoint(requestUrl, {
-         val controller = it.controller as StandardController
-         val response = it.response
-         var parse: dynamic
-         try {
-            parse = JsonUtil.parse(response)
-            controller.model.loadBillData(parse, false)
-         } catch (e: Throwable) {
-            error("Error parsing json response from data source: \n\t" + e.toString())
-         }
-         onDownload(controller)
-      })
+        this.loadEndpoint(requestUrl, {
+            val controller = it.controller as StandardController
+            val response = it.response
+            var parse: dynamic
+            try {
+                parse = JsonUtil.parse(response)
+                controller.model.loadBillData(parse, false)
+            } catch (e: Throwable) {
+                error("Error parsing json response from data source: \n\t" + e.toString())
+            }
+            onDownload(controller)
+        })
 
 //         val controller: Controller = this
 //         ServerRequestDispatcher().sendRequest(
@@ -226,7 +225,7 @@ class BillController(rootElmt: HtmlSelector,
 //         )
 //      }
 
-   }
+    }
 }
 
 //private fun  String.parseInt(): Double {}

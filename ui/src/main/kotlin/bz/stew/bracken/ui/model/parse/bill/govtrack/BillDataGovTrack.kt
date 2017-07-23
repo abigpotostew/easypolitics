@@ -197,7 +197,6 @@ class BillDataGovTrack(private val model: Model) : BillDataBuilder {
                            gi.sponsor_role.state,
                            gi.sponsor.twitterid)*/
 
-
       relatedBills = resolveRelatedBills(gi.related_bills)
 
       cosponsors = parseCosponsors(gi.cosponsors)//array
@@ -219,6 +218,5 @@ class BillDataGovTrack(private val model: Model) : BillDataBuilder {
             relatedBills = relatedBills
                      )
    }
-
 
 }

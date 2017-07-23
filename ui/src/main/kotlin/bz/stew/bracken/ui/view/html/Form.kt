@@ -8,10 +8,10 @@ import kotlin.browser.document
  */
 enum class Form {
     Option {
-        override fun generateHtml(innerHtml:String, options: Map<String,String>): Element {
+        override fun generateHtml(innerHtml: String, options: Map<String, String>): Element {
             val out = document.createElement("option")
-            for (pair in options.entries){
-                out.setAttribute(pair.key,pair.value)
+            for (pair in options.entries) {
+                out.setAttribute(pair.key, pair.value)
             }
             out.innerHTML = innerHtml
             return out
@@ -20,5 +20,5 @@ enum class Form {
 
     ;
 
-    abstract fun generateHtml(innerHtml:String, options: Map<String,String>): Element
+    abstract fun generateHtml(innerHtml: String, options: Map<String, String>): Element
 }

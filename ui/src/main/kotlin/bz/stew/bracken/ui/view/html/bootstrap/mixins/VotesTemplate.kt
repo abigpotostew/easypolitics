@@ -12,19 +12,19 @@ import kotlinx.html.tr
 /**
  * Created by stew on 7/4/17.
  */
-class VotesTemplate(private val bill: Bill):SubTemplate {
+class VotesTemplate(private val bill: Bill) : SubTemplate {
    override fun renderIn(root: HtmlBodyTag) {
       val numRows = 10
       val numColumns = 10
-      root.table (Classes.voteTable){
+      root.table (Classes.voteTable) {
          for (row in 0..numRows) {
             tr {
                for (col in 0..numColumns) {
                   td(Classes.voteCell) {
                      val n = row*numColumns + col
-                     if((n+row)%2==0){
+                     if ((n+row)%2==0) {
                         ac(Classes.voteDem)
-                     }else{
+                     } else {
                         ac(Classes.voteRep)
                      }
                      +"$n"

@@ -12,7 +12,6 @@ import bz.stew.bracken.view.HtmlSelector
  */
 //@native("$") val jquery : dynamic = noImpl
 
-
 fun main(args: Array<String>) {
 
    val rootElement = HtmlSelector(Identifier.ID,
@@ -30,14 +29,11 @@ fun main(args: Array<String>) {
          //"https://www.govtrack.us/api/v2/bill?congress=115&order_by=-current_status_date&limit=2",
          {
             controller.startupSetupUi()
-            controller.view.setLoading(false);
+            controller.view.setLoading(false)
             println("done loading")
          })
 
-
-
 }
-
 
 /**
  * print some info about µajor action data. this doesn't print correctly in the intellij console, but does in chrome

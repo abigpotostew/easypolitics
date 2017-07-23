@@ -1,7 +1,5 @@
 package bz.stew.bracken.ui.view.html
 
-import jquery.JQuery
-
 /**
  * Created by stew.bracken on 1/28/17.
  */

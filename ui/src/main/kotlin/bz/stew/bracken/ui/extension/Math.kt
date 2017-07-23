@@ -22,7 +22,7 @@ fun niceClamp(v: Double,
                    lo: Double,
                    hi: Double,
                    preferLo: Boolean): Double {
-    Log.debug{"v: $v, lo: $lo, hi: $hi, preferLo: $preferLo"}//println("v: $v, lo: $lo, hi: $hi, preferLo: $preferLo")
+    Log.debug { "v: $v, lo: $lo, hi: $hi, preferLo: $preferLo" } //println("v: $v, lo: $lo, hi: $hi, preferLo: $preferLo")
     if (v.isNaN()) {
         if (preferLo) return lo else return hi
     }

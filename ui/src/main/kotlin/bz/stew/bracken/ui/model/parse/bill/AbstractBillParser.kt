@@ -8,7 +8,7 @@ import bz.stew.bracken.ui.model.types.bill.BillData
  */
 abstract class AbstractBillParser(_json: dynamic) {
 
-   protected val json:dynamic = _json
+   protected val json: dynamic = _json
 
    protected abstract fun getBillsArray(): dynamic
    protected abstract fun getBillCount(): Int

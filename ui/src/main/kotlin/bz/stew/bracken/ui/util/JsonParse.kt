@@ -8,10 +8,9 @@ package bz.stew.bracken.ui.util
 
 class JsonUtil {
 
-
     companion object Parse {
         fun parse(string: String): dynamic {
-            val out =JSON.parse<dynamic>(string)
+            val out = JSON.parse<dynamic>(string)
             return out
             //return JSON.parse<dynamic>(string)
             //return jq().parseJSON(string)

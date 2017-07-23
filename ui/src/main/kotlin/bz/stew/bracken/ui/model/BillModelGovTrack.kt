@@ -10,7 +10,6 @@ import bz.stew.bracken.ui.model.types.bill.BillData
  */
 class BillModelGovTrack : Model {
 
-
    private val bills: MutableMap<Int, BillData> = mutableMapOf()
    private var latestBillData: dynamic = null
 
@@ -19,7 +18,7 @@ class BillModelGovTrack : Model {
       val parsed = GovTrackBillParser(data).parse(this)
       parsed.forEach { bills.put(it.uniqueId, it) }
 
-      this.latestBillData = data;
+      this.latestBillData = data
       indexData()
    }
 

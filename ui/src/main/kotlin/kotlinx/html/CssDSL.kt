@@ -70,7 +70,7 @@ open class CssElement() {
         }
     }
 
-    inner open class TagSelector(val name: String) : Selector {
+    open inner class TagSelector(val name: String) : Selector {
         fun id(name: String): Selector = invoke(IdSelector(name))
         fun id(name: String, body: StyledElement.() -> Unit) = id(IdSelector(name), body)
         fun id(id: IdSelector, body: StyledElement.() -> Unit) = invoke(id, body = body)
@@ -138,7 +138,6 @@ open class CssElement() {
     val dl: TagSelector get() = TagSelector("dl")
     val dt: TagSelector get() = TagSelector("dt")
     val dd: TagSelector get() = TagSelector("dd")
-
 
     fun id(name: String, body: StyledElement.() -> Unit) {
         any.id(name, body)
@@ -223,7 +222,6 @@ open class CssElement() {
     }
 }
 
-
 class StyledElement(val selector: String) : CssElement() {
     /**
      * Writes the element to the builder with the given indenation.
@@ -243,7 +241,7 @@ class StyledElement(val selector: String) : CssElement() {
 
     /** Strongly-typed method for pulling attributes out of the hash. */
     @Suppress("UNCHECKED_CAST")
-    fun <T:Any?> getAttribute(name: String): T {
+    fun <T: Any?> getAttribute(name: String): T {
         if (attributes.containsKey(name))
             return attributes[name] as T
         else

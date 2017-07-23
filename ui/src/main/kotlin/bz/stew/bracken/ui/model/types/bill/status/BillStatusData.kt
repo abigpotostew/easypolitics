@@ -16,13 +16,11 @@ class BillStatusData(private val fixedStatus: FixedStatus = FixedStatus.NONE,
                      private val label: String = "",
                      private val majorActions: Collection<MajorAction> = emptyList()) : BillStatus {
 
-
    private val lastMajorActionCached: MajorAction =
          this.majorActions.maxBy {
             val dt = it.date()
             dt?.getTime()
          } ?: emptyMajorAction()
-
 
    override fun lastMajorAction(): MajorAction {
       return this.lastMajorActionCached
@@ -51,7 +49,6 @@ class BillStatusData(private val fixedStatus: FixedStatus = FixedStatus.NONE,
    override fun majorActions(): Collection<MajorAction> {
       return this.majorActions
    }
-
 
 }
 

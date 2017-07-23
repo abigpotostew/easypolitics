@@ -24,6 +24,7 @@ subprojects {
         }
     }
 
+
 }
 
 task buildUi(dependsOn: ":ui:build"){

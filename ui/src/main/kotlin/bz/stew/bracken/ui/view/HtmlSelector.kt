@@ -26,7 +26,7 @@ class HtmlSelector(private val identifier: Identifier = Identifier.TAG,
     /**
      * The class '.' or id '#' prefix
      */
-    fun prefix():String{
+    fun prefix(): String {
         return identifier.getPrefix()
     }
 
@@ -34,27 +34,27 @@ class HtmlSelector(private val identifier: Identifier = Identifier.TAG,
      *  The actual custom identifying text.
      *  @return if selector is #element1, returns "element1"
      */
-    fun suffix():String{
+    fun suffix(): String {
         return selectorText
     }
 
-    fun addToJqElement(obj: JQuery){
-        when (this.identifier){
+    fun addToJqElement(obj: JQuery) {
+        when (this.identifier) {
             Identifier.ID -> obj.attr("id", suffix())
             Identifier.CLASS -> obj.addClass(suffix())
             Identifier.TAG -> throw UnsupportedOperationException("Can't add a tag to a class.")
         }
     }
 
-    fun getElements(): List<Element>{
-        return when(this.identifier){
+    fun getElements(): List<Element> {
+        return when (this.identifier) {
             Identifier.CLASS -> {
                 return document.getElementsByClassName(suffix()).asList()
             }
             Identifier.ID -> {
-                val elm:Element? = document.getElementById(suffix())
-                if(elm!=null){
-                    return MutableList<Element>(1,{elm}).toList()
+                val elm: Element? = document.getElementById(suffix())
+                if (elm != null) {
+                    return MutableList<Element>(1, { elm }).toList()
                 }
                 return ArrayList<Element>() //empty list
             }

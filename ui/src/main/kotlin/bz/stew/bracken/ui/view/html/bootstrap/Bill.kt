@@ -1,13 +1,11 @@
 package bz.stew.bracken.ui.view.html.bootstrap
 
 import bz.stew.bracken.ui.extension.kotlinx.ac
-import bz.stew.bracken.ui.extension.kotlinx.horzizontalDescriptionList
 import bz.stew.bracken.ui.model.types.bill.status.BillStatus
 import bz.stew.bracken.ui.util.ui.UIFormatter
 import bz.stew.bracken.ui.view.html.*
 import bz.stew.bracken.ui.view.html.bootstrap.mixins.*
 import bz.stew.bracken.ui.view.item.BillViewItem
-import bz.stewart.bracken.shared.data.MajorStatus
 import bz.stewart.bracken.shared.data.party.Party
 import kotlinx.html.*
 
@@ -140,7 +138,7 @@ class Bill(val billView: BillViewItem) : Template {
                            ac("active")
                            set("role", "tabpanel")
                         }
-                        div(Classes.boots_container){
+                        div(Classes.boots_container) {
                            ac(Classes.billExpandedTabContent)
                            tabTemplates[i].renderIn(this)
                         }
@@ -165,7 +163,6 @@ private fun HtmlBodyTag.contactTabContent(template: Bill) {
    val sponsor = template.billView.billData.sponsor
    LegislatorProfile(sponsor).renderIn(this)
 }
-
 
 private fun HtmlBodyTag.textTabContent(template: Bill) {
 

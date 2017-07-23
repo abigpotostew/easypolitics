@@ -26,7 +26,7 @@ fun HTMLElement.eachChildClass(className: String,
 
 fun HTMLElement.eachChildId(idName: String,
                             block: (Element) -> Unit) {
-    this.getElementsByTagName("*").asList().filter { it.id.equals(idName) }.map { block(it) }//(idName).each (block)
+    this.getElementsByTagName("*").asList().filter { it.id.equals(idName) }.map { block(it) } //(idName).each (block)
 
 }
 

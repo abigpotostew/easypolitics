@@ -7,7 +7,7 @@ import bz.stew.bracken.ui.model.types.bill.BillData
 /**
  * Created by stew on 4/29/17.
  */
-class GovTrackBillParser (json:dynamic) :AbstractBillParser(json){
+class GovTrackBillParser (json: dynamic) : AbstractBillParser(json) {
    override fun getBillsArray(): dynamic {
       return json.objects
    }

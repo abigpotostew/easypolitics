@@ -10,7 +10,7 @@ import bz.stewart.bracken.shared.data.person.Legislator
  * Created by stew on 4/29/17.
  */
 class EasyPoliticsParser(json: dynamic) : AbstractBillParser(json) {
-   private val legislatorCache:MutableMap<String, Legislator> = mutableMapOf()
+   private val legislatorCache: MutableMap<String, Legislator> = mutableMapOf()
 
    override fun getBillsArray(): dynamic {
       return this.json.results
@@ -24,11 +24,11 @@ class EasyPoliticsParser(json: dynamic) : AbstractBillParser(json) {
       return EasyPoliticsBillData(this).build(bill)
    }
 
-   fun legislatorCached(bioguideId:String):Legislator?{
+   fun legislatorCached(bioguideId: String): Legislator? {
       return legislatorCache[bioguideId]
    }
 
-   fun saveLegislator(person:Legislator){
+   fun saveLegislator(person: Legislator) {
       legislatorCache.put(person.getBioguideId(), person)
    }
 }

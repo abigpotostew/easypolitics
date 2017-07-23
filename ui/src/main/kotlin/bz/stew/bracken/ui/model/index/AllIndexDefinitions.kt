@@ -58,7 +58,6 @@ val PARTY_INDEX = object : BillIndex<Party>(Party.NONE) {
     }
 }
 
-
 val INTRO_DATE_INDEX = object : NumericDoubleAbstractMappedIndex<BillData>() {
     override fun map(inst: BillData): Double {
         return inst.intro_date.getTime()
@@ -98,11 +97,11 @@ val EMPTY_INDEX = object : AbstractMappedIndex<Any?, Any?>(null) {
     }
 }
 
-val ALL_INDEX_DEFS = listOf(STATUS_INDEX, PARTY_INDEX, INTRO_DATE_INDEX, LAST_UPDATED_DATE_INDEX,MAJOR_STATUS_INDEX)
+val ALL_INDEX_DEFS = listOf(STATUS_INDEX, PARTY_INDEX, INTRO_DATE_INDEX, LAST_UPDATED_DATE_INDEX, MAJOR_STATUS_INDEX)
         //mapOf<KClass<Any>, AbstractMappedIndex<Any?,Any?>>( Pair(FixedStatus::class,STATUS_INDEX) )
 
-fun resetAllIndex(){
-    for (idx in ALL_INDEX_DEFS){
+fun resetAllIndex() {
+    for (idx in ALL_INDEX_DEFS) {
         idx.reset()
     }
 }

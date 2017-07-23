@@ -1,12 +1,11 @@
 package bz.stew.bracken.ui.util.log
 
-
 /**
  * Created by stew on 1/28/17.
  */
 
-enum class LogLevel{
-    SILENT,ERROR, WARNING, INFO, DEBUG;
+enum class LogLevel {
+    SILENT, ERROR, WARNING, INFO, DEBUG;
 }
 
 class Log {
@@ -15,62 +14,62 @@ class Log {
     var saveMessages = false
 
     companion object LogCompanion {
-        fun getLogLevel():LogLevel{
+        fun getLogLevel(): LogLevel {
             return logs.logLevel
         }
 
-        fun setLogLevel(lvl:LogLevel){
+        fun setLogLevel(lvl: LogLevel) {
             logs.logLevel = lvl
         }
 
         fun warning(s: String) {
-            logs.logMessage(LogLevel.WARNING,s)
+            logs.logMessage(LogLevel.WARNING, s)
         }
         fun debug(s: String) {
-            logs.logMessage(LogLevel.DEBUG,s)
+            logs.logMessage(LogLevel.DEBUG, s)
         }
         fun error(s: String) {
-            logs.logMessage(LogLevel.ERROR,s)
+            logs.logMessage(LogLevel.ERROR, s)
         }
         fun info(s: String) {
-            logs.logMessage(LogLevel.INFO,s)
+            logs.logMessage(LogLevel.INFO, s)
         }
 
-        fun warning(fn: ()->String) {
-            logs.logMessage(LogLevel.WARNING,fn)
+        fun warning(fn: () -> String) {
+            logs.logMessage(LogLevel.WARNING, fn)
         }
-        fun debug(fn: ()->String) {
-            logs.logMessage(LogLevel.DEBUG,fn)
+        fun debug(fn: () -> String) {
+            logs.logMessage(LogLevel.DEBUG, fn)
         }
-        fun error(fn: ()->String) {
-            logs.logMessage(LogLevel.ERROR,fn)
+        fun error(fn: () -> String) {
+            logs.logMessage(LogLevel.ERROR, fn)
         }
-        fun info(fn: ()->String) {
-            logs.logMessage(LogLevel.INFO,fn)
+        fun info(fn: () -> String) {
+            logs.logMessage(LogLevel.INFO, fn)
         }
     }
-    fun logMessage(msgLevel:LogLevel, msg:String){
-        saveMessage(msgLevel,msg)
-        if(logLevel!=LogLevel.SILENT && logLevel.ordinal >= msgLevel.ordinal) {
+    fun logMessage(msgLevel: LogLevel, msg: String) {
+        saveMessage(msgLevel, msg)
+        if (logLevel != LogLevel.SILENT && logLevel.ordinal >= msgLevel.ordinal) {
             println("Warning: " + msg)
         }
     }
 
-    fun logMessage(msgLevel:LogLevel, msg:()->String){
-        saveMessage(msgLevel,msg)
-        if(logLevel!=LogLevel.SILENT && logLevel.ordinal >= msgLevel.ordinal) {
+    fun logMessage(msgLevel: LogLevel, msg: () -> String) {
+        saveMessage(msgLevel, msg)
+        if (logLevel != LogLevel.SILENT && logLevel.ordinal >= msgLevel.ordinal) {
             println("Warning: " + msg())
         }
     }
 
-    private fun saveMessage(msgLevel: LogLevel, msg: ()->String){
-        if(saveMessages) {
-            saveMessage(msgLevel,msg())
+    private fun saveMessage(msgLevel: LogLevel, msg: () -> String) {
+        if (saveMessages) {
+            saveMessage(msgLevel, msg())
         }
     }
 
-    private fun saveMessage(msgLevel: LogLevel, msg: String){
-        if(saveMessages) {
+    private fun saveMessage(msgLevel: LogLevel, msg: String) {
+        if (saveMessages) {
             var set: HashSet<String>? = logs.messages.get(logLevel)
             if (set == null) {
                 set = HashSet<String>()
@@ -81,4 +80,4 @@ class Log {
     }
 }
 
-private val logs:Log = Log()
+private val logs: Log = Log()

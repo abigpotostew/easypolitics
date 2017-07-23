@@ -7,10 +7,10 @@ import kotlin.js.Date
  * Created by stew on 2/13/17.
  */
 interface MajorAction {
-   fun id(): Int;
-   fun description(): String;
-   fun raw(): String;
-   fun date(): Date;
+   fun id(): Int
+   fun description(): String
+   fun raw(): String
+   fun date(): Date
 }
 
 private val emptyAction = object : MajorAction {

@@ -14,8 +14,8 @@ interface BillStatus {
     fun date(): Date
     fun description(): String
     fun label(): String
-    fun majorActions():Collection<MajorAction>
-    fun lastMajorAction():MajorAction
+    fun majorActions(): Collection<MajorAction>
+    fun lastMajorAction(): MajorAction
     fun lastMajorStatus(): MajorStatus
 }
 //

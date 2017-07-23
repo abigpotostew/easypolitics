@@ -10,7 +10,6 @@ import org.w3c.dom.HTMLElement
  * Created by stew on 1/24/17.
  */
 
-
 @Suppress("NOTHING_TO_INLINE")
 inline fun JQuery.fadeIn(speed: String): JQuery = asDynamic().fadeIn(speed)
 
@@ -20,16 +19,14 @@ fun JQuery.get(idx: Int): HTMLElement {
 }
 
 fun JQuery.hide(): JQuery = asDynamic().hide()
-fun JQuery.hide(dur:Int): JQuery = asDynamic().hide(dur)
-fun JQuery.hide(dur:String): JQuery = asDynamic().hide(dur)
+fun JQuery.hide(dur: Int): JQuery = asDynamic().hide(dur)
+fun JQuery.hide(dur: String): JQuery = asDynamic().hide(dur)
 
 inline fun JQuery.show(): JQuery = asDynamic().show()
-inline fun JQuery.show(dur:Int): JQuery = asDynamic().show(dur)
-inline fun JQuery.show(dur:String): JQuery = asDynamic().show(dur)
-
+inline fun JQuery.show(dur: Int): JQuery = asDynamic().show(dur)
+inline fun JQuery.show(dur: String): JQuery = asDynamic().show(dur)
 
 inline fun JQuery.append(jQuery: JQuery): JQuery = asDynamic().append(jQuery)
-
 
 inline fun JQuery.children(jQuery: JQuery): JQuery = asDynamic().children(jQuery)
 
@@ -37,20 +34,17 @@ inline fun JQuery.children(): JQuery = asDynamic().children()
 
 inline fun JQuery.children(selector: String): JQuery = asDynamic().children(selector)
 
-
 inline fun JQuery.first(): JQuery = asDynamic().first()
-
 
 inline fun JQuery.remove(): JQuery = asDynamic().remove()
 
 inline fun JQuery.remove(selector: String): JQuery = asDynamic().remove(selector)
 
+inline fun JQuery.css(prop: String, value: String): JQuery = asDynamic().css(prop, value)
 
-inline fun JQuery.css(prop:String, value:String):JQuery= asDynamic().css(prop, value)
+inline fun JQuery.velocity(prop: String, opts: dynamic?): JQuery = asDynamic().velcity(prop, opts)
 
-inline fun JQuery.velocity(prop:String, opts:dynamic?):JQuery=asDynamic().velcity(prop,opts)
-
-inline fun JQuery.actual(prop:String):Number=asDynamic().actual(prop)
+inline fun JQuery.actual(prop: String): Number = asDynamic().actual(prop)
 
 //@JsName("$")
 //external fun jq(selector: String): JQuery = noImpl

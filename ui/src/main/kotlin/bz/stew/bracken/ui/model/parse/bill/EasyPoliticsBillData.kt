@@ -16,7 +16,7 @@ import bz.stewart.bracken.shared.data.person.emptyLegislator
 /**
  * Created by stew on 4/29/17.
  */
-class EasyPoliticsBillData(private val parser:EasyPoliticsParser) : BillDataBuilder {
+class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBuilder {
 
    private fun resolveMajorActions(
          actionsArr: dynamic): Collection<EasyPoliticsMajorAction> {
@@ -41,11 +41,11 @@ class EasyPoliticsBillData(private val parser:EasyPoliticsParser) : BillDataBuil
 
    private fun resolveLegislator(sponsor: dynamic): Legislator? {
       val s = sponsor
-      if(s==null){
+      if (s == null) {
          return null
       }
-      val cachedLegislator:Legislator? = parser.legislatorCached(s.bioguideId)
-      if(cachedLegislator!=null){
+      val cachedLegislator: Legislator? = parser.legislatorCached(s.bioguideId)
+      if (cachedLegislator != null) {
          return cachedLegislator
       }
       val parsed = Legislator(bioguideId = s.bioguideId,
@@ -65,17 +65,17 @@ class EasyPoliticsBillData(private val parser:EasyPoliticsParser) : BillDataBuil
       return parsed
    }
 
-   private fun resolveCosponsors(cosponsors:dynamic):List<Legislator>{
-      if(cosponsors==null){
+   private fun resolveCosponsors(cosponsors: dynamic): List<Legislator> {
+      if (cosponsors == null) {
          println("nope")
          return emptyList()
       }
       val out = mutableListOf<Legislator>()
-      if (cosponsors!=null){
+      if (cosponsors != null) {
          val numCosponsor: Int = cosponsors.length
          for (i in 0..numCosponsor) {
             val data = cosponsors[i]
-            if(data!=null){
+            if (data != null) {
                val p = resolveLegislator(data)
                out.add(p ?: emptyLegislator())
             }
@@ -116,7 +116,7 @@ class EasyPoliticsBillData(private val parser:EasyPoliticsParser) : BillDataBuil
       val intro_date = jsParseDate(gi.introducedAt) // todo this is just a number now
 
       val parsedSponsor = resolveLegislator(gi.sponsor)
-      if (parsedSponsor==null){
+      if (parsedSponsor == null) {
          Log.error("sponsor is null for bill: $uniqueParsedId of congress $congress")
       }
       val sponsor = parsedSponsor ?: emptyLegislator()

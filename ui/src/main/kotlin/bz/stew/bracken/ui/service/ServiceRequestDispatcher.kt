@@ -27,25 +27,25 @@ class ServerRequestDispatcher {
         if (callback != null) {
             request.addEventListener("progress",
                                      object : EventListener {
-                                         override fun handleEvent(event: Event): Unit {
+                                         override fun handleEvent(event: Event) {
                                              callback.onProgress()
                                          }
                                      })
             request.addEventListener("load",
                                      object : EventListener {
-                                         override fun handleEvent(event: Event): Unit {
+                                         override fun handleEvent(event: Event) {
                                              callback.onLoad(request.response)
                                          }
                                      })
             request.addEventListener("error",
                                      object : EventListener {
-                                         override fun handleEvent(event: Event): Unit {
+                                         override fun handleEvent(event: Event) {
                                              callback.onError()
                                          }
                                      })
             request.addEventListener("abort",
                                      object : EventListener {
-                                         override fun handleEvent(event: Event): Unit {
+                                         override fun handleEvent(event: Event) {
                                              callback.onCancel()
                                          }
                                      })

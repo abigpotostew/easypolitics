@@ -40,7 +40,6 @@ enum class BillFilters(public val idxDef: IndexEnum,
    }
 }
 
-
 @Suppress("UNUSED_PARAMETER")
 private fun identity(a: Any?,
                      b: Any?): Boolean {

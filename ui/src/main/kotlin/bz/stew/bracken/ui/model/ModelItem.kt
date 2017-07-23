@@ -7,7 +7,6 @@ import bz.stew.bracken.ui.model.types.bill.status.BillStatus
  */
 interface ModelItem {
 
-
    /**
     * to identify this object in html
     */

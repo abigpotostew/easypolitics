@@ -5,5 +5,5 @@ package bz.stew.bracken.ui.controller.bill.filter
  */
 interface FilterEntry {
     @Deprecated("Don't use this")
-    fun filterType():BillFilters
+    fun filterType(): BillFilters
 }
