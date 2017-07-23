@@ -53,8 +53,8 @@ class BillQueryBuilder(private val db: MainDbAccess,
    private fun getSort(): Bson {
       val sortKey = "status_at"
       val sortOrder =  when (orderBy) {
-         "-current_status_date" -> SORT_DESCENDING
-         " current_status_date" -> SORT_ASCENDING
+         "current_status_date_des" -> SORT_DESCENDING
+         "current_status_date_asc" -> SORT_ASCENDING
          else -> SORT_DESCENDING
       }
       return BasicDBObject(sortKey, sortOrder)

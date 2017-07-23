@@ -153,7 +153,7 @@ task ktlint(type: JavaExec) {
     classpath = configurations.ktlint
     args "src/**/*.kt"
 }
-check.dependsOn ktlint
+//check.dependsOn ktlint
 
 task ktlintFormat(type: JavaExec) {
     main = "com.github.shyiko.ktlint.Main"

@@ -6,7 +6,7 @@ package bz.stew.bracken.ui.controller.bill.query
 class BillRestQuery(
     val endpoint: String = "http://localhost:8080/api/v1/bills",
     val congress: Int?,
-    val orderBy: OrderBy = OrderBy.ASCENDING_DATE,
+    val orderBy: OrderBy = OrderBy.DESCENDING_DATE,
     val limit: Int = 200,
     val offset: Int = 0) {
     override fun toString(): String {
