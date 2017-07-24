@@ -97,7 +97,7 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
       val bill_res_type = matchVisibleType(BillResolutionType.values(), gi.resolutionType,
                                            VisibleTypeMatcher.LOWER)
 
-      val majorActions = resolveMajorActions(gi.actionsArr)
+      val majorActions = resolveMajorActions(gi.actions)
       val resolvedFixedStatus = FixedStatus.valueOfDb(gi.currentStatus)
 
       //todo status label and description not entered
@@ -130,7 +130,7 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
                       congress = congress,
                       bill_type = bill_type,
                       bill_resolution_type = bill_res_type,
-                      status = currentStatus,
+                      currentStatus = currentStatus,
                       number = number,
                       link = link,
                       intro_date = intro_date,

@@ -53,7 +53,7 @@ fun printMajorActionData(controller: BillController) {
    for (k in grouped.keys) {
       println("---------")
       println(k.toString() + " size " + grouped[k]?.size)
-      println(grouped[k]?.groupBy { (it as BillData).status.lastMajorAction().description() })
+      println(grouped[k]?.groupBy { (it as BillData).currentStatus.lastMajorAction().description() })
       println("---------")
    }
 }

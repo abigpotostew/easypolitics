@@ -61,5 +61,5 @@ private fun statusPredicate(bill: BillData,
    if (fs.equals(FixedStatus.NONE)) {
       return true
    }
-   return bill.status.fixedStatus().equals(fs)
+   return bill.currentStatus.fixedStatus().equals(fs)
 }

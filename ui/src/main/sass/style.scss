@@ -211,7 +211,7 @@ $color-independent: rgb(241, 255, 137);
   display: none;
   /*padding: 20px 100px 20px 100px;*/
   /*margin:auto;*/
-  background-color: aquamarine;
+  background-color: #ffffff;
 
   position: absolute;
   width: 95vw;
@@ -232,12 +232,20 @@ $color-independent: rgb(241, 255, 137);
 }
 
 .billExpandedSponsorImg{
-  width: 15rem;
-  height: 15rem;
+  width: 16rem;
+  height: 16rem;
+}
+
+.party-republican .billExpandedSponsorImg{
+  background-image: url("img/republicanlogo.png");
+}
+
+.party-democrat .billExpandedSponsorImg{
+  background-image: url("img/democratlogo.png");
 }
 
 .billExpandedSponsorData{
-  width:20rem;
+  width:16rem;
 }
 
 .billExpandedTabContent{

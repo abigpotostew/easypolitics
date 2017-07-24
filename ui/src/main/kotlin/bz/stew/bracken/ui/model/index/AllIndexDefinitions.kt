@@ -15,7 +15,7 @@ typealias BillIndex<K> = AbstractMappedIndex<K, BillData>
 
 val STATUS_INDEX = object : BillIndex<FixedStatus>(FixedStatus.NONE) {
     override fun map(inst: BillData): FixedStatus {
-        return inst.status.fixedStatus()
+        return inst.currentStatus.fixedStatus()
     }
 
     override fun filterType(): BillFilters {

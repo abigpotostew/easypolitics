@@ -208,7 +208,7 @@ class BillDataGovTrack(private val model: Model) : BillDataBuilder {
             bill_type = bill_type,
             bill_resolution_type = bill_resolution_type,
             //display_number,
-            status = current_status,
+            currentStatus = current_status,
             number = number,
             link = link,
             is_alive = is_alive,

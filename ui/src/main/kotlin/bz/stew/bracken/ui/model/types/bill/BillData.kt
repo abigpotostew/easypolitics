@@ -19,7 +19,7 @@ data class BillData(val uniqueId: Int = -1,
                     val congress: Int = -1,
                     val bill_type: BillType = BillType.NONE,
                     val bill_resolution_type: BillResolutionType = BillResolutionType.NONE,
-                    val status: BillStatus = emptyBillStatus(),
+                    val currentStatus: BillStatus = emptyBillStatus(),
                     val number: Int = -1,
                     val link: String = "",
                     val is_alive: Boolean = false,
@@ -31,7 +31,7 @@ data class BillData(val uniqueId: Int = -1,
                     val origData: dynamic = null) : ModelItem {
 
    override fun billStatus(): BillStatus {
-      return this.status
+      return this.currentStatus
    }
 
 //    override fun lastMajorAction(): MajorAction {
@@ -43,11 +43,11 @@ data class BillData(val uniqueId: Int = -1,
 //    }
 
    fun lastUpdated(): Double {
-      return this.status.lastMajorAction().date().getTime()
+      return this.currentStatus.lastMajorAction().date().getTime()
    }
 
    fun lastUpdatedDate(): Date {
-      return this.status.lastMajorAction().date()
+      return this.currentStatus.date() ?: this.currentStatus.lastMajorAction().date()
    }
 
    override fun toString(): String {

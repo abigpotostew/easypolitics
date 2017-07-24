@@ -231,10 +231,10 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
       this.internalBillId++
       val billId = billView.selector()
       val name = bd.officialTitle
-      val statusDescription = bd.status.description()
+      val statusDescription = bd.currentStatus.description()
       val sponsorName = bd.sponsor.getOfficialName()
       val introDate = UIFormatter.prettyDate(bd.intro_date)
-      val status: BillStatus = bd.status
+      val status: BillStatus = bd.currentStatus
       val statusLabel: String = status.label()
       val statusDescr: String = status.description()
       val link: String = bd.link

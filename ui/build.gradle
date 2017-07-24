@@ -55,7 +55,7 @@ repositories {
 compileKotlin2Js {
     kotlinOptions.metaInfo = true
     kotlinOptions.outputFile = "${buildOutDir}/${projName}.js"
-    kotlinOptions.sourceMap = false
+    kotlinOptions.sourceMap = true
     //kotlinOptions.suppressWarnings = false
     kotlinOptions.verbose = true
 
@@ -83,7 +83,7 @@ task copyJsResources(dependsOn:[build, mainSass]) {
         copy {
             from resourcesDir
             into "${buildOutDir}"
-            exclude { details -> details.isDirectory() }
+            //exclude { details -> details.isDirectory() }
         }
         //copy kotlin.js into lib folder
         configurations.compile.each { File file ->
