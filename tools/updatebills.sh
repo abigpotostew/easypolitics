@@ -7,6 +7,7 @@ function prop {
 THIS_PWD=$(pwd)
 CONGRESS=$(prop 'CONGRESS_GIT')
 LEGIS=$(prop 'LEGISLATOR_GIT')
+DB=$(prop 'DBNAME')
 cd $CONGRESS
 
 source /usr/local/bin/virtualenvwrapper.sh
@@ -19,9 +20,12 @@ echo "==============================================================="
 echo "Bills updated"
 echo "==============================================================="
 
+onDeactivate(){
+   cd $THIS_PWD
+   
+   ./gradlew :db:run -PappArgs="['-b', '-d','$CONGRESS/data', '--update', '-b', '$DB']"
+}
+trap onDeactivate EXIT
 deactivate
-cd $THIS_PWD
+#cd $THIS_PWD
 
-./gradlew :db:run -PappArgs="['-b', '-d','$CONGRESS/data', '--update', '-b', 'congress2']"
-gw :db:run -PappArgs="['-l', '-f', '$LEGIS/alternate_formats/legislators-current.json', '-s', '$LEGIS/alternate_formats/legislators-social-media.json', '-b', 'congress2']"
-#exit 0

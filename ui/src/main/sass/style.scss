@@ -98,7 +98,14 @@ $color-independent: rgb(241, 255, 137);
   overflow: hidden;
   text-overflow: ellipsis;*/
   overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 9rem;
+}
 
+.billGridContent .billTopSubject {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 2rem;
 }
 
 .billStatus{
@@ -250,6 +257,10 @@ $color-independent: rgb(241, 255, 137);
 
 .billExpandedTabContent{
   margin-left:0em;
+}
+
+#site-title {
+  color:white;
 }
 
 /******************************************

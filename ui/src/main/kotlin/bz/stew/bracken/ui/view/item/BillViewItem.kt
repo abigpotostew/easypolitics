@@ -14,10 +14,10 @@ class BillViewItem(val billData: BillData) : ViewItem {
    //val billData:BillData=billData
 
    fun trueTitle(): String {
-      if (billData.shortTitle.isNullOrBlank()) {
-         return billData.officialTitle
+      if (billData.officialTitle.isNullOrBlank()) {
+         return billData.shortTitle
       }
-      return billData.shortTitle
+      return billData.officialTitle
    }
 
    fun shortLabel(): String {

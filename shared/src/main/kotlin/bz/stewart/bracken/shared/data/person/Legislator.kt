@@ -34,6 +34,9 @@ class Legislator(private val bioguideId: String,
       return officialName
    }
 
+   /**
+    * [Role-- short label] [Official name] [[State]]
+    */
    fun getFullTitle():String{
       return "${getRole().shortLabel()} ${getOfficialName()} [${getState()}]"
    }

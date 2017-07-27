@@ -12,27 +12,31 @@ import kotlin.js.Date
 /**
  * This contains data for a unique bill. this should be pooled in future, but needs to maintain updated status
  * Created by stew on 1/23/17.
+ * have this inherit from PublicBill
  */
-data class BillData(val uniqueId: Int = -1,
-                    val officialTitle: String = "",
-                    val shortTitle: String = "",
-                    val congress: Int = -1,
-                    val bill_type: BillType = BillType.NONE,
-                    val bill_resolution_type: BillResolutionType = BillResolutionType.NONE,
-                    val currentStatus: BillStatus = emptyBillStatus(),
-                    val number: Int = -1,
-                    val link: String = "",
-                    val is_alive: Boolean = false,
-                    val is_current: Boolean = false,
-                    val intro_date: Date = Date(),
-                    val sponsor: Legislator = emptyLegislator(),
-                    val relatedBills: RelatedBills = RelatedBills(),
-                    val cosponsors: List<Legislator> = emptyList(),
-                    val origData: dynamic = null) : ModelItem {
+data class BillData(
+    val uniqueId: Int = -1,
+    val officialTitle: String = "",
+    val shortTitle: String = "", //is the bill id in the front of officialTitle
+    val congress: Int = -1,
+    val bill_type: BillType = BillType.NONE,
+    val bill_resolution_type: BillResolutionType = BillResolutionType.NONE,
+    val currentStatus: BillStatus = emptyBillStatus(),
+    val number: Int = -1,
+    val link: String = "",
+    val is_alive: Boolean = false,
+    val is_current: Boolean = false,
+    val intro_date: Date = Date(),
+    val sponsor: Legislator = emptyLegislator(),
+    val relatedBills: RelatedBills = RelatedBills(),
+    val cosponsors: List<Legislator> = emptyList(),
+    val origData: dynamic = null,
+    val subjectsTopTerm:String = "",
+    val subjects: Set<BillSubject>) : ModelItem {
 
-   override fun billStatus(): BillStatus {
-      return this.currentStatus
-   }
+    override fun billStatus(): BillStatus {
+        return this.currentStatus
+    }
 
 //    override fun lastMajorAction(): MajorAction {
 //        return this.status.lastMajorAction()
@@ -42,15 +46,15 @@ data class BillData(val uniqueId: Int = -1,
 //        return this.status.lastMajorStatus()
 //    }
 
-   fun lastUpdated(): Double {
-      return this.currentStatus.lastMajorAction().date().getTime()
-   }
+    fun lastUpdated(): Double {
+        return this.currentStatus.lastMajorAction().date().getTime()
+    }
 
-   fun lastUpdatedDate(): Date {
-      return this.currentStatus.date() ?: this.currentStatus.lastMajorAction().date()
-   }
+    fun lastUpdatedDate(): Date {
+        return this.currentStatus.date() ?: this.currentStatus.lastMajorAction().date()
+    }
 
-   override fun toString(): String {
-      return "BillData\$${uniqueId}@${intro_date.getTime()}"
-   }
+    override fun toString(): String {
+        return "BillData\$${uniqueId}@${intro_date.getTime()}"
+    }
 }

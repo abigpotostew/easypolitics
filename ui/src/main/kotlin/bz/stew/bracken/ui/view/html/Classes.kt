@@ -105,6 +105,7 @@ enum class Classes(labelValue: String, addClasses: List<Classes> = emptyList()) 
    billSponsor("billSponsor"),
    billStatus("billStatus"),
    billDescription("billDescription"),
+   billTopSubject("billTopSubject"),
    billDate("billDate"),
    billExpanded("billExpanded"),
    billStatusDescription("billStatusDescription"),
