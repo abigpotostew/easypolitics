@@ -32,7 +32,8 @@ data class BillData(
     val cosponsors: List<Legislator> = emptyList(),
     val origData: dynamic = null,
     val subjectsTopTerm:String = "",
-    val subjects: Set<BillSubject>) : ModelItem {
+    val subjects: Set<BillSubject>,
+    val actions:Set<BillAction> = emptySet()) : ModelItem {
 
     override fun billStatus(): BillStatus {
         return this.currentStatus
@@ -56,5 +57,10 @@ data class BillData(
 
     override fun toString(): String {
         return "BillData\$${uniqueId}@${intro_date.getTime()}"
+    }
+
+    fun officialId(useFullType:Boolean=false):String{
+        val typeStr = if (useFullType) bill_type.niceFormat() else bill_type.shortLabel()
+        return "$typeStr ${number}"
     }
 }

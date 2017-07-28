@@ -67,12 +67,7 @@ class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
       if (!l.getTwitter().isNullOrBlank()) {
          root.p {
 //            +"Twitter: "
-            a {
-               +"@"
-               +l.getTwitter()
-               href = DirectLink("http://www.twitter.com/${l.getTwitter()}")
-               target = "_blank"
-            }
+            TwitterLink(l).renderIn(this)
          }
       }
    }

@@ -44,17 +44,11 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
     val COUNT_TEXT_HTML_SELECTOR = HtmlSelector(Identifier.ID, "nav-bar-billCount")
     val OPEN_SPEED: Int = 250
     val HIDE_SPEED: Int = 200
-    val OPEN_HEIGHT: Int = 30
-    val OPEN_HEIGHT_UNITS: String = "rem"
     var activeCell: HTMLElement? = null
     var internalBillId: Int = 0
-    //private val billViews = ArrayList<BillViewItem>()
     private val billViews = mutableMapOf<Int, BillViewItem>()
     val SKIP_PROFILE_IMG: Boolean = true
-
     var visibleBills = mutableSetOf<BillViewItem>()
-
-    //var generatedFilterKeys:Map<BillFilters,Collection<BillViewItem>> = mapOf<BillFilters,Collection<BillViewItem>>()
 
     fun appendModelData(bills: List<BillData>) {
         for (b: BillData in bills) {
@@ -185,13 +179,21 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
         return ani
     }
 
+    @Suppress("UnsafeCastFromDynamic")
+    private inline fun calculateOpenHeight(jqElement:dynamic):Int{
+        return jqElement.actual("height").toInt() + 100
+    }
+
     fun makeHtmlCellActive(bill: HTMLElement) {
         val active = this.activeCell
 
+        val additionalExpandHeight = 30
         if (active != null) {
             //close prior one
             val child = jq(active).children(".billExpanded")
-            val openHeight = jq(child).height().toInt()
+            val openHeight =
+                //calculateOpenHeight(jq(child))
+                jq(child).actual("height").toInt() + additionalExpandHeight
             val aniOpen: Animation = makeAnimation(openHeight,
                 "px",
                 true
@@ -211,7 +213,9 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
         child.css("transform",
             "translateX(-" + document.elementFixedOffset(bill).x + "px)")
 
-        val openHeight = child.actual("height").toInt() /// MUST be before .show
+        val openHeight =
+            //calculateOpenHeight(child)//why no work when in function??
+            child.actual("height").toInt() + additionalExpandHeight /// MUST be before .show
         val aniOpen: Animation = makeAnimation(openHeight, "px")
         aniOpen.run(OPEN_SPEED,
             bill)

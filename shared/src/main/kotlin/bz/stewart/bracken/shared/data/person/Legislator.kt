@@ -35,10 +35,11 @@ class Legislator(private val bioguideId: String,
    }
 
    /**
-    * [Role-- short label] [Official name] [[State]]
+    * [Role-- short or long label] [Official name] [[State]]
     */
-   fun getFullTitle():String{
-      return "${getRole().shortLabel()} ${getOfficialName()} [${getState()}]"
+   fun getFullTitle(useLongRoleTitle: Boolean = false): String {
+      val title = if (useLongRoleTitle) getRole().niceFormat() else getRole().niceFormat()
+      return "$title ${getOfficialName()} [${getState()}]"
    }
 
    override fun getNickName(): String? {

@@ -26,13 +26,15 @@ class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false
         val subtemplate = this
         val billView = template.billView
         val bd = billView.billData
-        val sponsorName = bd.sponsor.getOfficialName()
+        val sponsor = bd.sponsor
+        val sponsorName = sponsor.getFullTitle(true)
         val name = bd.officialTitle
         val introDate = UIFormatter.prettyDate(bd.intro_date)
         val status: BillStatus = bd.currentStatus
         val statusDescr: String = status.description()
         val billSponsorProfileImg = billView.sponsorImageUrl()
         val link: String = bd.link
+        val billTypeNiceFormat = bd.officialId(true)
 
         //div(Classes.boots_container, {
         root.div(Classes.boots_row, {
@@ -40,18 +42,16 @@ class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false
                 h6 {
                     ac(Classes.billStatus, Classes.boots_card_text,
                         Classes.boots_card_subtitle)
-                    +billView.shortLabel()
+                    +billTypeNiceFormat
                     +": "
                     +name
                 }
                 h7 {
                     ac(Classes.billStatus, Classes.boots_card_text,
                         Classes.boots_card_subtitle)
+                    +"Sponsor: "
                     +sponsorName
                 }
-//            p(cssClass(Classes.billDescription, Classes.boots_card_text), {
-//               +name
-//            })
                 p(cssClass(Classes.billDate, Classes.boots_card_text), {
                     +"Introduced "
                     +introDate
@@ -76,7 +76,7 @@ class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false
                             alt = "Bill sponsor"
                             src = DirectLink(billSponsorProfileImg)
                         })
-                    }else{
+                    } else {
                         span {
                             ac(Classes.billExpandedSponsorImg)
                         }

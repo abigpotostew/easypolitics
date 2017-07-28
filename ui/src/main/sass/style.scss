@@ -227,11 +227,18 @@ $color-independent: rgb(241, 255, 137);
   /*padding: 10px;*/
 
   color: black;
+
 }
 
 .billExpanded>.billDate{
   /*font-size: smaller;*/
 
+}
+
+.billExpanded .tab-content{
+  max-height: 28rem;
+  min-height: 28rem;
+  overflow: scroll;
 }
 
 .billExpanded>.billDescription{

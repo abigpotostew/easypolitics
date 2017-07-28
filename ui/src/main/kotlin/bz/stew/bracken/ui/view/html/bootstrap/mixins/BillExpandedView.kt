@@ -24,9 +24,7 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                     ac("nav flex-column flex-sm-row nav-pills card-header-pills")
                     set("role", "tablist")
                     var i = 0
-                    val tabNames = listOf<String>("Overview", "Contact", "Details",
-                        //"Votes",
-                        "Text")
+                    val tabNames = listOf<String>("Overview", "Contact", "Details", "Pizza")
                     (0..3).forEach {
                         li {
                             ac("flex-sm-fill text-sm-center nav-item")
@@ -44,16 +42,13 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                         }
                         ++i
                     }
-
                 }
             }
             div(Classes.boots_tab_content, {
                 val tabTemplates = arrayListOf<SubTemplate>(
                     BillOverview(template),
                     BillContact(sponsor),
-                    //detailsTabContent(it)
-                    BillDetailsTab(template)
-                    ,
+                    BillDetailsTab(template),
                     Paragraph("pizza")
                 )
                 for (i in 0..3) {

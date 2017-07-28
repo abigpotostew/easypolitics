@@ -4,6 +4,7 @@ import bz.stew.bracken.ui.extension.html.jsParseDate
 import bz.stew.bracken.ui.model.parse.bill.BillDataBuilder
 import bz.stew.bracken.ui.model.parse.bill.EasyPoliticsMajorAction
 import bz.stew.bracken.ui.model.parse.bill.EasyPoliticsParser
+import bz.stew.bracken.ui.model.types.bill.BillAction
 import bz.stew.bracken.ui.model.types.bill.BillData
 import bz.stew.bracken.ui.model.types.bill.BillSubject
 import bz.stew.bracken.ui.model.types.bill.status.BillStatusData
@@ -101,6 +102,23 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
         return out
     }
 
+    private fun resolveActions(actionsArr: dynamic):Set<BillAction>{
+        if(!actionsArr) {
+            return emptySet()
+        }
+        val out = mutableSetOf<BillAction>()
+        val len = actionsArr.length
+        for(i in 0..len){
+            val actionDyn = actionsArr[i]
+            if(actionDyn== undefined){
+                continue
+            }
+            val action = BillAction(actionDyn)
+            out.add(action)
+        }
+        return out
+    }
+
     override fun build(govInput: dynamic): BillData {
         val gi = govInput
         val title = gi.officialTitle
@@ -144,6 +162,8 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
         val topSubject: String = gi.subjectsTopTerm ?: ""
         val subjects = resolveSubjects(subjectsArrDyn)
 
+        val actions = resolveActions(gi.actions)
+
         return BillData(
             officialTitle = title,
             shortTitle = shortTitle,
@@ -159,7 +179,8 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
             cosponsors = cosponsors,
             origData = gi,
             subjects = subjects,
-            subjectsTopTerm = topSubject
+            subjectsTopTerm = topSubject,
+            actions = actions
         )
     }
 }

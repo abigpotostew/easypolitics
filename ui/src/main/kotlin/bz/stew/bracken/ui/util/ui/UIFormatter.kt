@@ -19,6 +19,7 @@ public class UIFormatter {
             val day = hour * 24
             val week = day * 7
             val month = week * 4
+            val year = month * 12
 
             var fuzzy: String
             if (!isFuture) {
@@ -33,8 +34,8 @@ public class UIFormatter {
                     delta < day * 2 -> "yesterday"
                     delta < 2 * week -> Math.floor(delta / day).toString() + " days ago"
                     delta < month -> Math.floor(delta / week).toString() + " weeks ago"
-                    //delta < month               -> Math.floor(delta / week).toString() +" weeks ago"
-                    else -> "over a month ago"
+                    delta < year -> Math.floor(delta / month).toString() + " months ago"
+                    else -> "over a year ago"
                 }
             } else {
                 fuzzy = when {
