@@ -7,6 +7,7 @@ import kotlin.js.Date
 
 /**
  * parse on demand this action. no undefined checks, do that before construction
+ * this way of parsing is dank.
  */
 class BillAction (private val data:dynamic): PublicAction {
     override fun getActedAt(): String = data.actedAt

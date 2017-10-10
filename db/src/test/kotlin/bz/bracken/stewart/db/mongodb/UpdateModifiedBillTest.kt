@@ -41,7 +41,7 @@ class UpdateModifiedBillTest {
             val db = db!!
             val bill = readMap(data)
             val found = db.queryCollection("bills", {
-               find("{ bill_id:${bill.bill_id} }".formatJson()).first()
+               find("{ 'bill_id':'${bill.bill_id}' }".formatJson()).first()
             })
             val extModTime = db.getBillExternalModifiedTime(lastModified, bill)
             if (db.shouldUpdate(extModTime, found)) {

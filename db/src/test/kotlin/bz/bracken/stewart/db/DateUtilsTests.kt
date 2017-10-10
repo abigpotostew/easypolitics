@@ -12,6 +12,6 @@ class DateUtilsTests {
    @Test
    fun standardWriteFormatTest(){
       val v = DateUtils.standardWriteFormat()
-      assertTrue(v.parse("2017-02-18T03:08:00Z").time == 1487387280000)
+      assertTrue(v.parse("2017-02-18T03:08:00.000Z").time == 1487387280000)
    }
 }
