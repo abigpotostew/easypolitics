@@ -6,7 +6,8 @@ class ServiceRunner {
     fun run(){
         Spark.get("/hello") { req, res -> "Hello World" }
         Spark.get("/bill/:id") {
-            req, res -> BillWebView(req.params("id")).render()
+            req, res -> WebsiteSkeleton(BillWebView(req.params("id"))).render()
+
         }
     }
 }
