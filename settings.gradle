@@ -21,11 +21,13 @@ include 'db'
 include 'ui'
 include 'rest'
 include 'shared'
+include 'web'
 //include 'legislators'
 
 //subprojects{
-    //common config here
+//common config here
 //}
 //allprojects {
-    //Add configuration here
+//Add configuration here
 //}
+

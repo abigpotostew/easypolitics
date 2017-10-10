@@ -1,0 +1,46 @@
+version 'unspecified'
+
+String MAIN_CLASS = 'bz.stewart.bracken.web.MainKt'
+
+buildscript {
+    ext.kotlin_version = "${kotlin_version}"
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'java'
+apply plugin: "kotlin"
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile 'com.sparkjava:spark-core:2.3'
+    compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4"
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-fat'
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    manifest {
+        attributes 'Main-Class': MAIN_CLASS
+    }
+}
+
+task run(type:JavaExec,dependsOn:fatJar){
+    main = MAIN_CLASS
+    classpath = sourceSets.main.runtimeClasspath
+}
