@@ -1,6 +1,5 @@
-version 'unspecified'
 
-String MAIN_CLASS = 'bz.stewart.bracken.web.MainKt'
+
 
 buildscript {
     ext.kotlin_version = "${kotlin_version}"
@@ -8,9 +7,27 @@ buildscript {
         mavenCentral()
     }
 }
+plugins {
+    id "org.kravemir.gradle.sass" version "1.2.2"
+}
+version 'unspecified'
+
 
 apply plugin: 'java'
 apply plugin: "kotlin"
+
+String MAIN_CLASS = 'bz.stewart.bracken.web.MainKt'
+String projName = "easypoliticsweb" //${project.name}
+String buildRootDir = "$buildDir"
+String buildResources = "${buildRootDir}/resources"
+
+sass {
+    main {
+        srcDir = file("$projectDir/src/main/sass")
+        outDir = file("$buildResources/main/static")
+        //registerInSourceSets ( 'main' )
+    }
+}
 
 repositories {
     mavenCentral()
@@ -31,7 +48,20 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-task fatJar(type: Jar) {
+mainSass{
+    doFirst{
+        println("Compiling Sass...")
+    }
+    doLast{
+        println("Finished compiling Sass!")
+    }
+}
+
+tasks.build.doLast {
+    tasks.mainSass.execute()
+}
+
+task fatJar(type: Jar, dependsOn:build) {
     baseName = project.name + '-fat'
     from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
