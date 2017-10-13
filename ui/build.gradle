@@ -8,6 +8,7 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+        //classpath 'com.eriwen:gradle-js-plugin:1.4.0'
     }
 }
 
@@ -17,8 +18,10 @@ buildscript {
 
 plugins {
     id "org.kravemir.gradle.sass" version "1.2.2"
+   // id "com.eriwen.gradle.js" version "2.14.1" //combine js files
 }
 apply plugin: 'kotlin2js'
+//apply plugin: "com.eriwen.gradle.js" //combine js files
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -26,9 +29,8 @@ apply plugin: 'kotlin2js'
 ///////////////////////////////////////////////////////////////////////////
 version '1.0-SNAPSHOT'
 String projName = "easypolitics-ui" //${project.name}
-String confidence = "internal"
 String buildRootDir = "${projectDir}/build"
-String buildOutDir = "${buildRootDir}/${confidence}/${projName}"
+String buildOutDir = "${buildRootDir}/${projName}"
 
 String sharedSrc = "../shared/src/main/kotlin"
 String genTargetDir = "$buildOutDir/gen"
@@ -42,6 +44,7 @@ configurations {
 ///////////////////////////////////////////////////////////////////////////
 // BUILD LOGIC
 ///////////////////////////////////////////////////////////////////////////
+
 sass {
     main {
         srcDir = file("$projectDir/src/main/sass")
@@ -73,35 +76,68 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:${project.kotlin_stdlib_js_version}"
 }
 
+// very important
+task copySharedCode(type: Copy){
+    doFirst{
+        println("Copying shared code into $genTargetDir...")
+    }
+    from sharedSrc
+    into genTargetDir
+    doLast{
+        println("Finished copying '$sharedSrc' into '$genTargetDir'.")
+    }
+}
 
-task copyJsResources(dependsOn:[build, mainSass]) {
 
+
+task copyJsResources(type:Sync) {
     doFirst {
         println("COPYING resources from $resourcesDir into build directory $buildOutDir")
     }
+    from resourcesDir
+    into "${buildOutDir}"
     doLast {
-        copy {
-            from resourcesDir
-            into "${buildOutDir}"
-            //exclude { details -> details.isDirectory() }
-        }
-        //copy kotlin.js into lib folder
-        configurations.compile.each { File file ->
-            copy {
-                includeEmptyDirs = false
-                from zipTree(file.absolutePath)
-                into "${buildOutDir}/lib"
-                include { fileTreeElement ->
-                    def path = fileTreeElement.path
-                    path.endsWith(".js") && (path.startsWith("META-INF/resources/")
-                            || !path.startsWith("META-INF/"))
-                }
-            }
-        }
-        println("Copied kotlin.js from jar")
         println("Finished copying resources into build folder...")
     }
+    dependsOn mainSass
 }
+//assemble.dependsOn.add(copyJsResources)
+
+task assembleWeb(type: Sync) {
+    configurations.compile.each { File file ->
+        from(zipTree(file.absolutePath), {
+            includeEmptyDirs = false
+            include { fileTreeElement ->
+                def path = fileTreeElement.path
+                path.endsWith(".js") && (path.startsWith("META-INF/resources/") ||
+                        !path.startsWith("META-INF/"))
+            }
+        })
+    }
+    from compileKotlin2Js.destinationDir
+    into "${buildOutDir}/lib"
+
+    dependsOn {
+        classes
+        copySharedCode
+    }
+    //dependsOn tasks.copySharedCode
+
+    doLast{
+        println("Copied kotlin.js from jar")
+    }
+}
+assemble {
+    dependsOn {
+        copySharedCode
+        copyJsResources
+        assembleWeb
+    }
+}
+//assemble.dependsOn.add(assembleWeb)
+
+//classes.dependsOn copySharedCode
+tasks.classes.dependsOn(copySharedCode)
 
 mainSass{
     doFirst{
@@ -132,21 +168,6 @@ tasks.clean.doLast{
     tasks.cleaner.execute()
 }
 
-task copySharedCode(type: Copy){
-    doFirst{
-        println("Copying shared code into $genTargetDir...")
-    }
-    from sharedSrc
-    into genTargetDir
-    doLast{
-        println("Finished copying '$sharedSrc' into '$genTargetDir'.")
-    }
-}
-
-assemble {
-    dependsOn copySharedCode
-}
-
 
 task ktlint(type: JavaExec) {
     main = "com.github.shyiko.ktlint.Main"
@@ -159,4 +180,70 @@ task ktlintFormat(type: JavaExec) {
     main = "com.github.shyiko.ktlint.Main"
     classpath = configurations.ktlint
     args "-F", "src/**/*.kt"
+}
+
+task webArtifact(type:Tar){
+    //inputs.file copyJsResources
+    compression 'gzip'
+    from "build/$projName"
+    //into "bui/bundle"
+    exclude "$buildDir/bundle"
+    exclude "gen"
+    //outputs.dir "$buildDir/bundle"
+    //dependsOn "$buildDir"
+}
+
+///////////////////////////////////////////////////////////////////////////
+// Configurations
+///////////////////////////////////////////////////////////////////////////
+
+
+//javascript.source {
+//    dev {
+//        js {
+//            srcDir "$buildDir"
+//            include "*.js"
+//            exclude "*.meta.js"
+//        }
+//    }
+////    prod {
+////        js {
+////            srcDir buildDir
+////            include "*.min.js"
+////            exclude "*.meta.js"
+////        }
+////    }
+//}
+//
+//combineJs {
+////    dependencies{
+////        compile
+////    }
+//    encoding = "UTF-8"
+//    source = javascript.source.dev.js.files
+//    dest = file("${buildDir}/${projName}-all.js")
+//}
+//combineJs.dependsOn build
+////// Create new CombineJsTasks if you have multiple sets of JS files
+////task jsDev(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
+////    source = ["${projectDir}/js/file1.js", "${projectDir}/js/file2.js"]
+////    dest = file("${buildDir}/all-debug.js")
+////}
+////
+////task jsProd(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
+////    source = ["${projectDir}/js/file1.js", "${projectDir}/js/file2.js"]
+////    dest = file("${buildDir}/all.js")
+////}
+
+configurations {
+    // New configuration to associate
+    // dist task output with.
+    jsArtifact
+}
+
+artifacts {
+    // Declare output of dist task
+    // as artifact for the jsArtifact
+    // configuration.
+    jsArtifact webArtifact
 }
