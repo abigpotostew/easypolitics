@@ -30,8 +30,11 @@ abstract class TagConfiguration <T : HTMLTag> (type:KClass<T>, attributes:Map<St
     }
 }
 
-class BasicConfig<T : HTMLTag>(type:KClass<T>, attributes:Map<String,String>):TagConfiguration<T>(type, attributes){
+class BasicConfig<T : HTMLTag>(type:KClass<T>, attributes:Map<String,String>, content:String?=null):TagConfiguration<T>(type, attributes){
+    val content = content
     override fun doConfig(tag: T) {
-
+        if(content!=null){
+            tag.content
+        }
     }
 }
