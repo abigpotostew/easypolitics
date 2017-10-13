@@ -1,4 +1,4 @@
-package bz.stewart.bracken.web
+package bz.stewart.bracken.web.html
 
 import kotlinx.html.HtmlBlockTag
 
