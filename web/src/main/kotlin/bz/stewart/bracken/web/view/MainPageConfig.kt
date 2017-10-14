@@ -30,7 +30,9 @@ class MainPageConfig : PageConfig{
             Pair("crossorigin", "anonymous")
         ))
         val stylesheet = BasicConfig(LINK::class, mapOf(
+            Pair("rel",HtmlConstants.STYLESHEET.get()),
             Pair("href", "/mainstyle.css")
+
         ))
         return setOf(bootStrap, stylesheet)
     }

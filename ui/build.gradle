@@ -79,7 +79,7 @@ dependencies {
 // very important
 task copySharedCode(type: Copy){
     doFirst{
-        logger.info("Copying shared code into $genTargetDir for UI...")
+        logger.info("Copying shared code into $genTargetDir...")
     }
     from sharedSrc
     into genTargetDir
@@ -90,7 +90,7 @@ task copySharedCode(type: Copy){
 
 
 
-task copyJsResources(type:Sync) {
+task copyJsResources(type:Copy) {
     doFirst {
         logger.info("COPYING UI resources from $resourcesDir into build directory $buildOutDir")
     }
@@ -103,7 +103,7 @@ task copyJsResources(type:Sync) {
 }
 //assemble.dependsOn.add(copyJsResources)
 
-task assembleWeb(type: Sync) {
+task assembleWeb(type: Copy) {
     configurations.compile.each { File file ->
         from(zipTree(file.absolutePath), {
             includeEmptyDirs = false
@@ -117,22 +117,20 @@ task assembleWeb(type: Sync) {
     from compileKotlin2Js.destinationDir
     into "${buildOutDir}/lib"
 
-    dependsOn {
-        classes
-        copySharedCode
-    }
+    dependsOn classes
+
+
     //dependsOn tasks.copySharedCode
 
     doLast{
         logger.info("Copied kotlin.js from jar")
     }
 }
+
+compileKotlin2Js.dependsOn copySharedCode
 assemble {
-    dependsOn {
-        copySharedCode
-        copyJsResources
-        assembleWeb
-    }
+    dependsOn copyJsResources, assembleWeb
+
 }
 //assemble.dependsOn.add(assembleWeb)
 
