@@ -1,9 +1,12 @@
 package bz.stewart.bracken.web.view
 
 import bz.stewart.bracken.web.HtmlConstants
+import bz.stewart.bracken.web.ScriptSrcConstants
 import bz.stewart.bracken.web.html.PageConfig
 import bz.stewart.bracken.web.html.config.BasicConfig
+import bz.stewart.bracken.web.html.config.ScriptConfig
 import bz.stewart.bracken.web.html.config.TagConfiguration
+import bz.stewart.bracken.web.html.config.TitleConfig
 import kotlinx.html.HTMLTag
 import kotlinx.html.LINK
 import kotlinx.html.META
@@ -33,10 +36,14 @@ class MainPageConfig : PageConfig{
     }
 
     override fun getTitle(): TagConfiguration<TITLE> {
-        return BasicConfig(TITLE::class, mapOf(Pair("__content","pizza")))
+        return TitleConfig("pizza")
     }
 
     override fun getEndBodyScripts(): Set<TagConfiguration<SCRIPT>> {
-        return emptySet()
+        val out = mutableSetOf<ScriptConfig>()
+        for(enum in ScriptSrcConstants.values().iterator()){
+            out.add(ScriptConfig(enum))
+        }
+        return out
     }
 }

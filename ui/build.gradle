@@ -79,12 +79,12 @@ dependencies {
 // very important
 task copySharedCode(type: Copy){
     doFirst{
-        println("Copying shared code into $genTargetDir...")
+        logger.info("Copying shared code into $genTargetDir for UI...")
     }
     from sharedSrc
     into genTargetDir
     doLast{
-        println("Finished copying '$sharedSrc' into '$genTargetDir'.")
+        logger.info("Finished UI copying '$sharedSrc' into '$genTargetDir'.")
     }
 }
 
@@ -92,12 +92,12 @@ task copySharedCode(type: Copy){
 
 task copyJsResources(type:Sync) {
     doFirst {
-        println("COPYING resources from $resourcesDir into build directory $buildOutDir")
+        logger.info("COPYING UI resources from $resourcesDir into build directory $buildOutDir")
     }
     from resourcesDir
     into "${buildOutDir}"
     doLast {
-        println("Finished copying resources into build folder...")
+        logger.info("Finished copying UI resources into build folder...")
     }
     dependsOn mainSass
 }
@@ -124,7 +124,7 @@ task assembleWeb(type: Sync) {
     //dependsOn tasks.copySharedCode
 
     doLast{
-        println("Copied kotlin.js from jar")
+        logger.info("Copied kotlin.js from jar")
     }
 }
 assemble {
@@ -141,10 +141,10 @@ tasks.classes.dependsOn(copySharedCode)
 
 mainSass{
     doFirst{
-        println("Compiling Sass...")
+        logger.info("Compiling UI Sass...")
     }
     doLast{
-        println("Finished compiling Sass!")
+        logger.info("Finished compiling UI Sass!")
     }
 }
 
@@ -152,13 +152,13 @@ tasks.build.doLast() {
     tasks.copyJsResources.execute()
     tasks.mainSass.execute()
 
-    println("Finished build!")
+    logger.info("Finished UI build!")
 }
 
 task cleaner(type: Delete) {
     doLast{
         [buildRootDir, "out"].each({ String s->
-            println("Deleting: ${s}")
+            logger.info("Deleting: ${s}")
             delete s
         })
         followSymlinks = true

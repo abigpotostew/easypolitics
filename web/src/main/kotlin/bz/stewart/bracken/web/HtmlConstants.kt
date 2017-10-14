@@ -7,11 +7,15 @@ enum class HtmlConstants(private val value:String): ConstantText {
     TEXT_JAVASCRIPT("text/javascript"),
     UTF8("UTF-8"),
     utf8("utd-8"),
-    STYLESHEET("stylesheet")
+    STYLESHEET("stylesheet"),
+    SRC("src"),
+    INTEGRITY("integrity"),
+    CROSSORIGIN("crossorigin"),
+
     ;
 
     override fun get():String{
-        return value
+        return this.value
     }
 }
 
