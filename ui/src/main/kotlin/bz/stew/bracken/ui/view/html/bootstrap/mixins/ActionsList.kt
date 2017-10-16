@@ -1,14 +1,13 @@
 package bz.stew.bracken.ui.view.html.bootstrap.mixins
 
 import bz.stew.bracken.ui.extension.kotlinx.HtmlFunc
-import bz.stew.bracken.ui.extension.kotlinx.horzizontalDescriptionList
 import bz.stew.bracken.ui.model.types.bill.BillAction
 import bz.stew.bracken.ui.view.html.SubTemplate
+import kotlinx.html.HtmlBlockTag
 import kotlinx.html.HtmlBodyTag
-import kotlinx.html.p
 
 class ActionsList(private val actionsList: Set<BillAction>):SubTemplate{
-    override fun renderIn(root: HtmlBodyTag) {
+    override fun renderIn(root: HtmlBlockTag) {
         val descriptionListMap :MutableMap<HtmlFunc, HtmlFunc> = mutableMapOf()
 
         for(action in actionsList){

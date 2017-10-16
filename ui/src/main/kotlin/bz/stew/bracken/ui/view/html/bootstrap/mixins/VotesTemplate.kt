@@ -4,6 +4,7 @@ import bz.stew.bracken.ui.extension.kotlinx.ac
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.SubTemplate
 import bz.stew.bracken.ui.view.html.bootstrap.Bill
+import kotlinx.html.HtmlBlockTag
 import kotlinx.html.HtmlBodyTag
 import kotlinx.html.table
 import kotlinx.html.td
@@ -13,7 +14,7 @@ import kotlinx.html.tr
  * Created by stew on 7/4/17.
  */
 class VotesTemplate(private val bill: Bill) : SubTemplate {
-   override fun renderIn(root: HtmlBodyTag) {
+   override fun renderIn(root: HtmlBlockTag) {
       val numRows = 10
       val numColumns = 10
       root.table (Classes.voteTable) {

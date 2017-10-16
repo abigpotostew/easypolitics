@@ -1,39 +1,47 @@
 package bz.stew.bracken.ui.extension.kotlinx
 
+import bz.stew.bracken.ui.view.html.ClassGroup
 import bz.stew.bracken.ui.view.html.Classes
-import kotlinx.html.HtmlBodyTag
+import bz.stew.bracken.ui.view.html.CssClass
+import kotlinx.html.CommonAttributeGroupFacade
+import kotlinx.html.DL
+import kotlinx.html.DT
+import kotlinx.html.FlowContent
+import kotlinx.html.HTMLTag
+import kotlinx.html.HtmlBlockTag
+import kotlinx.html.classes
 import kotlinx.html.dd
-import kotlinx.html.dl
 import kotlinx.html.dt
 
-fun HtmlBodyTag.ac(newClass: String) {
-    this.addClass(newClass)
+fun CommonAttributeGroupFacade.ac(newClass: String) {
+    this.classes = this.classes.plus(newClass)
 }
 
-fun HtmlBodyTag.ac(id: Classes) {
-    this.addClass(id.lbl)
+fun CommonAttributeGroupFacade.ac(id: Classes) {
+    this.ac(id.lbl)
 }
 
-fun HtmlBodyTag.ac(vararg ts: String) {
+fun CommonAttributeGroupFacade.ac(vararg ts: String) {
     for (clazz in ts) {
-        this.addClass(clazz)
+        this.ac(clazz)
     }
 }
 
-fun HtmlBodyTag.ac(vararg ts: Classes) {
+fun CommonAttributeGroupFacade.ac(vararg ts: Classes) {
     for (id in ts) {
-        this.addClass(id.lbl)
+        this.ac(id.lbl)
     }
 }
 
-typealias HtmlFunc = (HtmlBodyTag) -> Unit
+typealias HtmlFunc = (HTMLTag) -> Unit
 
-fun HtmlBodyTag.horzizontalDescriptionList(content: Map<String, HtmlFunc>) {
+fun HtmlBlockTag.horzizontalDescriptionList(content: Map<String, HtmlFunc>) {
     dl(Classes.boots_row) {
         for ((titleString, dataFunc) in content) {
             dt {
-                ac(Classes.boots_colSm2, Classes.boots_colXl1)
+                this.ac(Classes.boots_colSm2, Classes.boots_colXl1)
                 +titleString
+                //this.text(titleString)
             }
             dd {
                 ac(Classes.boots_colSm10, Classes.boots_colXl11)
@@ -43,7 +51,7 @@ fun HtmlBodyTag.horzizontalDescriptionList(content: Map<String, HtmlFunc>) {
     }
 }
 
-fun HtmlBodyTag.horzizontalDescriptionList(content: Map<HtmlFunc, HtmlFunc>) {
+fun HtmlBlockTag.horzizontalDescriptionList(content: Map<HtmlFunc, HtmlFunc>) {
     dl(Classes.boots_row) {
         for ((titleFunc, dataFunc) in content) {
             dt {
@@ -57,3 +65,18 @@ fun HtmlBodyTag.horzizontalDescriptionList(content: Map<HtmlFunc, HtmlFunc>) {
         }
     }
 }
+
+private fun HTMLTag.classTag(c: CssClass) {
+    this.attributes.put("class", c.label())
+}
+
+private inline fun <T : HTMLTag> contentTag(tag: T, c: CssClass, contents: T.() -> Unit) {
+    tag.classTag(c)
+    tag.contents()
+}
+
+fun FlowContent.dt(vararg c: CssClass,
+                   contents: DT.() -> Unit) = contentTag(DT(emptyMap(), this.consumer), ClassGroup(*c), contents)
+
+fun FlowContent.dl(vararg c: CssClass,
+                   contents: DL.() -> Unit) = contentTag(DL(emptyMap(), this.consumer), ClassGroup(*c), contents)

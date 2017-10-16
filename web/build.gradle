@@ -40,6 +40,8 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile 'com.sparkjava:spark-core:2.3'
     compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4"
+    compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4", configuration:"sources"
+    compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4", configuration: "javadoc"
     testCompile group: 'junit', name: 'junit', version: '4.+'
     //compile project(":ui")
     uiJsSource project(path:":ui", configuration:"jsArtifact")

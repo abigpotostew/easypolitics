@@ -1,10 +1,10 @@
 package bz.stew.bracken.ui.view.html.bootstrap.mixins
 
-import bz.stew.bracken.ui.extension.kotlinx.ac
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.SubTemplate
 import bz.stew.bracken.ui.view.html.bootstrap.Bill
 import kotlinx.html.DirectLink
+import kotlinx.html.HtmlBlockTag
 import kotlinx.html.HtmlBodyTag
 import kotlinx.html.a
 import kotlinx.html.div
@@ -13,7 +13,7 @@ import kotlinx.html.ul
 
 class BillExpandedView(private val template: Bill) : SubTemplate {
     private val billView = template.billView
-    override fun renderIn(root: HtmlBodyTag) {
+    override fun renderIn(root: HtmlBlockTag) {
         val sponsor = billView.billData.sponsor
         root.div {
             style = "display:none;"

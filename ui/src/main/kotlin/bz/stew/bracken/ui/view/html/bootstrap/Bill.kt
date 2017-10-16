@@ -1,6 +1,5 @@
 package bz.stew.bracken.ui.view.html.bootstrap
 
-import bz.stew.bracken.ui.extension.kotlinx.ac
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.HtmlRenderOutput
 import bz.stew.bracken.ui.view.html.Template
@@ -8,8 +7,9 @@ import bz.stew.bracken.ui.view.html.bootstrap.mixins.BillExpandedView
 import bz.stew.bracken.ui.view.html.bootstrap.mixins.CollapsedCardView
 import bz.stew.bracken.ui.view.item.BillViewItem
 import bz.stewart.bracken.shared.data.party.Party
-import kotlinx.html.div
-import kotlinx.html.html
+import kotlinx.html.stream.appendHTML
+import kotlinx.html.stream.createHTML
+import kotlin.browser.document
 
 /**
  * Generates the html structure with content for a bill using bootstrap
@@ -34,8 +34,21 @@ class Bill(val billView: BillViewItem) : Template {
 
         val sponsorParty = bd.sponsor.getParty()
 
-        val gen = html {
-            div(Classes.bill, {
+        buildString {
+            appendHTML(false).div {
+
+            }
+        }
+        buildString {
+            appendHTML(false).div {
+                span {
+                    +"content"
+                }
+            }
+        }
+        val gen = buildString {
+
+            appendHTML(false).div(Classes.bill, {
                 id = billId
                 ac(mapPartyClass(sponsorParty))
 
@@ -44,7 +57,9 @@ class Bill(val billView: BillViewItem) : Template {
                 BillExpandedView(template).renderIn(this)
             })
         }
-        return StandardHtmlRenderOutput(gen)
+
+            return StandardHtmlRenderOutput(gen)
+        }
     }
 
 

@@ -1,19 +1,17 @@
 package bz.stew.bracken.ui.view.html.bootstrap.mixins
 
-import bz.stew.bracken.ui.extension.kotlinx.horzizontalDescriptionList
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.SubTemplate
 import bz.stew.bracken.ui.view.html.bootstrap.Bill
+import kotlinx.html.HtmlBlockTag
 import kotlinx.html.HtmlBodyTag
-import kotlinx.html.li
 import kotlinx.html.p
-import kotlinx.html.ul
 
 /**
  * Created by stew on 7/4/17.
  */
 class BillDetailsTab(private val template: Bill) : SubTemplate {
-    override fun renderIn(root: HtmlBodyTag) {
+    override fun renderIn(root: HtmlBlockTag) {
         val cosponsors = template.billView.billData.cosponsors
         root.p(Classes.billCosponsors) {
             val descriptionListMap = mutableMapOf<String, (HtmlBodyTag) -> Unit>()

@@ -1,6 +1,5 @@
 package bz.stew.bracken.ui.view.html.bootstrap.mixins
 
-import bz.stew.bracken.ui.extension.kotlinx.horzizontalDescriptionList
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.SubTemplate
 import bz.stewart.bracken.shared.data.person.Legislator
@@ -10,7 +9,7 @@ import kotlinx.html.*
  * Created by stew on 7/4/17.
  */
 class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
-   override fun renderIn(root: HtmlBodyTag) {
+   override fun renderIn(root: HtmlBlockTag) {
       val template = this
       val l = legislator
       root.p (Classes.boots_row) {

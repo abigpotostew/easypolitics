@@ -1,6 +1,5 @@
 package bz.stew.bracken.ui.view.html.bootstrap.mixins
 
-import bz.stew.bracken.ui.extension.kotlinx.ac
 import bz.stew.bracken.ui.model.types.bill.status.BillStatus
 import bz.stew.bracken.ui.util.ui.UIFormatter
 import bz.stew.bracken.ui.view.html.Classes
@@ -9,9 +8,9 @@ import bz.stew.bracken.ui.view.html.bootstrap.Bill
 import bz.stew.bracken.ui.view.html.cssClass
 import bz.stewart.bracken.shared.data.MajorStatus
 import kotlinx.html.DirectLink
+import kotlinx.html.HtmlBlockTag
 import kotlinx.html.HtmlBodyTag
 import kotlinx.html.a
-import kotlinx.html.button
 import kotlinx.html.div
 import kotlinx.html.h5
 import kotlinx.html.h6
@@ -22,7 +21,7 @@ import kotlinx.html.span
 
 class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false) : SubTemplate {
     private val showProfileImage = enableTwitterImg
-    override fun renderIn(root: HtmlBodyTag) {
+    override fun renderIn(root: HtmlBlockTag) {
         val subtemplate = this
         val billView = template.billView
         val bd = billView.billData
