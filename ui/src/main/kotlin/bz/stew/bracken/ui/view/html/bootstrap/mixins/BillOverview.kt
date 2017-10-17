@@ -5,7 +5,6 @@ import bz.stew.bracken.ui.extension.kotlinx.button
 import bz.stew.bracken.ui.extension.kotlinx.div
 import bz.stew.bracken.ui.extension.kotlinx.h5
 import bz.stew.bracken.ui.extension.kotlinx.img
-import bz.stew.bracken.ui.extension.kotlinx.p
 import bz.stew.bracken.ui.extension.kotlinx.set
 import bz.stew.bracken.ui.model.types.bill.status.BillStatus
 import bz.stew.bracken.ui.util.ui.UIFormatter
@@ -19,6 +18,7 @@ import kotlinx.html.HtmlBlockTag
 import kotlinx.html.a
 import kotlinx.html.div
 import kotlinx.html.h6
+import kotlinx.html.p
 import kotlinx.html.span
 
 class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false) : SubTemplate {
@@ -55,14 +55,17 @@ class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false
                     +"Sponsor: "
                     +sponsorName
                 }
-                p(Classes.billDate, Classes.boots_card_text) {
+                p {
+                    ac(Classes.billDate, Classes.boots_card_text)
                     +"Introduced "
                     +introDate
                 }
-                p(Classes.billStatusDescription) {
+                p{
+                    ac(Classes.billStatusDescription)
                     +statusDescr
                 }
-                p(Classes.billLinkContainer) {
+                p{
+                    ac(Classes.billLinkContainer)
                     a {
                         target = "_blank"
                         href = link
@@ -70,7 +73,7 @@ class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false
                     }
                 }
                 //todo the tracker thing here
-                subtemplate.buildTracker(this)
+                if(false) subtemplate.buildTracker(this)
             }
             div("col-3") {
                 div(cssClass(Classes.card, Classes.billExpandedSponsorData)) {
@@ -88,7 +91,8 @@ class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false
                         h5(cssClass(Classes.billSponsor, Classes.boots_card_title)) {
                             +sponsorName
                         }
-                        p(Classes.boots_card_text) {
+                        p {
+                            ac(Classes.boots_card_text)
                             +"pizza"
                         }
 

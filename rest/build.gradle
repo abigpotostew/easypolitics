@@ -133,6 +133,6 @@ task bootRunDebug(){
 	}
 }
 
-springBoot {
-	mainClass = "bz.stewart.bracken.rest.EasypoliticsRestApplication"
-}
+//springBoot {
+//	mainClass = "bz.stewart.bracken.rest.EasypoliticsRestApplication"
+//}

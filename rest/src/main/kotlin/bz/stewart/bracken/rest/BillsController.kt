@@ -25,63 +25,64 @@ import javax.annotation.PostConstruct
 @RestController
 class BillsController {
 
-   companion object: KLogging()
+    companion object : KLogging()
 
-   @Autowired
-   var billMongoDatabase: MongoDbBean? = null
+    @Autowired
+    var billMongoDatabase: MongoDbBean? = null
 
-   @PostConstruct
-   fun setupClient() {
-      //billMongoDatabase!!.getBillDb()!!.openDatabase()
-      //todo isn't setup called by the bean??
-   }
+    @PostConstruct
+    fun setupClient() {
+        //billMongoDatabase!!.getBillDb()!!.openDatabase()
+        //todo isn't setup called by the bean??
+    }
 
-   @CrossOrigin(origins = arrayOf("http://localhost:8080",
-                                  "http://localhost:63342")) // TODO this is just for testing locally, remove before prod
-   @GetMapping("/bills")
-   fun get(
-         @RequestParam(value = "number", required = false) number: String? = null,
-         @RequestParam(value = "bill_id", required = false) billId: String? = null,
-         @RequestParam(value = "bill_type", required = false) billType: String? = null,
-         @RequestParam(value = "congress",
-                       required = false) congress: Int? = EMPTY_CONGRESS,
+    @CrossOrigin(origins = arrayOf("http://localhost:8080",
+            "http://localhost:63342",
+            "http://localhost:4567")) // TODO this is just for testing locally, remove before prod
+    @GetMapping("/bills")
+    fun get(
+            @RequestParam(value = "number", required = false) number: String? = null,
+            @RequestParam(value = "bill_id", required = false) billId: String? = null,
+            @RequestParam(value = "bill_type", required = false) billType: String? = null,
+            @RequestParam(value = "congress",
+                    required = false) congress: Int? = EMPTY_CONGRESS,
 
-         //meta stuff
-         @RequestParam(value = "order_by", required = false,
-                       defaultValue = "-current_status_date") orderBy: String = "-current_status_date",
-         @RequestParam(value = "limit", required = false,
-                       defaultValue = "100") limit: Int = 100,
-         @RequestParam(value = "offset", required = false,
-               defaultValue = "0") offset: Int? = 0
-         /*@RequestParam(defaultValue = "") billId:String=""*/): QueryResult {
-      //congress=115&order_by=-current_status_date&limit=200
+            //meta stuff
+            @RequestParam(value = "order_by", required = false,
+                    defaultValue = "-current_status_date") orderBy: String = "-current_status_date",
+            @RequestParam(value = "limit", required = false,
+                    defaultValue = "100") limit: Int = 100,
+            @RequestParam(value = "offset", required = false,
+                    defaultValue = "0") offset: Int? = 0
+            /*@RequestParam(defaultValue = "") billId:String=""*/): QueryResult {
+        //congress=115&order_by=-current_status_date&limit=200
 
-      //todo move this to input validator
-      val matchedBillType = try {
-         TypeHelperDefaults.defaultBillTypeMatcher(billType ?: "")
-      } catch (e: BadStateException) {
-         BillType.NONE
-      }
+        //todo move this to input validator
+        val matchedBillType = try {
+            TypeHelperDefaults.defaultBillTypeMatcher(billType ?: "")
+        } catch (e: BadStateException) {
+            BillType.NONE
+        }
 
 
-      val queryExample =
-            BillExample(billNumber = number,
+        val queryExample =
+                BillExample(billNumber = number,
                         bill_id = billId,
                         bill_type = matchedBillType,
                         congressNum = congress!!
-                       )
+                )
 
-      logger.info{"Request: $queryExample\n\tOrder: $orderBy\n\tLimit: $limit\n\tOffset: $offset"}
+        logger.info { "Request: $queryExample\n\tOrder: $orderBy\n\tLimit: $limit\n\tOffset: $offset" }
 
 
-      //todo validate input
-      val result = try {
-         BillQueryBuilder(billMongoDatabase!!.getMainDb()!!, queryExample, orderBy,
-               limit, offset!!).find()
-      } catch (e:Exception){
-         emptyQueryResult()
-      }
-      return result
-   }
+        //todo validate input
+        val result = try {
+            BillQueryBuilder(billMongoDatabase!!.getMainDb()!!, queryExample, orderBy,
+                    limit, offset!!).find()
+        } catch (e: Exception) {
+            emptyQueryResult()
+        }
+        return result
+    }
 
 }

@@ -153,7 +153,9 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
                     this.visibleBills.add(i)
 
                 } catch (e: Throwable) {
-                    println(e.toString())
+                    console.log(e.message)
+                    console.log(e.cause)
+                    console.log(e)
                 }
             }
         }

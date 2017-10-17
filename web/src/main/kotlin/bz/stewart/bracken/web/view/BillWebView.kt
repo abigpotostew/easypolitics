@@ -75,7 +75,7 @@ class BillWebView(val id: String) : ViewTemplate {
                                         +"Party:"
                                     }
                                     select(classes = "custom-select form-inline mb-2 mr-sm-2 mb-sm-0") {
-                                        setId("illFilter-party")
+                                        setId("billFilter-party")
                                         option {
                                             attributes.put("selected", "true")
                                             attributes.put("value", "NONE")

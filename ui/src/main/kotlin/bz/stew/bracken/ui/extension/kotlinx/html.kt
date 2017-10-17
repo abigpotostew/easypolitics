@@ -80,7 +80,7 @@ private fun HTMLTag.classTag(c: CssClass) {
     this.attributes.put("class", c.label())
 }
 
-private inline fun <T : HTMLTag> contentTag(tag: T, c: CssClass, contents: T.() -> Unit) {
+private fun <T : HTMLTag> contentTag(tag: T, c: CssClass, contents: T.() -> Unit) {
     tag.classTag(c)
     tag.contents()
 }
@@ -108,7 +108,7 @@ fun TABLE.tr(vararg c: CssClass,
                    contents: TR.() -> Unit) = contentTag(TR(emptyMap(), this.consumer), ClassGroup(*c), contents)
 
 fun FlowContent.p(vararg c: CssClass,
-             contents: P.() -> Unit) = contentTag(kotlinx.html.P(emptyMap(), this.consumer), ClassGroup(*c), contents)
+             contents: P.() -> Unit) = contentTag(P(emptyMap(), this.consumer), ClassGroup(*c), contents)
 
 fun FlowContent.img(vararg c: CssClass,
                     contents: IMG.() -> Unit) = contentTag(IMG(emptyMap(), this.consumer), ClassGroup(*c), contents)
