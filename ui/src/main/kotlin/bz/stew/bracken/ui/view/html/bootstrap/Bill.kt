@@ -1,5 +1,6 @@
 package bz.stew.bracken.ui.view.html.bootstrap
 
+import bz.stew.bracken.ui.extension.kotlinx.div
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.HtmlRenderOutput
 import bz.stew.bracken.ui.view.html.Template
@@ -7,8 +8,8 @@ import bz.stew.bracken.ui.view.html.bootstrap.mixins.BillExpandedView
 import bz.stew.bracken.ui.view.html.bootstrap.mixins.CollapsedCardView
 import bz.stew.bracken.ui.view.item.BillViewItem
 import bz.stewart.bracken.shared.data.party.Party
-import kotlinx.html.stream.appendHTML
-import kotlinx.html.stream.createHTML
+import kotlinx.html.dom.createTree
+import kotlinx.html.id
 import kotlin.browser.document
 
 /**
@@ -34,33 +35,33 @@ class Bill(val billView: BillViewItem) : Template {
 
         val sponsorParty = bd.sponsor.getParty()
 
-        buildString {
-            appendHTML(false).div {
 
-            }
-        }
-        buildString {
-            appendHTML(false).div {
-                span {
-                    +"content"
-                }
-            }
-        }
-        val gen = buildString {
+//        document.createTree().ul {
+//            li {
+//
+//            }
+//        }
 
-            appendHTML(false).div(Classes.bill, {
-                id = billId
-                ac(mapPartyClass(sponsorParty))
-
-                CollapsedCardView(billView).renderIn(this)
-                //expanded section
-                BillExpandedView(template).renderIn(this)
-            })
+        val gen = document.createTree().div(Classes.bill, mapPartyClass(sponsorParty)) {
+            id = billId
+            CollapsedCardView(billView).renderIn(this)
+            //expanded section
+            BillExpandedView(template).renderIn(this)
         }
 
-            return StandardHtmlRenderOutput(gen)
-        }
+
+//        val gen =
+//
+//            appendHTML(false).div(Classes.bill, {
+//                id = billId
+//                ac(mapPartyClass(sponsorParty))
+//
+//                CollapsedCardView(billView).renderIn(this)
+//                //expanded section
+//                BillExpandedView(template).renderIn(this)
+//            })
+
+
+        return StandardHtmlRenderOutput(gen)
     }
-
-
 }

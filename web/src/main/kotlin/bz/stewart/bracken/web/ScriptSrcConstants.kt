@@ -17,6 +17,7 @@ enum class ScriptSrcConstants(private val value: String,
     BOOSTRAP_MIN_EXT("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js", "sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn", "anonymous"),
 
     KOTLIN_JS_FROM_UI_LOCAL("/lib/lib/kotlin.js"), //todo squish with ui code
+    KOTLINX_JS_FROM_UI_LOCAL("/lib/lib/kotlinx-html-js.js"), //must be before easypolitics-ui.js
     EASYPOLITICS_UI_JS_FROM_UI_LOCAL("/lib/easypolitics-ui.js"),// todo add integrity
     ;
 

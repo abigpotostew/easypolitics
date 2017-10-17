@@ -1,21 +1,24 @@
 package bz.stew.bracken.ui.view.html.bootstrap.mixins
 
+import bz.stew.bracken.ui.extension.kotlinx.horzizontalDescriptionList
+import bz.stew.bracken.ui.extension.kotlinx.p
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.SubTemplate
 import bz.stew.bracken.ui.view.html.bootstrap.Bill
+import kotlinx.html.FlowContent
 import kotlinx.html.HtmlBlockTag
-import kotlinx.html.HtmlBodyTag
-import kotlinx.html.p
+import kotlinx.html.li
+import kotlinx.html.ul
 
 /**
  * Created by stew on 7/4/17.
  */
 class BillDetailsTab(private val template: Bill) : SubTemplate {
-    override fun renderIn(root: HtmlBlockTag) {
+    override fun renderIn(root: FlowContent) {
         val cosponsors = template.billView.billData.cosponsors
         root.p(Classes.billCosponsors) {
-            val descriptionListMap = mutableMapOf<String, (HtmlBodyTag) -> Unit>()
-            val cosponsors: (HtmlBodyTag) -> Unit = {
+            val descriptionListMap = mutableMapOf<String, (HtmlBlockTag) -> Unit>()
+            val cosponsors: (HtmlBlockTag) -> Unit = {
                 it.ul {
                     for (l in cosponsors) {
                         li {
@@ -34,7 +37,7 @@ class BillDetailsTab(private val template: Bill) : SubTemplate {
             descriptionListMap.put("Cosponsored by:", cosponsors)
             val billSubjects = template.billView.billData.subjects
             if (undefined != billSubjects && !billSubjects.isEmpty()) {
-                val subjectView: (HtmlBodyTag) -> Unit = {
+                val subjectView: (HtmlBlockTag) -> Unit = {
                     it.ul {
                         for (subject in billSubjects) {
                             if (subject.subject != undefined) {

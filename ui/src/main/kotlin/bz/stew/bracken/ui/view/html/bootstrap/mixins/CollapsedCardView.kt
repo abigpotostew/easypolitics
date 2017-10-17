@@ -1,11 +1,11 @@
 package bz.stew.bracken.ui.view.html.bootstrap.mixins
 
+import bz.stew.bracken.ui.extension.kotlinx.ac
 import bz.stew.bracken.ui.util.ui.UIFormatter
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.SubTemplate
 import bz.stew.bracken.ui.view.item.BillViewItem
-import kotlinx.html.HtmlBlockTag
-import kotlinx.html.HtmlBodyTag
+import kotlinx.html.FlowContent
 import kotlinx.html.div
 import kotlinx.html.h4
 import kotlinx.html.h6
@@ -13,7 +13,7 @@ import kotlinx.html.p
 import kotlinx.html.small
 
 class CollapsedCardView(private val billView: BillViewItem) : SubTemplate {
-    override fun renderIn(root: HtmlBlockTag) {
+    override fun renderIn(root: FlowContent) {
         val billView = this.billView
         val bd = billView.billData
         val sponsorName = bd.sponsor.getOfficialName()

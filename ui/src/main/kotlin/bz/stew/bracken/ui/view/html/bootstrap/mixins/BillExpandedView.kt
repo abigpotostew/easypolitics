@@ -1,19 +1,22 @@
 package bz.stew.bracken.ui.view.html.bootstrap.mixins
 
+import bz.stew.bracken.ui.extension.kotlinx.ac
+import bz.stew.bracken.ui.extension.kotlinx.div
+import bz.stew.bracken.ui.extension.kotlinx.set
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.SubTemplate
 import bz.stew.bracken.ui.view.html.bootstrap.Bill
-import kotlinx.html.DirectLink
-import kotlinx.html.HtmlBlockTag
-import kotlinx.html.HtmlBodyTag
+import kotlinx.html.FlowContent
 import kotlinx.html.a
 import kotlinx.html.div
+import kotlinx.html.id
 import kotlinx.html.li
+import kotlinx.html.style
 import kotlinx.html.ul
 
 class BillExpandedView(private val template: Bill) : SubTemplate {
     private val billView = template.billView
-    override fun renderIn(root: HtmlBlockTag) {
+    override fun renderIn(root: FlowContent) {
         val sponsor = billView.billData.sponsor
         root.div {
             style = "display:none;"
@@ -36,7 +39,7 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                                 }
                                 set("data-toggle", "tab")
                                 set("role", "tab")
-                                href = DirectLink("#" + id)
+                                href = "#" + id
                                 +tabNames[i]
                             }
                         }
@@ -44,7 +47,7 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                     }
                 }
             }
-            div(Classes.boots_tab_content, {
+            div(Classes.boots_tab_content) {
                 val tabTemplates = arrayListOf<SubTemplate>(
                     BillOverview(template),
                     BillContact(sponsor),
@@ -64,7 +67,7 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                         }
                     }
                 }
-            })
+            }
         }
     }
 

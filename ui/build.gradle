@@ -74,6 +74,7 @@ sourceSets {
 
 dependencies {
     def kotlinx_html_version = "0.6.4"
+
     ktlint 'com.github.shyiko:ktlint:0.8.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:${project.kotlin_stdlib_js_version}"
     compile "org.jetbrains.kotlinx:kotlinx-html-js:${kotlinx_html_version}"

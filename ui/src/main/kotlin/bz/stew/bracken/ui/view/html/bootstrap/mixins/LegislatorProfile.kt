@@ -1,5 +1,7 @@
 package bz.stew.bracken.ui.view.html.bootstrap.mixins
 
+import bz.stew.bracken.ui.extension.kotlinx.horzizontalDescriptionList
+import bz.stew.bracken.ui.extension.kotlinx.p
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.SubTemplate
 import bz.stewart.bracken.shared.data.person.Legislator
@@ -9,7 +11,7 @@ import kotlinx.html.*
  * Created by stew on 7/4/17.
  */
 class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
-   override fun renderIn(root: HtmlBlockTag) {
+   override fun renderIn(root: FlowContent) {
       val template = this
       val l = legislator
       root.p (Classes.boots_row) {
@@ -40,28 +42,28 @@ class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
 //      }
 //   }
 
-   private fun contentMap(): Map<String, (HtmlBodyTag) -> Unit> {
-      val map = LinkedHashMap<String, (HtmlBodyTag) -> Unit>()
+   private fun contentMap(): Map<String, (HtmlBlockTag) -> Unit> {
+      val map = LinkedHashMap<String, (HtmlBlockTag) -> Unit>()
       map.put("Website", this::renderWebsite)
       map.put("Twitter", this::renderTwitter)
       map.put("Phone", this::renderPhone)
       return map
    }
 
-   private fun renderWebsite(root: HtmlBodyTag) {
+   private fun renderWebsite(root: HtmlBlockTag) {
       val l = legislator
       if (!l.getWebsite().isNullOrBlank()) {
          root.p {
             a {
                +l.getWebsite()!!
-               href = DirectLink(l.getWebsite()!!)
+               href = l.getWebsite()!!
                target = "_blank"
             }
          }
       }
    }
 
-   private fun renderTwitter(root: HtmlBodyTag) {
+   private fun renderTwitter(root: HtmlBlockTag) {
       val l = legislator
       if (!l.getTwitter().isNullOrBlank()) {
          root.p {
@@ -71,20 +73,20 @@ class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
       }
    }
 
-   private fun renderPhone(root: HtmlBodyTag) {
+   private fun renderPhone(root: HtmlBlockTag) {
       val l = legislator
       if (!l.getPhoneNumber().isNullOrBlank()) {
          root.p {
 //            +"Phone: "
             a {
                +l.getPhoneNumber()
-               href = DirectLink("#")
+               href = "#"
 
             }
             +" looking for a "
             a {
                +"different number?"
-               href = DirectLink("https://phonecongress.com/")
+               href = "https://phonecongress.com/"
                target = "_blank"
             }
          }
