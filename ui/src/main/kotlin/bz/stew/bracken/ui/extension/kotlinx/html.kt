@@ -20,6 +20,7 @@ import kotlinx.html.TR
 import kotlinx.html.Tag
 import kotlinx.html.classes
 import kotlinx.html.dd
+import kotlinx.html.dl
 import kotlinx.html.dt
 
 typealias HtmlFunc = (HtmlBlockTag) -> Unit
@@ -46,7 +47,8 @@ fun CommonAttributeGroupFacade.ac(vararg ts: Classes) {
 }
 
 fun HtmlBlockTag.horzizontalDescriptionList(content: Map<String, HtmlFunc>) {
-    dl(Classes.boots_row) {
+    dl{
+        ac(Classes.boots_row)
         for ((titleString, dataFunc) in content) {
             dt {
                 this.ac(Classes.boots_colSm2, Classes.boots_colXl1)
@@ -62,7 +64,8 @@ fun HtmlBlockTag.horzizontalDescriptionList(content: Map<String, HtmlFunc>) {
 }
 
 fun FlowContent.horzizontalDescriptionList(content: Map<DlTitleFunc, HtmlFunc>) {
-    dl(Classes.boots_row) {
+    dl{
+        ac(Classes.boots_row)
         for ((titleFunc, dataFunc) in content) {
             dt {
                 ac(Classes.boots_colSm2, Classes.boots_colXl1)
@@ -88,7 +91,7 @@ private fun <T : HTMLTag> contentTag(tag: T, c: CssClass, contents: T.() -> Unit
 inline fun <T : Tag> T.set(attribute:String, value:String){
     this.attributes.put(attribute, value)
 }
-
+/*
 fun FlowContent.dt(vararg c: CssClass,
                    contents: DT.() -> Unit) = contentTag(DT(emptyMap(), this.consumer), ClassGroup(*c), contents)
 
@@ -118,3 +121,4 @@ fun FlowContent.h5(vararg c: CssClass,
 
 fun FlowContent.button(vararg c: CssClass,
                    contents: BUTTON.() -> Unit) = contentTag(BUTTON(emptyMap(), this.consumer), ClassGroup(*c), contents)
+*/

@@ -1,23 +1,21 @@
 package bz.stew.bracken.ui.view.html.bootstrap.mixins
 
 import bz.stew.bracken.ui.extension.kotlinx.ac
-import bz.stew.bracken.ui.extension.kotlinx.button
-import bz.stew.bracken.ui.extension.kotlinx.div
-import bz.stew.bracken.ui.extension.kotlinx.h5
-import bz.stew.bracken.ui.extension.kotlinx.img
 import bz.stew.bracken.ui.extension.kotlinx.set
 import bz.stew.bracken.ui.model.types.bill.status.BillStatus
 import bz.stew.bracken.ui.util.ui.UIFormatter
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.SubTemplate
 import bz.stew.bracken.ui.view.html.bootstrap.Bill
-import bz.stew.bracken.ui.view.html.cssClass
 import bz.stewart.bracken.shared.data.MajorStatus
 import kotlinx.html.FlowContent
 import kotlinx.html.HtmlBlockTag
 import kotlinx.html.a
+import kotlinx.html.button
 import kotlinx.html.div
+import kotlinx.html.h5
 import kotlinx.html.h6
+import kotlinx.html.img
 import kotlinx.html.p
 import kotlinx.html.span
 
@@ -39,8 +37,10 @@ class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false
         val billTypeNiceFormat = bd.officialId(true)
 
         //div(Classes.boots_container, {
-        root.div(Classes.boots_row) {
-            div(Classes.boots_col) {
+        root.div {
+            ac(Classes.boots_row)
+            div {
+                ac(Classes.boots_col)
                 h6 {
                     ac(Classes.billStatus, Classes.boots_card_text,
                             Classes.boots_card_subtitle)
@@ -60,11 +60,11 @@ class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false
                     +"Introduced "
                     +introDate
                 }
-                p{
+                p {
                     ac(Classes.billStatusDescription)
                     +statusDescr
                 }
-                p{
+                p {
                     ac(Classes.billLinkContainer)
                     a {
                         target = "_blank"
@@ -73,12 +73,14 @@ class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false
                     }
                 }
                 //todo the tracker thing here
-                if(false) subtemplate.buildTracker(this)
+                subtemplate.buildTracker(this)
             }
             div("col-3") {
-                div(cssClass(Classes.card, Classes.billExpandedSponsorData)) {
+                div {
+                    ac(Classes.card, Classes.billExpandedSponsorData)
                     if (showProfileImage) {
-                        img(Classes.billExpandedSponsorImg) {
+                        img {
+                            ac(Classes.billExpandedSponsorImg)
                             alt = "Bill sponsor"
                             src = billSponsorProfileImg
                         }
@@ -87,8 +89,10 @@ class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false
                             ac(Classes.billExpandedSponsorImg)
                         }
                     }
-                    div(Classes.boots_card_block) {
-                        h5(cssClass(Classes.billSponsor, Classes.boots_card_title)) {
+                    div {
+                        ac(Classes.boots_card_block)
+                        h5 {
+                            ac(Classes.billSponsor, Classes.boots_card_title)
                             +sponsorName
                         }
                         p {
@@ -108,10 +112,12 @@ class BillOverview(private val template: Bill, enableTwitterImg: Boolean = false
 
         val displayList = listOf(MajorStatus.INTRODUCED, MajorStatus.PASSED_HOUSE, MajorStatus.PASSED_SENATE,
                 MajorStatus.SIGNED_PRESIDENT, MajorStatus.LAW)
-        root.div(Classes.billTracker) {
+        root.div {
+            ac(Classes.billTracker)
             set("role", "group")
             (displayList).forEach {
-                button(cssClass(Classes.boots_secondary_button, mapMajorStatusClass(it))) {
+                button {
+                    ac(Classes.boots_secondary_button, mapMajorStatusClass(it))
                     if (it == lastMajorStatus) {
                         setMostRecentTrackerButton(this)//set("style", "background-color:yellow;")
                     }

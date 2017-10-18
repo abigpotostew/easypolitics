@@ -1,7 +1,6 @@
 package bz.stew.bracken.ui.view.html.bootstrap.mixins
 
 import bz.stew.bracken.ui.extension.kotlinx.ac
-import bz.stew.bracken.ui.extension.kotlinx.div
 import bz.stew.bracken.ui.extension.kotlinx.set
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.SubTemplate
@@ -47,22 +46,24 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                     }
                 }
             }
-            div(Classes.boots_tab_content) {
+            div {
+                ac(Classes.boots_tab_content)
                 val tabTemplates = arrayListOf<SubTemplate>(
-                    BillOverview(template),
-                    BillContact(sponsor),
-                    BillDetailsTab(template),
-                    Paragraph("pizza")
+                        BillOverview(template),
+                        BillContact(sponsor),
+                        BillDetailsTab(template),
+                        Paragraph("pizza")
                 )
                 for (i in 0..3) {
-                    div(Classes.boots_tab_card) {
+                    div {
+                        ac(Classes.boots_tab_card)
                         id = tabId(i)
                         if (i == 0) {
                             ac("active")
                             set("role", "tabpanel")
                         }
-                        div(Classes.boots_container) {
-                            ac(Classes.billExpandedTabContent)
+                        div {
+                            ac(Classes.boots_container, Classes.billExpandedTabContent)
                             tabTemplates[i].renderIn(this)
                         }
                     }

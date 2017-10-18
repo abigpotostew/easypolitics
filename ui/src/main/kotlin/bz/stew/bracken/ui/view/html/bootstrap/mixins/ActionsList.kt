@@ -3,10 +3,10 @@ package bz.stew.bracken.ui.view.html.bootstrap.mixins
 import bz.stew.bracken.ui.extension.kotlinx.DlTitleFunc
 import bz.stew.bracken.ui.extension.kotlinx.HtmlFunc
 import bz.stew.bracken.ui.extension.kotlinx.horzizontalDescriptionList
-import bz.stew.bracken.ui.extension.kotlinx.p
 import bz.stew.bracken.ui.model.types.bill.BillAction
 import bz.stew.bracken.ui.view.html.SubTemplate
 import kotlinx.html.FlowContent
+import kotlinx.html.p
 
 class ActionsList(private val actionsList: Set<BillAction>) : SubTemplate {
     override fun renderIn(root: FlowContent) {
