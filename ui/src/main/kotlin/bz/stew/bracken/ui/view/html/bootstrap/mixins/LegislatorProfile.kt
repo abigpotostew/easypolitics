@@ -12,7 +12,6 @@ import kotlinx.html.*
  */
 class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
    override fun renderIn(root: FlowContent) {
-      val template = this
       val l = legislator
       root.p  {
          ac(Classes.boots_row)
@@ -22,26 +21,8 @@ class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
 
          val contentMap = contentMap()
          this.horzizontalDescriptionList(content = contentMap)
-//         template.renderTwitter(this)
-//         template.renderPhone(this)
-//         template.renderWebsite(this)
       }
-//      val func: (HtmlBodyTag) -> Unit = { this::renderPhone }
-
    }
-
-//   private fun renderDescList(root: HtmlBodyTag, content: Map<String, (HtmlBodyTag) -> Unit>) {
-//      root.dl {
-//         for ((k, v) in content) {
-//            dt {
-//               +k
-//            }
-//            dd {
-//               v(this)
-//            }
-//         }
-//      }
-//   }
 
    private fun contentMap(): Map<String, (HtmlBlockTag) -> Unit> {
       val map = LinkedHashMap<String, (HtmlBlockTag) -> Unit>()
@@ -68,7 +49,6 @@ class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
       val l = legislator
       if (!l.getTwitter().isNullOrBlank()) {
          root.p {
-//            +"Twitter: "
             TwitterLink(l).renderIn(this)
          }
       }
@@ -78,7 +58,6 @@ class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
       val l = legislator
       if (!l.getPhoneNumber().isNullOrBlank()) {
          root.p {
-//            +"Phone: "
             a {
                +l.getPhoneNumber()
                href = "#"

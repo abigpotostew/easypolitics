@@ -19,7 +19,7 @@ class BillStatusData(private val fixedStatus: FixedStatus = FixedStatus.NONE,
    private val lastMajorActionCached: MajorAction =
          this.majorActions.maxBy {
             val dt = it.date()
-            dt?.getTime()
+            dt.getTime()
          } ?: emptyMajorAction()
 
    override fun lastMajorAction(): MajorAction {
@@ -52,9 +52,9 @@ class BillStatusData(private val fixedStatus: FixedStatus = FixedStatus.NONE,
 
 }
 
-val EMPTY_BILL_STATUS: BillStatus = BillStatusData(majorActions = listOf(emptyMajorAction()))
+private val emptyBillStatusData: BillStatus = BillStatusData(majorActions = listOf(emptyMajorAction()))
 
 fun emptyBillStatus(): BillStatus {
-   return EMPTY_BILL_STATUS
+   return emptyBillStatusData
 }
 

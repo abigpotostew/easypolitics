@@ -14,33 +14,30 @@ import org.w3c.dom.HTMLElement
  * Created by stew on 1/23/17.
  */
 
-open abstract class View(val rootElementSelector: HtmlSelector = HtmlSelector(Identifier.TAG,
-                                                                              "body")) {
+abstract class View(val rootElementSelector: HtmlSelector = HtmlSelector(Identifier.TAG, "body")) {
 
-   protected var loading: Boolean = false
-   protected val htmlGen: HtmlGen = HtmlGen()
+    private var loading: Boolean = false
+    protected val htmlGen: HtmlGen = HtmlGen()
 
-   fun setLoading(isLoading: Boolean) {
-      this.loading = isLoading
-   }
+    fun setLoading(isLoading: Boolean) {
+        this.loading = isLoading
+    }
 
-   fun saveElementTemplate(templateName: String,
-                           contentsOf: HtmlSelector) {
-      this.htmlGen.addElement(templateName,
-                              getJq(contentsOf).html())
-   }
+    fun saveElementTemplate(templateName: String,
+                            contentsOf: HtmlSelector) {
+        this.htmlGen.addElement(templateName,
+                getJq(contentsOf).html())
+    }
 
-   fun clearRoot() {
-      getJq(rootElementSelector).children().remove()
-   }
+    fun clearRoot() {
+        getJq(rootElementSelector).children().remove()
+    }
 
-   fun getElement(selector: HtmlSelector): HTMLElement {
-      return getJq(selector).get(0)
-   }
+    fun getElement(selector: HtmlSelector): HTMLElement {
+        return getJq(selector).get(0)
+    }
 
-   protected fun getJq(selector: HtmlSelector): JQuery {
-      return jq(selector.text())
-   }
-
-   //abstract  fun <K : ModelItem> appendModelData(data:List<K>)
+    protected fun getJq(selector: HtmlSelector): JQuery {
+        return jq(selector.text())
+    }
 }

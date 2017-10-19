@@ -11,7 +11,7 @@ public class UIFormatter {
     companion object DateCompanion {
         public fun prettyDate(date: Date): String {
             // Make a fuzzy time
-            val delta = Math.round(((Date().getTime()) - (date.getTime() as Double)) / 1000)
+            val delta = Math.round(((Date().getTime()) - (date.getTime())) / 1000)
 
             val isFuture = delta < 0
             val minute = 60
