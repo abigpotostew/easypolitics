@@ -39,28 +39,20 @@ data class BillData(
         return this.currentStatus
     }
 
-//    override fun lastMajorAction(): MajorAction {
-//        return this.status.lastMajorAction()
-//    }
-//
-//    fun lastMajorStatus():MajorStatus{
-//        return this.status.lastMajorStatus()
-//    }
-
     fun lastUpdated(): Double {
         return this.currentStatus.lastMajorAction().date().getTime()
     }
 
     fun lastUpdatedDate(): Date {
-        return this.currentStatus.date() ?: this.currentStatus.lastMajorAction().date()
+        return this.currentStatus.date()
     }
 
     override fun toString(): String {
-        return "BillData\$${uniqueId}@${intro_date.getTime()}"
+        return "BillData\$$uniqueId@${intro_date.getTime()}"
     }
 
     fun officialId(useFullType:Boolean=false):String{
         val typeStr = if (useFullType) bill_type.niceFormat() else bill_type.shortLabel()
-        return "$typeStr ${number}"
+        return "$typeStr $number"
     }
 }

@@ -16,7 +16,7 @@ class CollapsedCardView(private val billView: BillViewItem) : SubTemplate {
     override fun renderIn(root: FlowContent) {
         val billView = this.billView
         val bd = billView.billData
-        val sponsorName = bd.sponsor.getOfficialName()
+        //val sponsorName = bd.sponsor.getOfficialName()
         val introDate = UIFormatter.prettyDate(bd.intro_date)
         val lastUpdatedDateString = UIFormatter.prettyDate(bd.lastUpdatedDate())
         //val status: BillStatus = bd.currentStatus

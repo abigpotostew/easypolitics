@@ -1,22 +1,11 @@
 package bz.stew.bracken.ui.extension.kotlinx
 
-import bz.stew.bracken.ui.view.html.ClassGroup
 import bz.stew.bracken.ui.view.html.Classes
 import bz.stew.bracken.ui.view.html.CssClass
-import kotlinx.html.BUTTON
 import kotlinx.html.CommonAttributeGroupFacade
-import kotlinx.html.DIV
-import kotlinx.html.DL
-import kotlinx.html.DT
 import kotlinx.html.FlowContent
-import kotlinx.html.H5
 import kotlinx.html.HTMLTag
 import kotlinx.html.HtmlBlockTag
-import kotlinx.html.IMG
-import kotlinx.html.P
-import kotlinx.html.TABLE
-import kotlinx.html.TD
-import kotlinx.html.TR
 import kotlinx.html.Tag
 import kotlinx.html.classes
 import kotlinx.html.dd
@@ -46,8 +35,8 @@ fun CommonAttributeGroupFacade.ac(vararg ts: Classes) {
     }
 }
 
-fun HtmlBlockTag.horzizontalDescriptionList(content: Map<String, HtmlFunc>) {
-    dl{
+fun FlowContent.horzizontalDescriptionList(content: Map<String, HtmlFunc>) {
+    dl {
         ac(Classes.boots_row)
         for ((titleString, dataFunc) in content) {
             dt {
@@ -64,7 +53,7 @@ fun HtmlBlockTag.horzizontalDescriptionList(content: Map<String, HtmlFunc>) {
 }
 
 fun FlowContent.horzizontalDescriptionList(content: Map<DlTitleFunc, HtmlFunc>) {
-    dl{
+    dl {
         ac(Classes.boots_row)
         for ((titleFunc, dataFunc) in content) {
             dt {
@@ -88,7 +77,7 @@ private fun <T : HTMLTag> contentTag(tag: T, c: CssClass, contents: T.() -> Unit
     tag.contents()
 }
 
-inline fun <T : Tag> T.set(attribute:String, value:String){
+inline fun <T : Tag> T.set(attribute: String, value: String) {
     this.attributes.put(attribute, value)
 }
 /*

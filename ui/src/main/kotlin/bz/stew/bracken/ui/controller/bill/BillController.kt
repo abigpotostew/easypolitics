@@ -11,7 +11,6 @@ import bz.stew.bracken.ui.model.index.IndexOperation
 import bz.stew.bracken.ui.model.index.MAJOR_STATUS_INDEX
 import bz.stew.bracken.ui.model.index.PARTY_INDEX
 import bz.stew.bracken.ui.model.index.STATUS_INDEX
-import bz.stew.bracken.ui.model.types.bill.BillData
 import bz.stew.bracken.ui.util.JsonUtil
 import bz.stew.bracken.ui.util.log.Log
 import bz.stew.bracken.ui.view.bill.BillView
@@ -31,9 +30,9 @@ import org.w3c.dom.events.EventTarget
  */
 
 class BillController(rootElmt: HtmlSelector,
-    model: Model = BillModelGovTrack()) : StandardController(
-    BillView(rootElmt, BootstrapTemplates()),
-    model) {
+                     model: Model = BillModelGovTrack()) : StandardController<BillView>(
+        BillView(rootElmt, BootstrapTemplates()),
+        model) {
 
     /*override fun loadData(dataRequest: DataRequest, onComplete: (Controller) -> Unit) {
         val controller = this
@@ -46,15 +45,6 @@ class BillController(rootElmt: HtmlSelector,
 
     override fun onParseError() {
         throw RuntimeException("") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    fun applyFilter(filter: BillFilters,
-        selectVal: Any?) {
-        val filtered: List<BillData> = (this.model).getBillData().filter {
-            filter.predicate(it, selectVal)
-        }
-        (this.view as BillView).showSelectedBills(filtered)
-
     }
 
     /**
@@ -70,21 +60,23 @@ class BillController(rootElmt: HtmlSelector,
             introducedDateFilter(it, IndexOperation.LessThanOrEqual)
         })
         this.view.getElement(BillFilters.LASTMAJORSTATUS.htmlSelector()).addEventListener("change",
-            this::billMajorStatusFilter)
+                this::billMajorStatusFilter)
 
         this.view.getElement(HtmlSelector(identifier = Identifier.ID, selectorText = "loadNextPageBtn")).addEventListener("click", {
             nextPageQuery()
         })
     }
 
+    @Suppress("unused")
     fun stopListening() {
+        //TODO use this
         this.view.getElement(BillFilters.PARTY.htmlSelector()).removeEventListener("change", this::partyFilter)
         this.view.getElement(BillFilters.FIXEDSTATUS.htmlSelector()).removeEventListener("change",
-            this::billStatusFilter)
+                this::billStatusFilter)
     }
 
-    fun introducedDateFilter(event: Event,
-        operator: IndexOperation) {
+    private fun introducedDateFilter(event: Event,
+                                     operator: IndexOperation) {
         val target: EventTarget? = event.target
         if (target != null && target is HTMLInputElement) {
             val inputDate: Double = try {
@@ -93,14 +85,14 @@ class BillController(rootElmt: HtmlSelector,
                 0.0
             }
             val validDate = niceClamp(inputDate, INTRO_DATE_INDEX.minKey(), INTRO_DATE_INDEX.maxKey(),
-                operator == IndexOperation.GreaterThanOrEqual)
+                    operator == IndexOperation.GreaterThanOrEqual)
             println("VALUE IS: $validDate")
-            (this.view as BillView).showSelectedBills(
-                INTRO_DATE_INDEX.instancesByOperator(operator, validDate))
+            this.view.showSelectedBills(
+                    INTRO_DATE_INDEX.instancesByOperator(operator, validDate))
         }
     }
 
-    fun partyFilter(event: Event) {
+    private fun partyFilter(event: Event) {
         val target: EventTarget? = event.target
         if (target != null && target is HTMLSelectElement) {
             val party: Party = try {
@@ -108,12 +100,11 @@ class BillController(rootElmt: HtmlSelector,
             } catch (e: IllegalArgumentException) {
                 Party.NONE
             }
-            //this.applyFilter(BillFilters.PARTY, party)
-            (this.view as BillView).showSelectedBills(PARTY_INDEX.instancesWith(party))
+            this.view.showSelectedBills(PARTY_INDEX.instancesWith(party))
         }
     }
 
-    fun billMajorStatusFilter(event: Event) {
+    private fun billMajorStatusFilter(event: Event) {
         //TODO make this filtering more generic
         val target: EventTarget? = event.target
         if (target != null && target is HTMLSelectElement) {
@@ -125,11 +116,11 @@ class BillController(rootElmt: HtmlSelector,
             } catch (e: NumberFormatException) {
                 throw RuntimeException("you fuxed up the status filter for select value of ${target.value}")
             }
-            (this.view as BillView).showSelectedBills(MAJOR_STATUS_INDEX.instancesWith(majorStatus))
+            this.view.showSelectedBills(MAJOR_STATUS_INDEX.instancesWith(majorStatus))
         }
     }
 
-    fun billStatusFilter(event: Event) {
+    private fun billStatusFilter(event: Event) {
         //TODO make this filtering more generic
         val target: EventTarget? = event.target
         if (target != null && target is HTMLSelectElement) {
@@ -141,7 +132,7 @@ class BillController(rootElmt: HtmlSelector,
             } catch (e: NumberFormatException) {
                 throw RuntimeException("you fuxed up the status filter for select value of ${target.value}")
             }
-            (this.view as BillView).showSelectedBills(STATUS_INDEX.instancesWith(fixedStatus))
+            this.view.showSelectedBills(STATUS_INDEX.instancesWith(fixedStatus))
         }
     }
 
@@ -150,18 +141,17 @@ class BillController(rootElmt: HtmlSelector,
      */
     fun startupSetupUi() {
 
-        if (this.view is BillView) {
-            this.view.appendModelData((this.model).getBillData())
+        this.view.appendModelData((this.model).getBillData())
 
-            //todo make this filtering more generic
-            this.view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
-            this.view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
-            this.view.generateAndDisplayAllBills()
-            startListeningFilterForms()
-        }
+        //todo make this filtering more generic
+        this.view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
+        this.view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
+        this.view.generateAndDisplayAllBills()
+        startListeningFilterForms()
+
     }
 
-    fun nextPageQuery() {
+    private fun nextPageQuery() {
         val lastQuery = lastSuccessfulQuery
         if (inProgressQuery != null || lastQuery == null) {
             Log.warning("Can't query to next page since no prior successful query or a query is in progress.")
@@ -169,7 +159,7 @@ class BillController(rootElmt: HtmlSelector,
         }
         val nextQuery = lastQuery.nextPage()
         this.loadEndpoint(nextQuery, {
-            val controller = it.controller as StandardController
+            val controller = it.controller as StandardController<*>
             val view = controller.view as BillView //todo this is janky and should be proply typed
             val response = it.response
             var parse: dynamic
@@ -191,12 +181,12 @@ class BillController(rootElmt: HtmlSelector,
      * Main point to load new data from remote endpoint
      */
     fun downloadBillsLoadData(requestUrl: BillRestQuery,
-        onDownload: (StandardController) -> Unit) {
+                              onDownload: (BillController) -> Unit) {
 
+        val controller = this
         this.loadEndpoint(requestUrl, {
-            val controller = it.controller as StandardController
             val response = it.response
-            var parse: dynamic
+            val parse: dynamic
             try {
                 parse = JsonUtil.parse(response)
                 controller.model.loadBillData(parse, false)
@@ -205,29 +195,5 @@ class BillController(rootElmt: HtmlSelector,
             }
             onDownload(controller)
         })
-
-//         val controller: Controller = this
-//         ServerRequestDispatcher().sendRequest(
-//               requestUrl,
-//               object : RequestCallback() {
-//                  override fun onLoad(response: String) {
-//                     var parse: dynamic
-//                     try {
-//                        parse = JsonUtil.parse(response)
-//                        controller.model.loadBillData(parse)
-//                     } catch (e: Throwable) {
-//                        error("Error parsing json response from data source: \n\t" + e.toString())
-//
-//                     }
-//                     onDownload(controller)
-//                  }
-//               }
-//         )
-//      }
-
     }
 }
-
-//private fun  String.parseInt(): Double {}
-
-//public inline fun jsDate(): Date = js("new Date(year,month,day)")

@@ -40,21 +40,20 @@ import kotlin.dom.addClass
  */
 class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootElmtStr) {
 
-    val GENERATE_FROM_TEMPLATE = true
-    val COUNT_TEXT_HTML_SELECTOR = HtmlSelector(Identifier.ID, "nav-bar-billCount")
-    val OPEN_SPEED: Int = 250
-    val HIDE_SPEED: Int = 200
-    var activeCell: HTMLElement? = null
-    var internalBillId: Int = 0
+    private val GENERATE_FROM_TEMPLATE = true
+    private val COUNT_TEXT_HTML_SELECTOR = HtmlSelector(Identifier.ID, "nav-bar-billCount")
+    private val OPEN_SPEED: Int = 250
+    private val HIDE_SPEED: Int = 200
+    private var activeCell: HTMLElement? = null
+    private var internalBillId: Int = 0
     private val billViews = mutableMapOf<Int, BillViewItem>()
-    val SKIP_PROFILE_IMG: Boolean = true
-    var visibleBills = mutableSetOf<BillViewItem>()
+    private val SKIP_PROFILE_IMG: Boolean = true
+    private var visibleBills = mutableSetOf<BillViewItem>()
 
     fun appendModelData(bills: List<BillData>) {
         for (b: BillData in bills) {
             val existing = billViews.get(b.uniqueId)
             if (existing == null) {
-                //billViews.add(BillViewItem(b))
                 billViews.put(b.uniqueId, BillViewItem(b))
             }
         }
@@ -106,10 +105,8 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
         updateBillCountText(bills.size)
 
         val remainingBills = this.billViews.toMutableMap()//mutableMapOf<Int,BillViewItem>()
-        //allBills.putAll()
         for (bv: BillViewItem in this.visibleBills) {
             getJq(bv.selector()).addClass("billVisible").removeClass("billHidden")
-            //.fadeIn("slow")
             remainingBills.remove(bv.billData.uniqueId)
         }
         remainingBills.forEach {
@@ -129,7 +126,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
 
     //Only call this once. generates
     fun generateAndDisplayAllBills(resetVisible: Boolean = true) {
-        var billListJQ: JQuery = getJq(rootElementSelector)
+        val billListJQ: JQuery = getJq(rootElementSelector)
 
         val sortedList = this.billViews.values.sorted()
 

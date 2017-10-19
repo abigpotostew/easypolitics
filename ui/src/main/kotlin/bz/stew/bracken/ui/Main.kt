@@ -34,26 +34,3 @@ fun main(args: Array<String>) {
          })
 
 }
-
-/**
- * print some info about µajor action data. this doesn't print correctly in the intellij console, but does in chrome
- */
-fun printMajorActionData(controller: BillController) {
-   val bills = controller.model.getBillData()
-
-   //val majorActionIds =
-   //bills.groupBy { (it as BillData).lastMajorAction().id() }
-
-   val grouped = bills.groupBy { it.billStatus().lastMajorAction().id() }
-   println(grouped)
-
-   println("---------")
-   println(grouped.keys)
-   println("---------")
-   for (k in grouped.keys) {
-      println("---------")
-      println(k.toString() + " size " + grouped[k]?.size)
-      println(grouped[k]?.groupBy { (it as BillData).currentStatus.lastMajorAction().description() })
-      println("---------")
-   }
-}
