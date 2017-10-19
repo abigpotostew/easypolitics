@@ -4,7 +4,6 @@ import bz.stew.bracken.ui.controller.StandardController
 import bz.stew.bracken.ui.controller.bill.filter.BillFilters
 import bz.stew.bracken.ui.controller.bill.query.BillRestQuery
 import bz.stew.bracken.ui.extension.niceClamp
-import bz.stew.bracken.ui.model.BillModelGovTrack
 import bz.stew.bracken.ui.model.Model
 import bz.stew.bracken.ui.model.index.INTRO_DATE_INDEX
 import bz.stew.bracken.ui.model.index.IndexOperation
@@ -30,7 +29,7 @@ import org.w3c.dom.events.EventTarget
  */
 
 class BillController(rootElmt: HtmlSelector,
-                     model: Model = BillModelGovTrack()) : StandardController<BillView>(
+                     model: Model) : StandardController<BillView>(
         BillView(rootElmt, BootstrapTemplates()),
         model) {
 
