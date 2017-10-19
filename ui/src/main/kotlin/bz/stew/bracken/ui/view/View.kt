@@ -1,11 +1,8 @@
 package bz.stew.bracken.view
 
-import bz.stew.bracken.ui.extension.jquery.children
-import bz.stew.bracken.ui.extension.jquery.get
-import bz.stew.bracken.ui.extension.jquery.remove
+import bz.stew.bracken.ui.extension.jquery.ext.JQuery
+import bz.stew.bracken.ui.extension.jquery.ext.jQuery
 import bz.stew.bracken.ui.view.html.Identifier
-import jquery.JQuery
-import jquery.jq
 import org.w3c.dom.HTMLElement
 
 //import bz.stew.bracken.jquery
@@ -38,6 +35,6 @@ abstract class View(val rootElementSelector: HtmlSelector = HtmlSelector(Identif
     }
 
     protected fun getJq(selector: HtmlSelector): JQuery {
-        return jq(selector.text())
+        return jQuery(selector.text())
     }
 }

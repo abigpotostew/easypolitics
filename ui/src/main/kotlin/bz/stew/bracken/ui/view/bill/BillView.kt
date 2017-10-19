@@ -6,13 +6,8 @@ import bz.stew.bracken.ui.extension.html.eachChildId
 import bz.stew.bracken.ui.extension.html.elementFixedOffset
 import bz.stew.bracken.ui.extension.html.removeAllChildrenNodes
 import bz.stew.bracken.ui.extension.jquery.actual
-import bz.stew.bracken.ui.extension.jquery.append
-import bz.stew.bracken.ui.extension.jquery.children
-import bz.stew.bracken.ui.extension.jquery.css
-import bz.stew.bracken.ui.extension.jquery.fadeIn
-import bz.stew.bracken.ui.extension.jquery.get
-import bz.stew.bracken.ui.extension.jquery.hide
-import bz.stew.bracken.ui.extension.jquery.show
+import bz.stew.bracken.ui.extension.jquery.ext.JQuery
+import bz.stew.bracken.ui.extension.jquery.ext.jQuery
 import bz.stew.bracken.ui.model.types.bill.BillData
 import bz.stew.bracken.ui.model.types.bill.status.BillStatus
 import bz.stew.bracken.ui.util.animation.Animation
@@ -27,8 +22,6 @@ import bz.stew.bracken.view.View
 import bz.stew.bracken.view.item.ViewItem
 import bz.stewart.bracken.shared.data.FixedStatus
 import bz.stewart.bracken.shared.data.MajorStatus
-import jquery.JQuery
-import jquery.jq
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import kotlin.browser.document
@@ -64,7 +57,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
      */
     //
     fun loadStatusFilter(filterEntry: BillFilters,
-        allStatus: Set<FixedStatus>) {
+                         allStatus: Set<FixedStatus>) {
         val parent = getElement(filterEntry.htmlSelector())
         parent.removeAllChildrenNodes()
         parent.appendChild(Form.Option.generateHtml("All", mapOf(Pair("value", FixedStatus.NONE.ordinal.toString()))))
@@ -77,7 +70,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
     }
 
     fun loadMajorStatusFilter(filterEntry: BillFilters,
-        allMajorStatus: Set<MajorStatus>) {
+                              allMajorStatus: Set<MajorStatus>) {
         val parent = getElement(filterEntry.htmlSelector())
         parent.removeAllChildrenNodes()
         parent.appendChild(Form.Option.generateHtml("All", mapOf(Pair("value", MajorStatus.NONE.ordinal.toString()))))
@@ -89,7 +82,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
     }
 
     fun updateBillCountText(billCount: Int) {
-        jq(countBillsTextHtmlSelector.text()).get(0).innerHTML = "Showing ${billCount} bills"
+        jQuery(countBillsTextHtmlSelector.text()).get(0).innerHTML = "Showing ${billCount} bills"
     }
 
     fun showSelectedBills(bills: Collection<BillData>) {
@@ -114,17 +107,18 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
         //TODO need to also animate the width and height.
         //js("$('.billHidden').velocity('transition.bounceLeftOut',{duration: 500, stagger:10})") //.velocity({ width: 0},500)
         //js("$('.billVisible').velocity('transition.bounceRightIn',{duration: 500, stagger:10})")
-        jq(".billHidden")
-            //.velocity("fadeOut",js("({duration: 500})"))
-            .hide("slow")
+        jQuery(".billHidden")
+                //.velocity("fadeOut",js("({duration: 500})"))
+                .hide("slow")
 
-        jq(".billVisible")
-            //.velocity("fadeIn",js("({duration: 500})")) //DOESN'T WORK
-            .show("slow")
+        jQuery(".billVisible")
+                //.velocity("fadeIn",js("({duration: 500})")) //DOESN'T WORK
+                .show("slow")
     }
 
     //Only call this once. generates
     fun generateAndDisplayAllBills(resetVisible: Boolean = true) {
+        //val bills = jQuery(rootElementSelector.text()).append(jQuery("<div><h1>YO</h2></div>"))
         val billListJQ: JQuery = getJq(rootElementSelector)
 
         val sortedList = this.billViews.values.sorted()
@@ -157,8 +151,8 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
     }
 
     private fun makeAnimation(position: Int,
-        units: String,
-        backwards: Boolean = false): Animation {
+                              units: String,
+                              backwards: Boolean = false): Animation {
         val ani: Animation = object : Animation() {
             override fun onUpdate(progress: Double) {
                 element!!.style.marginBottom = (progress * position).toString() + units
@@ -177,7 +171,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
     }
 
     @Suppress("UnsafeCastFromDynamic")
-    private inline fun calculateOpenHeight(jqElement:dynamic):Int{
+    private inline fun calculateOpenHeight(jqElement: dynamic): Int {
         return jqElement.actual("height").toInt() + 100
     }
 
@@ -187,16 +181,16 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
         val additionalExpandHeight = 30
         if (active != null) {
             //close prior one
-            val child = jq(active).children(".billExpanded")
+            val child = jQuery(active).children(".billExpanded")
             val openHeight =
-                //calculateOpenHeight(jq(child))
-                jq(child).actual("height").toInt() + additionalExpandHeight
+                    //calculateOpenHeight(jq(child))
+                    jQuery(child).actual("height").toInt() + additionalExpandHeight
             val aniOpen: Animation = makeAnimation(openHeight,
-                "px",
-                true
+                    "px",
+                    true
             )
             aniOpen.run(openSpeed,
-                active)
+                    active)
             child.hide(hideSpeed)
             if (this.activeCell == bill) {
                 this.activeCell = null
@@ -205,29 +199,29 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
         }
 
         this.activeCell = bill
-        val child: JQuery = jq(bill).children(".billExpanded")
+        val child: JQuery = jQuery(bill).children(".billExpanded")
         //TODO made this centered, and the width of the number of bills across the screen
         child.css("transform",
-            "translateX(-" + document.elementFixedOffset(bill).x + "px)")
+                "translateX(-" + document.elementFixedOffset(bill).x + "px)")
 
         val openHeight =
-            //calculateOpenHeight(child)//why no work when in function??
-            child.actual("height").toInt() + additionalExpandHeight /// MUST be before .show
+                //calculateOpenHeight(child)//why no work when in function??
+                child.actual("height").toInt() + additionalExpandHeight /// MUST be before .show
         val aniOpen: Animation = makeAnimation(openHeight, "px")
         aniOpen.run(openSpeed,
-            bill)
+                bill)
         child.show(openSpeed)
     }
 
     fun makeCellActive(billSelector: HtmlSelector) {
-        val jqd: dynamic = jq(billSelector.text())
-        makeHtmlCellActive(jqd[0] as HTMLElement)
+        val jqd = jQuery(billSelector.text())
+        makeHtmlCellActive(jqd.get(0))
     }
 
     fun generateFromTemplate(billView: BillViewItem,
-        parentJq: JQuery): HTMLElement {
+                             parentJq: JQuery): HTMLElement {
         val billString = templater.renderBill(billView).getHtml()
-        val billNode = jq(billString)
+        val billNode = jQuery(billString)
         parentJq.append(billNode)
         return billNode.get(0)
     }
@@ -236,7 +230,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
     generates HTML, this should eventually be switched out with a backend templating
      */
     fun generateBillView(billView: BillViewItem,
-        parentJq: JQuery): HTMLElement {
+                         parentJq: JQuery): HTMLElement {
         val bd = billView.billData
         this.internalBillId++
         val billId = billView.selector()
@@ -263,23 +257,23 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
         billHtml.addClass(partyNameClass)
 
         parentJq.append(billJq)
-        billJq.hide()
+        billJq.hide(3)
 
         //make sure the element gets the id or class that it should be identified with
         billId.addToJqElement(billJq)
 
         //could clean up this interface
         billHtml.eachChildClass("billTitle",
-            { this.innerHTML = billView.shortLabel() })
+                { this.innerHTML = billView.shortLabel() })
         billHtml.eachChildClass("billSponsor",
-            { this.innerHTML = sponsorName })
+                { this.innerHTML = sponsorName })
         billHtml.eachChildClass("billDescription",
-            { this.innerHTML = name })
+                { this.innerHTML = name })
         billHtml.eachChildClass("billStatus",
-            { this.innerHTML = "Status: " + statusLabel })
+                { this.innerHTML = "Status: " + statusLabel })
         billHtml.eachChildClass("billDate", { this.innerHTML = introDate })
         billHtml.eachChildClass("billStatusDescription",
-            { this.innerHTML = statusDescr })
+                { this.innerHTML = statusDescr })
 
         val lastMajorStatusIdx = when (status.lastMajorStatus()) {
             MajorStatus.INTRODUCED -> "intro"
@@ -302,18 +296,18 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
 
         // Make tab href and id unique to this bill... required for tabs to work
         (0..3)
-            .map { "bill-exp-nav-tab" + it }
-            .forEach { txt ->
-                val newSelector = HtmlSelector(Identifier.ID, txt + "-" + billId.suffix())
-                billHtml.eachChildClass(txt, {
+                .map { "bill-exp-nav-tab" + it }
+                .forEach { txt ->
+                    val newSelector = HtmlSelector(Identifier.ID, txt + "-" + billId.suffix())
+                    billHtml.eachChildClass(txt, {
 
-                    this.setAttribute("href", newSelector.text())
-                })
-                billHtml.eachChildId(txt, {
-                    //it.setAttribute("href", txt+"-" + billId.suffix())
-                    it.id = newSelector.suffix()
-                })
-            }
+                        this.setAttribute("href", newSelector.text())
+                    })
+                    billHtml.eachChildId(txt, {
+                        //it.setAttribute("href", txt+"-" + billId.suffix())
+                        it.id = newSelector.suffix()
+                    })
+                }
 
         if (!skipProfileImage) {
             billHtml.eachChildClass("billExpandedSponsorImg", {
@@ -330,11 +324,11 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
      */
     private fun initiateBill(bill: BillViewItem) {
         val billSelector = bill.selector()
-        val billJq = jq(billSelector.text())
+        val billJq = jQuery(billSelector.text())
         //val billElmt: HTMLElement = billJq.get(0)
         val view = this
         // Make active on click
-        val clickHeader = jq(billJq).children(".billGridContent")
+        val clickHeader = jQuery(billJq).children(".billGridContent")
         clickHeader.get(0).onclick = fun(e: Event) {
             e.stopImmediatePropagation()
             e.stopPropagation()

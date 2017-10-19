@@ -2,7 +2,7 @@
 
 package bz.stew.bracken.ui.extension.jquery
 
-import jquery.JQuery
+import bz.stew.bracken.ui.extension.jquery.ext.JQuery
 import org.w3c.dom.HTMLElement
 
 /**
@@ -14,9 +14,9 @@ import org.w3c.dom.HTMLElement
 inline fun JQuery.fadeIn(speed: String): JQuery = asDynamic().fadeIn(speed)
 
 //hack!!
-fun JQuery.get(idx: Int): HTMLElement {
+/*fun JQuery.get(idx: Int): HTMLElement {
     return this.asDynamic()[idx]
-}
+}*/
 
 fun JQuery.hide(): JQuery = asDynamic().hide()
 fun JQuery.hide(dur: Int): JQuery = asDynamic().hide(dur)

@@ -1,7 +1,7 @@
 package bz.stew.bracken.view
 
+import bz.stew.bracken.ui.extension.jquery.ext.JQuery
 import bz.stew.bracken.ui.view.html.Identifier
-import jquery.JQuery
 import org.w3c.dom.Element
 import org.w3c.dom.asList
 import kotlin.browser.document

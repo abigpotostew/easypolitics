@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_PARAMETER")
+
 package bz.stew.bracken.ui.extension.html
 
 import kotlin.js.Date
