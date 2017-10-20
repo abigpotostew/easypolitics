@@ -19,9 +19,9 @@ fun main(args: Array<String>) {
    val controller = BillController(rootElement, BillModelEasyPoliticsRest())
 
    controller.view.setLoading(true)
-   controller.view.saveElementTemplate("bill",
+   //controller.view.saveElementTemplate("bill",
                                        rootElement)
-   controller.view.clearRoot()
+   //controller.view.clearRoot()
 
    controller.downloadBillsLoadData(
          BillRestQuery(congress = 115, limit = 50),

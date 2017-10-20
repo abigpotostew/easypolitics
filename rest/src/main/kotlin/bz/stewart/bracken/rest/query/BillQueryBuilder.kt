@@ -29,6 +29,14 @@ class BillQueryBuilder(private val db: MainDbAccess,
 
    private fun queryBson(): BasicDBObject {
       val query = BasicDBObject()
+      if(this.exampleBill.bill_id!=null){
+         if(this.exampleBill.hasEmptyCongress()){
+            //todo multi search for any bills that start with the provided id
+         }else{
+             //todo create a formal mapping between db field names and the bill example field
+            query.put("bill_id", this.exampleBill.bill_id)
+         }
+      }
       if(!exampleBill.hasEmptyCongress() ){//by congress number
          val congressPair = byCongress()
          query.put(congressPair.key, congressPair.value)
@@ -45,7 +53,7 @@ class BillQueryBuilder(private val db: MainDbAccess,
 //         NO_OP()
 //      }
 //      else {
-         return BsonPair("congress",exampleBill.getCongress()!!)
+         return BsonPair("congress",exampleBill.getCongress())
          //"congress: ${exampleBill.getCongress()!!}"
 //      }
    }

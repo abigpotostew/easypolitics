@@ -15,6 +15,11 @@ import java.util.*
  */
 val EMPTY_CONGRESS = -1
 
+/**
+ * The user can describe portions of a bill using any parts of this object. Some parms have different inputs than what's in the database.
+ *
+ * @param bill_id this will be the portion of the id before the '-[congressNum]' such as 'hconres1'
+ */
 class BillExample(val bill_id: String? = null,
                   val actionsArr: Array<PublicAction>? = null,
                   val bill_type: BillType = BillType.NONE,

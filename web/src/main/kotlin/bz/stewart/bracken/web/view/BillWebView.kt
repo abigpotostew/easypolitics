@@ -171,7 +171,7 @@ class BillWebView(val id: String) : ViewTemplate {
                 div {
                     this.id = "bills"
                     ac("card-deck")
-                    //+"bill $reqId"
+                    //  +"bill $reqId"
                 }
             }
         }
