@@ -14,16 +14,9 @@ import org.w3c.dom.HTMLElement
 abstract class View(val rootElementSelector: HtmlSelector = HtmlSelector(Identifier.TAG, "body")) {
 
     private var loading: Boolean = false
-    protected val htmlGen: HtmlGen = HtmlGen()
 
     fun setLoading(isLoading: Boolean) {
         this.loading = isLoading
-    }
-
-    fun saveElementTemplate(templateName: String,
-                            contentsOf: HtmlSelector) {
-        this.htmlGen.addElement(templateName,
-                getJq(contentsOf).html())
     }
 
     fun clearRoot() {

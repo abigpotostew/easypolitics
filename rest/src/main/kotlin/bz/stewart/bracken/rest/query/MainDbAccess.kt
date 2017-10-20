@@ -22,18 +22,21 @@ class MainDbAccess(_databaseName: String) :
             "legislators"),
       StandardDbAccess {
    override fun standardBillQuery(query: BasicDBObject,
-                                  limitRequest: Int,
-                                  sortRequest: Bson,
+                                  limitRequest: Int?,
+                                  sortRequest: Bson?,
                                   offset: Int
-                                 ): Collection<BillDelegated> {
+                                 ): QueryResult {
 
-      val limit = MathUtil.clamp(limitRequest, 0, 1000)
+      val limit = if (limitRequest==null) 1 else MathUtil.clamp(limitRequest, 0, 1000)
       val queryBillOut = queryBills(query, limit, sortRequest, offset)
       if (queryBillOut == null) {
-         return emptyList()
+         return BasicQueryResult(null, limit, offset)
       }
       val peopleMap = peopleQueryToMap(queryBillOut)
-      return toPublicBillCollection(queryBillOut.take(limit), peopleMap)
+
+      val finalResult :Collection<BillDelegated> = toPublicBillCollection(queryBillOut.take(limit), peopleMap)
+      return BasicQueryResult(finalResult, limit, offset)
+      //return toPublicBillCollection(, peopleMap)
    }
 
    private fun peopleQueryToMap(bills: FindIterable<Bill>): Map<String, LegislatorData> {
@@ -99,8 +102,8 @@ class MainDbAccess(_databaseName: String) :
    private fun queryBills(
          query: BasicDBObject,
          limit: Int,
-         sortRequest: Bson,
-         offset: Int): FindIterable<Bill>? {
+         sortRequest: Bson?,
+         offset: Int=0): FindIterable<Bill>? {
 
 
       val db = getFirstDb()
@@ -113,8 +116,11 @@ class MainDbAccess(_databaseName: String) :
          res
       }) ?: return null
 
-      queryBillOut.limit(limit)
-      queryBillOut.sort(sortRequest)
+         queryBillOut.limit(limit)
+
+      if (sortRequest!=null) {
+         queryBillOut.sort(sortRequest)
+      }
       return queryBillOut
    }
 }

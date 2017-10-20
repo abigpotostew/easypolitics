@@ -13,7 +13,7 @@ import kotlinx.html.META
 import kotlinx.html.SCRIPT
 import kotlinx.html.TITLE
 
-class MainPageConfig : PageConfig{
+open class MainPageConfig : PageConfig{
     override fun getMetas(): Set<TagConfiguration<META>> {
         val charsetUpper = BasicConfig(META::class, mapOf(Pair("charset", HtmlConstants.UTF8.get())))
         val charsetLower = BasicConfig(META::class, mapOf(Pair("charset", HtmlConstants.utf8.get())))

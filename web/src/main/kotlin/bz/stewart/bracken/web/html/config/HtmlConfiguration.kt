@@ -18,7 +18,7 @@ class HtmlConfiguration(val tagConfigurations: Set<out TagConfiguration<HTMLTag>
     }
 }
 
-abstract class TagConfiguration<T : HTMLTag>(type: KClass<T>, attributes: Map<String, String>) {
+abstract class TagConfiguration<T : HTMLTag>(type: KClass<T>, attributes: Map<String, String> = emptyMap()) {
     //, conf:T.()->Unit
     val type = type
     val attributes = attributes
@@ -47,6 +47,13 @@ class BasicConfig<T : HTMLTag>(type: KClass<T>,
 
 class ScriptConfig(scriptDef: ScriptSrcConstants) : TagConfiguration<SCRIPT>(SCRIPT::class, scriptDef.asMap()) {
     override fun doConfig(tag: SCRIPT) {
+    }
+}
+
+class ExecuteJsScriptConfig(val jsValue:String) : TagConfiguration<SCRIPT>(SCRIPT::class) {
+    override fun doConfig(tag: SCRIPT) {
+        val js = this.jsValue
+        tag.apply { +js }
     }
 }
 

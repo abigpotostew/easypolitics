@@ -133,11 +133,9 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
         for (i: ViewItem in sortedList) {
             if (i is BillViewItem && !this.visibleBills.contains(i)) {
                 try {
-                    if (generateFromTemplate) {
-                        this.generateFromTemplate(i, billListJQ)
-                    } else {
-                        this.generateBillView(i, billListJQ)
-                    }
+
+                    this.generateFromTemplate(i, billListJQ)
+
                     this.initiateBill(i)
                     this.visibleBills.add(i)
 
@@ -225,98 +223,98 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
         parentJq.append(billNode)
         return billNode.get(0)
     }
-
-    /*
-    generates HTML, this should eventually be switched out with a backend templating
-     */
-    fun generateBillView(billView: BillViewItem,
-                         parentJq: JQuery): HTMLElement {
-        val bd = billView.billData
-        this.internalBillId++
-        val billId = billView.selector()
-        val name = bd.officialTitle
-        //val statusDescription = bd.currentStatus.description()
-        val sponsorName = bd.sponsor.getOfficialName()
-        val introDate = UIFormatter.prettyDate(bd.intro_date)
-        val status: BillStatus = bd.currentStatus
-        val statusLabel: String = status.label()
-        val statusDescr: String = status.description()
-        val link: String = bd.link
-        //val congress: Int = bd.congress
-        val partyNameClass = bd.sponsor.getParty().lowercaseName() //TODO this is kinda janky using as a direct css identifier :(
-        //val billResolType = bd.bill_resolution_type
-        //val billType = bd.bill_type
-        val billSponsorProfileImg = billView.sponsorImageUrl()
-
-        //val view = this
-
-        val billJq: JQuery = htmlGen.buildElement("bill")
-
-        //do all properly typed stuff
-        val billHtml: HTMLElement = billJq.get(0)
-        billHtml.addClass(partyNameClass)
-
-        parentJq.append(billJq)
-        billJq.hide(3)
-
-        //make sure the element gets the id or class that it should be identified with
-        billId.addToJqElement(billJq)
-
-        //could clean up this interface
-        billHtml.eachChildClass("billTitle",
-                { this.innerHTML = billView.shortLabel() })
-        billHtml.eachChildClass("billSponsor",
-                { this.innerHTML = sponsorName })
-        billHtml.eachChildClass("billDescription",
-                { this.innerHTML = name })
-        billHtml.eachChildClass("billStatus",
-                { this.innerHTML = "Status: " + statusLabel })
-        billHtml.eachChildClass("billDate", { this.innerHTML = introDate })
-        billHtml.eachChildClass("billStatusDescription",
-                { this.innerHTML = statusDescr })
-
-        val lastMajorStatusIdx = when (status.lastMajorStatus()) {
-            MajorStatus.INTRODUCED -> "intro"
-            MajorStatus.PASSED_HOUSE -> "house"
-            MajorStatus.PASSED_SENATE -> "senate"
-            MajorStatus.SIGNED_PRESIDENT -> "president"
-            MajorStatus.LAW -> "law"
-            else -> ""
-        }
-
-        billHtml.eachChildClass("billTracker-$lastMajorStatusIdx", {
-            this.setAttribute("style", "background-color:yellow;")
-        })
-
-        //todo link
-        billHtml.eachChildClass("billLink", {
-            this.setAttribute("href", link)
-            this.innerHTML = "Link to govtrack"
-        })
-
-        // Make tab href and id unique to this bill... required for tabs to work
-        (0..3)
-                .map { "bill-exp-nav-tab" + it }
-                .forEach { txt ->
-                    val newSelector = HtmlSelector(Identifier.ID, txt + "-" + billId.suffix())
-                    billHtml.eachChildClass(txt, {
-
-                        this.setAttribute("href", newSelector.text())
-                    })
-                    billHtml.eachChildId(txt, {
-                        //it.setAttribute("href", txt+"-" + billId.suffix())
-                        it.id = newSelector.suffix()
-                    })
-                }
-
-        if (!skipProfileImage) {
-            billHtml.eachChildClass("billExpandedSponsorImg", {
-                this.setAttribute("src", billSponsorProfileImg)
-            })
-        }
-
-        return billHtml
-    }
+//
+//    /*
+//    generates HTML, this should eventually be switched out with a backend templating
+//     */
+//    fun generateBillView(billView: BillViewItem,
+//                         parentJq: JQuery): HTMLElement {
+//        val bd = billView.billData
+//        this.internalBillId++
+//        val billId = billView.selector()
+//        val name = bd.officialTitle
+//        //val statusDescription = bd.currentStatus.description()
+//        val sponsorName = bd.sponsor.getOfficialName()
+//        val introDate = UIFormatter.prettyDate(bd.intro_date)
+//        val status: BillStatus = bd.currentStatus
+//        val statusLabel: String = status.label()
+//        val statusDescr: String = status.description()
+//        val link: String = bd.link
+//        //val congress: Int = bd.congress
+//        val partyNameClass = bd.sponsor.getParty().lowercaseName() //TODO this is kinda janky using as a direct css identifier :(
+//        //val billResolType = bd.bill_resolution_type
+//        //val billType = bd.bill_type
+//        val billSponsorProfileImg = billView.sponsorImageUrl()
+//
+//        //val view = this
+//
+//        val billJq: JQuery = htmlGen.buildElement("bill")
+//
+//        //do all properly typed stuff
+//        val billHtml: HTMLElement = billJq.get(0)
+//        billHtml.addClass(partyNameClass)
+//
+//        parentJq.append(billJq)
+//        billJq.hide(3)
+//
+//        //make sure the element gets the id or class that it should be identified with
+//        billId.addToJqElement(billJq)
+//
+//        //could clean up this interface
+//        billHtml.eachChildClass("billTitle",
+//                { this.innerHTML = billView.shortLabel() })
+//        billHtml.eachChildClass("billSponsor",
+//                { this.innerHTML = sponsorName })
+//        billHtml.eachChildClass("billDescription",
+//                { this.innerHTML = name })
+//        billHtml.eachChildClass("billStatus",
+//                { this.innerHTML = "Status: " + statusLabel })
+//        billHtml.eachChildClass("billDate", { this.innerHTML = introDate })
+//        billHtml.eachChildClass("billStatusDescription",
+//                { this.innerHTML = statusDescr })
+//
+//        val lastMajorStatusIdx = when (status.lastMajorStatus()) {
+//            MajorStatus.INTRODUCED -> "intro"
+//            MajorStatus.PASSED_HOUSE -> "house"
+//            MajorStatus.PASSED_SENATE -> "senate"
+//            MajorStatus.SIGNED_PRESIDENT -> "president"
+//            MajorStatus.LAW -> "law"
+//            else -> ""
+//        }
+//
+//        billHtml.eachChildClass("billTracker-$lastMajorStatusIdx", {
+//            this.setAttribute("style", "background-color:yellow;")
+//        })
+//
+//        //todo link
+//        billHtml.eachChildClass("billLink", {
+//            this.setAttribute("href", link)
+//            this.innerHTML = "Link to govtrack"
+//        })
+//
+//        // Make tab href and id unique to this bill... required for tabs to work
+//        (0..3)
+//                .map { "bill-exp-nav-tab" + it }
+//                .forEach { txt ->
+//                    val newSelector = HtmlSelector(Identifier.ID, txt + "-" + billId.suffix())
+//                    billHtml.eachChildClass(txt, {
+//
+//                        this.setAttribute("href", newSelector.text())
+//                    })
+//                    billHtml.eachChildId(txt, {
+//                        //it.setAttribute("href", txt+"-" + billId.suffix())
+//                        it.id = newSelector.suffix()
+//                    })
+//                }
+//
+//        if (!skipProfileImage) {
+//            billHtml.eachChildClass("billExpandedSponsorImg", {
+//                this.setAttribute("src", billSponsorProfileImg)
+//            })
+//        }
+//
+//        return billHtml
+//    }
 
     /**
      * Starts events and fades in bill

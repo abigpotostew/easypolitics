@@ -14,7 +14,7 @@ class BillQueryBuilder(private val db: MainDbAccess,
                        private val exampleBill: BillExample,
                        private val orderBy: String,
                        limitIn: Int,
-                       offset: Int) {
+                       offset: Int) :Query{
 
    private val MAX_OFFSET = 100000
    private val MAX_RETURNED = 1000
@@ -72,9 +72,9 @@ class BillQueryBuilder(private val db: MainDbAccess,
     * execute the query (unvalidated at this point) with request limit and sort
     * TODO validate input first
     */
-   fun find():QueryResult{
-      val queryRes :Collection<BillDelegated> = db.standardBillQuery(queryBson(), limit, getSort(), offset)
-      return BasicQueryResult(queryRes, limit)
+   override fun find():QueryResult{
+      val queryRes = db.standardBillQuery(queryBson(), limit, getSort(), offset)
+      return queryRes
    }
 
 

@@ -1,17 +1,14 @@
 package bz.stewart.bracken.web.view
 
-import bz.stewart.bracken.web.extension.ac
 import bz.stewart.bracken.web.extension.setId
 import bz.stewart.bracken.web.html.ViewTemplate
 import kotlinx.html.ButtonType
 import kotlinx.html.HtmlBlockTag
-import kotlinx.html.br
 import kotlinx.html.button
 import kotlinx.html.div
 import kotlinx.html.form
 import kotlinx.html.h3
 import kotlinx.html.h4
-import kotlinx.html.id
 import kotlinx.html.input
 import kotlinx.html.label
 import kotlinx.html.li
@@ -22,10 +19,9 @@ import kotlinx.html.span
 import kotlinx.html.style
 import kotlinx.html.ul
 
-class BillWebView(val id: String) : ViewTemplate {
+class NavBar : ViewTemplate {
     override fun renderIn(parent: HtmlBlockTag) {
-        val reqId = this.id
-        parent.div {
+        parent.apply {
             div(classes = "fixed-top") {
                 //                <div class="collapse " id="navbarToggleExternalContent">
                 div(classes = "collapse") {
@@ -158,24 +154,6 @@ class BillWebView(val id: String) : ViewTemplate {
                     }
                 }
             }
-            br { }
-            br { }
-            br { }
-            br { }
-            br { }
-
-            div(classes = "container-fluid") {
-                this.id = "root"
-                ac("container-fluid")
-
-                div {
-                    this.id = "bills"
-                    ac("card-deck")
-                    //  +"bill $reqId"
-                }
-            }
         }
-
     }
 }
-

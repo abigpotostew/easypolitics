@@ -5,6 +5,7 @@ import bz.stewart.bracken.rest.bills.BillExample
 import bz.stewart.bracken.rest.bills.EMPTY_CONGRESS
 import bz.stewart.bracken.rest.query.BillQueryBuilder
 import bz.stewart.bracken.rest.query.QueryResult
+import bz.stewart.bracken.rest.query.SingleBillQuery
 import bz.stewart.bracken.rest.query.emptyQueryResult
 import bz.stewart.bracken.shared.data.BadStateException
 import bz.stewart.bracken.shared.data.BillType
@@ -13,9 +14,11 @@ import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import javax.annotation.PostConstruct
+import javax.websocket.server.PathParam
 
 /**
  * bills api rest controller
@@ -40,7 +43,7 @@ class BillsController {
             "http://localhost:63342",
             "http://localhost:4567")) // TODO this is just for testing locally, remove before prod
     @GetMapping("/bills")
-    fun get(
+    fun getBills(
             @RequestParam(value = "number", required = false) number: String? = null,
             @RequestParam(value = "bill_id", required = false) billId: String? = null,
             @RequestParam(value = "bill_type", required = false) billType: String? = null,
@@ -83,6 +86,21 @@ class BillsController {
             emptyQueryResult()
         }
         return result
+    }
+
+    @CrossOrigin(origins = arrayOf("http://localhost:8080",
+            "http://localhost:63342",
+            "http://localhost:4567")) // TODO this is just for testing locally, remove before prod
+    @GetMapping("/bill/{bill_id}")
+    fun getBill(@PathVariable(value = "bill_id") bill_id: String): QueryResult {
+        logger.info { "Single bill query request: '$bill_id'" }
+        val result = try {
+            SingleBillQuery(bill_id, billMongoDatabase!!.getMainDb()!!).find()
+        } catch (e: Exception) {
+            emptyQueryResult()
+        }
+        return result
+
     }
 
 }
