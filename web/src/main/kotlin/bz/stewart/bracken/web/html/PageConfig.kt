@@ -9,6 +9,7 @@ import kotlinx.html.TITLE
 interface PageConfig {
     fun getMetas(): Set<TagConfiguration<META>>
     fun getLinks(): Set<TagConfiguration<LINK>>
+    fun getBeginBodyScripts(): Set<TagConfiguration<SCRIPT>>
     fun getTitle(): TagConfiguration<TITLE>
     fun getEndBodyScripts(): Set<TagConfiguration<SCRIPT>>
 }

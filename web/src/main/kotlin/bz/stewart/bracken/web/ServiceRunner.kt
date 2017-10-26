@@ -20,10 +20,14 @@ class ServiceRunner {
         }
         Spark.get("/bill/:id") { req, _ ->
             WebsiteSkeleton(SingleBillView(), SingleBillConfig(req.params("id"))).render()
-
         }
         Spark.get("/browse") { _, _ ->
             WebsiteSkeleton(BrowseBillsView(), BrowsePageConfig()).render()
+        }
+        Spark.get("/main.js") { _,response ->
+            response.status(200)
+            response.type("text/javascript")
+            RequireJs(arrayOf(ScriptSrcConstants.KOTLIN_JS_FROM_UI_LOCAL, ScriptSrcConstants.KOTLINX_JS_FROM_UI_LOCAL, ScriptSrcConstants.EASYPOLITICS_UI_JS_FROM_UI_LOCAL), "EasyPoliticsExecute").text()
         }
     }
 }

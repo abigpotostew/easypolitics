@@ -1,9 +1,11 @@
 package bz.stewart.bracken.web.html.config
 
+import bz.stewart.bracken.web.RequireJsDataMain
 import bz.stewart.bracken.web.ScriptSrcConstants
 import kotlinx.html.HTMLTag
 import kotlinx.html.SCRIPT
 import kotlinx.html.TITLE
+import javax.xml.ws.RequestWrapper
 import kotlin.reflect.KClass
 
 class HtmlConfiguration(val tagConfigurations: Set<out TagConfiguration<HTMLTag>>) {
@@ -42,6 +44,13 @@ class BasicConfig<T : HTMLTag>(type: KClass<T>,
         if (this.content != null) {
             tag.text(content)
         }
+    }
+}
+
+class ScriptDataMainConfig(val scriptDef: RequireJsDataMain): TagConfiguration<SCRIPT>(SCRIPT::class, emptyMap()){
+    override fun doConfig(tag: SCRIPT) {
+        tag.attributes.put("data-main", scriptDef.dataMain)
+        tag.src = scriptDef.src
     }
 }
 

@@ -1,6 +1,5 @@
 package bz.stewart.bracken.web
 
-import bz.stewart.bracken.web.html.config.BasicConfig
 import bz.stewart.bracken.web.html.config.ExecuteJsScriptConfig
 import bz.stewart.bracken.web.html.config.TagConfiguration
 import kotlinx.html.SCRIPT
@@ -10,7 +9,14 @@ class UiApiActions {
         val config = ExecuteJsScriptConfig("function EasypoliticsUiApiBrowse(){ return true; }")
         return config
     }
-    fun doSingleBillAction(billId:String):TagConfiguration<SCRIPT>{
-        return ExecuteJsScriptConfig("function EasypoliticsUiApiSingleBill() { return '$billId'; }")
+
+    fun doSingleBillAction(billId: String): TagConfiguration<SCRIPT> {
+        return ExecuteJsScriptConfig("" +
+                "requirejs(['kotlin', 'kotlinJsHtml', 'easypoliticsUi'],\n" +
+                "function   (        kotlin,   kotlinJsHtml, easypoliticsUi) {\n" +
+                "    EasypoliticsUiApiSingleBill = function() { return '$billId'; }" +
+                "});")
     }
+
+
 }

@@ -28,6 +28,11 @@ class WebsiteSkeleton(private val content: ViewTemplate? = null, private val con
                 title {
                     config.getTitle().apply(this)
                 }
+                for(conf in config.getBeginBodyScripts()){
+                    script{
+                        conf.apply(this)
+                    }
+                }
             }
             body {
                 content?.renderIn(this)

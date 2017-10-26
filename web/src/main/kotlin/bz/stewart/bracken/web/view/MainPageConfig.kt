@@ -41,6 +41,15 @@ open class MainPageConfig : PageConfig{
         return TitleConfig("pizza")
     }
 
+    override fun getBeginBodyScripts(): Set<TagConfiguration<SCRIPT>> {
+        return setOf(ScriptConfig(ScriptSrcConstants.JQUERY_MIN_EXT),
+                ScriptConfig(ScriptSrcConstants.JQUERY_ACTUAL_LOCAL),
+                ScriptConfig(ScriptSrcConstants.VELOCITY_EXT),
+                ScriptConfig(ScriptSrcConstants.VELOCITY_UI_MIN_EXT),
+                ScriptConfig(ScriptSrcConstants.TETHER_MIN_EXT),
+                ScriptConfig(ScriptSrcConstants.BOOSTRAP_MIN_EXT))
+    }
+
     override fun getEndBodyScripts(): Set<TagConfiguration<SCRIPT>> {
         val out = mutableSetOf<ScriptConfig>()
         for(enum in ScriptSrcConstants.values().iterator()){
