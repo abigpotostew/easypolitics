@@ -1,6 +1,6 @@
 package bz.stew.bracken.ui.api
 
-import bz.stew.bracken.ui.controller.bill.BillController
+import bz.stew.bracken.ui.controller.bill.BrowseBillsController
 import bz.stew.bracken.ui.controller.bill.query.BillRestQuery
 import bz.stew.bracken.ui.model.BillModelEasyPoliticsRest
 import bz.stew.bracken.ui.view.html.Identifier
@@ -9,7 +9,7 @@ import bz.stew.bracken.view.HtmlSelector
 class BrowseRuntime :RuntimeUi{
     override fun execute() {
         val rootElement = HtmlSelector(Identifier.ID,"root")
-        val controller = BillController(rootElement, BillModelEasyPoliticsRest())
+        val controller = BrowseBillsController(rootElement, BillModelEasyPoliticsRest())
         controller.view.setLoading(true)
 
         controller.downloadBillsLoadData(

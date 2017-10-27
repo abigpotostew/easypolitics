@@ -12,7 +12,7 @@ import bz.stew.bracken.ui.model.index.PARTY_INDEX
 import bz.stew.bracken.ui.model.index.STATUS_INDEX
 import bz.stew.bracken.ui.util.JsonUtil
 import bz.stew.bracken.ui.util.log.Log
-import bz.stew.bracken.ui.view.bill.BillView
+import bz.stew.bracken.ui.view.bill.BrowseBillsView
 import bz.stew.bracken.ui.view.html.Identifier
 import bz.stew.bracken.ui.view.html.bootstrap.BootstrapTemplates
 import bz.stew.bracken.view.HtmlSelector
@@ -28,19 +28,10 @@ import org.w3c.dom.events.EventTarget
  * Created by stew on 1/25/17.
  */
 
-class BillController(rootElmt: HtmlSelector,
-                     model: Model) : StandardController<BillView>(
-        BillView(rootElmt, BootstrapTemplates()),
+class BrowseBillsController(rootElmt: HtmlSelector,
+                            model: Model) : StandardController<BrowseBillsView>(
+        BrowseBillsView(rootElmt, BootstrapTemplates()),
         model) {
-
-    /*override fun loadData(dataRequest: DataRequest, onComplete: (Controller) -> Unit) {
-        val controller = this
-        downloadBillsLoadData(dataRequest.request(), {
-            controller.generateAndDisplayAllBills()
-            controller.view.setLoading(false);
-            println("done loading")
-        })
-    }*/
 
     override fun onParseError() {
         throw RuntimeException("") //To change body of created functions use File | Settings | File Templates.
@@ -49,7 +40,7 @@ class BillController(rootElmt: HtmlSelector,
     /**
      * Start listening to the forms
      */
-    fun startListeningFilterForms() {
+    private fun startListeningFilterForms() {
         this.view.getElement(BillFilters.PARTY.htmlSelector()).addEventListener("change", this::partyFilter)
         this.view.getElement(BillFilters.FIXEDSTATUS.htmlSelector()).addEventListener("change", this::billStatusFilter)
         this.view.getElement(BillFilters.DATEINTROSTART.htmlSelector()).addEventListener("change", {
@@ -139,7 +130,6 @@ class BillController(rootElmt: HtmlSelector,
      * First time only setup.
      */
     fun startupSetupUi() {
-
         this.view.appendModelData((this.model).getBillData())
 
         //todo make this filtering more generic
@@ -159,7 +149,7 @@ class BillController(rootElmt: HtmlSelector,
         val nextQuery = lastQuery.nextPage()
         this.loadEndpoint(nextQuery, {
             val controller = it.controller as StandardController<*>
-            val view = controller.view as BillView //todo this is janky and should be proply typed
+            val view = controller.view as BrowseBillsView //todo this is janky and should be proply typed
             val response = it.response
             var parse: dynamic
             try {
@@ -173,15 +163,13 @@ class BillController(rootElmt: HtmlSelector,
                 error("Error parsing json response from data source while querying for next page: \n\t" + e.toString())
             }
         })
-
     }
 
     /**
      * Main point to load new data from remote endpoint
      */
     fun downloadBillsLoadData(requestUrl: BillRestQuery,
-                              onDownload: (BillController) -> Unit) {
-
+                              onDownload: (BrowseBillsController) -> Unit) {
         val controller = this
         this.loadEndpoint(requestUrl, {
             val response = it.response
