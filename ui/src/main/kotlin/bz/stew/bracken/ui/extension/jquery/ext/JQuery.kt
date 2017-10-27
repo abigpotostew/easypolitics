@@ -285,6 +285,7 @@ external interface JQueryStatic {
     fun post(settings: JQueryAjaxSettings): JQueryXHR
     fun Callbacks(flags: String? = definedExternally /* null */): JQueryCallback
     fun holdReady(hold: Boolean)
+    //operator fun invoke(call:dynamic): JQuery
     @nativeInvoke
     operator fun invoke(selector: String, context: Element? = definedExternally /* null */): JQuery
     @nativeInvoke
@@ -714,7 +715,7 @@ external interface JQuery {
     //@nativeGetter
     //operator fun get(index: Number): HTMLElement?
     //@nativeSetter
-    operator fun set(index: Number, value: HTMLElement)
+    //operator fun set(index: Number, value: HTMLElement)
     fun add(selector: String, context: Element? = definedExternally /* null */): JQuery
     fun add(vararg elements: Element): JQuery
     fun add(html: String): JQuery
@@ -772,6 +773,8 @@ external interface JQuery {
     fun queue(callback: Function<*>): JQuery
     fun queue(queueName: String, newQueue: Array<Function<*>>): JQuery
     fun queue(queueName: String, callback: Function<*>): JQuery
+    @nativeInvoke
+    operator fun invoke(obj:JQuery?= definedExternally):JQuery
 }
 //external var jQuery: JQueryStatic = definedExternally
 //@JsModule("jquery")
@@ -783,3 +786,4 @@ external interface JQuery {
 external val jquery : JQueryStatic = definedExternally
 val jQuery = jquery
 fun jQuery(x:String) = jQuery(x,null as JQuery?)
+//fun jQuery(jq:JQuery) = jQuery(jq,null as JQuery?)

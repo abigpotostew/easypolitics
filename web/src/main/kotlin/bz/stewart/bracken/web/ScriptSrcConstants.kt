@@ -11,7 +11,7 @@ enum class ScriptSrcConstants(val jsName:String,
                               private val crossorigin: String = emptyString()) : ConstantText {
 
     JQUERY_MIN_EXT("jquery","https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"),
-    JQUERY_ACTUAL_LOCAL("jqueryActual","/jquery.actual.js"),
+    JQUERY_ACTUAL_LOCAL("jqueryActual","/lib/jquery.actual.js"),
     VELOCITY_EXT("velocity","https://cdnjs.cloudflare.com/ajax/libs/velocity/1.4.0/velocity.min.js"),
     VELOCITY_UI_MIN_EXT("velocityUi","https://cdn.jsdelivr.net/velocity/1.4.0/velocity.ui.min.js"),
     TETHER_MIN_EXT("tether","https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js", "sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" ,"anonymous"),

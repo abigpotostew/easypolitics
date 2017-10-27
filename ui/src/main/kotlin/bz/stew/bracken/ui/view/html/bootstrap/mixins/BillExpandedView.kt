@@ -31,14 +31,16 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                         li {
                             ac("flex-sm-fill text-sm-center nav-item")
                             a {
-                                val id = tabId(i)
-                                ac("nav-link " + id)
+                                id = tabLabelId(i)
+                                val tabContentId = tabId(i)
+                                ac("nav-link ")// + id)//pizza
+                                this.attributes.put("aria-controls", tabContentId)
                                 if (i == 0) {
                                     ac("active")//only first tab is active
                                 }
                                 set("data-toggle", "tab")
                                 set("role", "tab")
-                                href = "#" + id
+                                href = "#" + tabContentId
                                 +tabNames[i]
                             }
                         }
@@ -56,8 +58,9 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                 )
                 for (i in 0..3) {
                     div {
-                        ac(Classes.boots_tab_card)
+                        ac(Classes.boots_card_block, Classes.boots_tab_pane)
                         id = tabId(i)
+                        attributes.put("aria-labelledby", tabLabelId(i))
                         if (i == 0) {
                             ac("active")
                             set("role", "tabpanel")
@@ -70,6 +73,10 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                 }
             }
         }
+    }
+
+    private fun tabLabelId(i: Int): String {
+        return "bill-exp-nav-label-tab$i-${billView.selector().suffix()}"
     }
 
     private fun tabId(i: Int): String {

@@ -326,7 +326,7 @@ class BillView(rootElmtStr: HtmlSelector, val templater: Templates) : View(rootE
         //val billElmt: HTMLElement = billJq.get(0)
         val view = this
         // Make active on click
-        val clickHeader = jQuery(billJq).children(".billGridContent")
+        val clickHeader = billJq.children(".billGridContent")
         clickHeader.get(0).onclick = fun(e: Event) {
             e.stopImmediatePropagation()
             e.stopPropagation()

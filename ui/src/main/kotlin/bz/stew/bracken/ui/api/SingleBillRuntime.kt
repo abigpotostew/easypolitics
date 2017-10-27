@@ -8,7 +8,7 @@ import bz.stew.bracken.view.HtmlSelector
 
 class SingleBillRuntime(val billId:String) :RuntimeUi{
     override fun execute() {
-        val rootElement = HtmlSelector(Identifier.ID,"root")
+        val rootElement = HtmlSelector(Identifier.ID,"bills")
         val controller = BillController(rootElement, BillModelEasyPoliticsRest())
         controller.view.setLoading(true)
 

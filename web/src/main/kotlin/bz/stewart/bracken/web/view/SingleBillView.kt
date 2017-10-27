@@ -6,7 +6,9 @@ import kotlinx.html.HtmlBlockTag
 class SingleBillView():ViewTemplate {
     override fun renderIn(parent: HtmlBlockTag) {
         //val requestSingleBillQuery
-        NavBar().renderIn(parent)
+//        NavBar().renderIn(parent)
         ContentRoot(BillsMultiView()).renderIn(parent)
+        //todo request query for bill
+
     }
 }
