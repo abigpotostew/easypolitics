@@ -27,7 +27,6 @@ import org.w3c.dom.events.EventTarget
 /**
  * Created by stew on 1/25/17.
  */
-
 class BrowseBillsController(rootElmt: HtmlSelector,
                             model: Model<BillData>) : StandardController<BrowseBillsView, BillData>(
         BrowseBillsView(rootElmt, BootstrapTemplates()),
@@ -152,25 +151,17 @@ class BrowseBillsController(rootElmt: HtmlSelector,
         val nextQuery = lastQuery.nextPage()
         val controller = this
         this.requestService.sendBillRequest(nextQuery, {
-
+            val view = controller.view
+            val response = it.rawResponse
+            var data = it.response
+            if (data != null) {
+                controller.model.loadBillData(data, true)
+                view.appendModelData(this.model.getBillData())
+                view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
+                view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
+                view.generateAndDisplayAllBills(false)
+            }
         })
-        //todo finish this
-//        this.loadEndpoint(nextQuery, {
-//            //val controller = it.controller
-//            val view = controller.view
-//            val response = it.rawResponse
-//            var parse: dynamic
-//            try {
-//                parse = JsonUtil.parse(response)
-//                controller.model.loadBillData(parse, true)
-//                view.appendModelData((this.model).getBillData())
-//                view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
-//                view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
-//                view.generateAndDisplayAllBills(false)
-//            } catch (e: Throwable) {
-//                error("Error parsing json response from data source while querying for next page: \n\t" + e.toString())
-//            }
-//        })
     }
 
     /**
@@ -181,7 +172,7 @@ class BrowseBillsController(rootElmt: HtmlSelector,
         val controller = this
         this.requestService.sendBillRequest(requestUrl, {
             val bills = it.response
-            if(bills!=null) {
+            if (bills != null) {
                 controller.model.loadBillData(bills, false)
             }
             onDownload.invoke()
