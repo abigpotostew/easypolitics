@@ -14,6 +14,4 @@ class SingleBillConfig(val billId: String) : MainPageConfig() {
     override fun getBeginBodyScripts(): Set<TagConfiguration<SCRIPT>> {
         return super.getBeginBodyScripts() + setOf(ScriptDataMainConfig(RequireJsDataMain.REQUIREJS_APP))
     }
-
-
 }

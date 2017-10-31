@@ -1,6 +1,6 @@
 package bz.stew.bracken.ui.service
 
-import bz.stew.bracken.ui.controller.Controller
+import bz.stew.bracken.ui.common.controller.Controller
 import bz.stew.bracken.view.View
 
 /**

@@ -1,7 +1,7 @@
 package bz.stew.bracken.ui.extension.kotlinx
 
-import bz.stew.bracken.ui.view.html.Classes
-import bz.stew.bracken.ui.view.html.CssClass
+import bz.stew.bracken.ui.common.view.Classes
+import bz.stew.bracken.ui.common.view.CssClass
 import kotlinx.html.CommonAttributeGroupFacade
 import kotlinx.html.FlowContent
 import kotlinx.html.HTMLTag
