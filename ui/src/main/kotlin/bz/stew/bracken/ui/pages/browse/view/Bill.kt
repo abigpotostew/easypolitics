@@ -35,33 +35,12 @@ class Bill(val billView: BillViewItem) : Template {
 
         val sponsorParty = bd.sponsor.getParty()
 
-
-//        document.createTree().ul {
-//            li {
-//
-//            }
-//        }
-
         val gen = document.createTree().div(Classes.bill, mapPartyClass(sponsorParty)) {
             id = billId
             CollapsedCardView(billView).renderIn(this)
             //expanded section
             BillExpandedView(template).renderIn(this)
         }
-
-
-//        val gen =
-//
-//            appendHTML(false).div(Classes.bill, {
-//                id = billId
-//                ac(mapPartyClass(sponsorParty))
-//
-//                CollapsedCardView(billView).renderIn(this)
-//                //expanded section
-//                BillExpandedView(template).renderIn(this)
-//            })
-
-
         return StandardHtmlRenderOutput(gen)
     }
 }

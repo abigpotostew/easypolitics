@@ -2,25 +2,24 @@ package bz.stew.bracken.ui.common.bill
 
 import bz.stew.bracken.model.parse.bill.AbstractBillParser
 import bz.stew.bracken.model.parse.bill.EasyPoliticsBillData
-import bz.stew.bracken.ui.common.model.Model
 import bz.stewart.bracken.shared.data.person.Legislator
 
 /**
  * Created by stew on 4/29/17.
  */
-class EasyPoliticsParser(json: dynamic) : AbstractBillParser(json) {
+class EasyPoliticsParser() : AbstractBillParser() {
    private val legislatorCache: MutableMap<String, Legislator> = mutableMapOf()
 
-   override fun getBillsArray(): dynamic {
-      return this.json.results
+   override fun getBillsArray(json: dynamic): dynamic {
+      return json.results
    }
 
-   override fun getBillCount(): Int {
-      return this.json.results.length
+   override fun getBillCount(json: dynamic): Int {
+      return json.results.length
    }
 
-   override fun parseBill(bill: dynamic, model: Model): BillData {
-      return EasyPoliticsBillData(this).build(bill)
+   override fun parseBill(json: dynamic): BillData {
+      return EasyPoliticsBillData(this).build(json)
    }
 
    fun legislatorCached(bioguideId: String): Legislator? {

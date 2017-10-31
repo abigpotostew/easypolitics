@@ -1,19 +1,20 @@
 package bz.stew.bracken.ui.pages.browse.controller
 
+import bz.stew.bracken.ui.common.bill.BillData
 import bz.stew.bracken.ui.common.controller.StandardController
-import bz.stew.bracken.ui.common.query.BillRestQuery
-import bz.stew.bracken.ui.extension.niceClamp
-import bz.stew.bracken.ui.common.model.Model
 import bz.stew.bracken.ui.common.index.INTRO_DATE_INDEX
 import bz.stew.bracken.ui.common.index.IndexOperation
 import bz.stew.bracken.ui.common.index.MAJOR_STATUS_INDEX
 import bz.stew.bracken.ui.common.index.PARTY_INDEX
 import bz.stew.bracken.ui.common.index.STATUS_INDEX
-import bz.stew.bracken.ui.util.JsonUtil
-import bz.stew.bracken.ui.util.log.Log
-import bz.stew.bracken.ui.pages.browse.view.BrowseBillsView
+import bz.stew.bracken.ui.common.model.Model
+import bz.stew.bracken.ui.common.query.BillRestQueryUrl
+import bz.stew.bracken.ui.common.service.BillRestService
 import bz.stew.bracken.ui.common.view.Identifier
+import bz.stew.bracken.ui.extension.niceClamp
 import bz.stew.bracken.ui.pages.browse.view.BootstrapTemplates
+import bz.stew.bracken.ui.pages.browse.view.BrowseBillsView
+import bz.stew.bracken.ui.util.log.Log
 import bz.stew.bracken.view.HtmlSelector
 import bz.stewart.bracken.shared.data.FixedStatus
 import bz.stewart.bracken.shared.data.MajorStatus
@@ -28,9 +29,11 @@ import org.w3c.dom.events.EventTarget
  */
 
 class BrowseBillsController(rootElmt: HtmlSelector,
-                            model: Model) : StandardController<BrowseBillsView>(
-      BrowseBillsView(rootElmt, BootstrapTemplates()),
+                            model: Model<BillData>) : StandardController<BrowseBillsView, BillData>(
+        BrowseBillsView(rootElmt, BootstrapTemplates()),
         model) {
+
+    private val requestService = BillRestService()
 
     override fun onParseError() {
         throw RuntimeException("") //To change body of created functions use File | Settings | File Templates.
@@ -51,7 +54,8 @@ class BrowseBillsController(rootElmt: HtmlSelector,
         this.view.getElement(BillFilters.LASTMAJORSTATUS.htmlSelector()).addEventListener("change",
                 this::billMajorStatusFilter)
 
-        this.view.getElement(HtmlSelector(identifier = Identifier.ID, selectorText = "loadNextPageBtn")).addEventListener("click", {
+        this.view.getElement(HtmlSelector(identifier = Identifier.ID,
+                selectorText = "loadNextPageBtn")).addEventListener("click", {
             nextPageQuery()
         })
     }
@@ -140,46 +144,47 @@ class BrowseBillsController(rootElmt: HtmlSelector,
     }
 
     private fun nextPageQuery() {
-        val lastQuery = lastSuccessfulQuery
-        if (inProgressQuery != null || lastQuery == null) {
+        val lastQuery = this.requestService.lastSuccessfulQuery
+        if (this.requestService.inProgressQuery != null || lastQuery == null) {
             Log.warning("Can't query to next page since no prior successful query or a query is in progress.")
             return
         }
         val nextQuery = lastQuery.nextPage()
-        this.loadEndpoint(nextQuery, {
-            val controller = it.controller as StandardController<*>
-            val view = controller.view as BrowseBillsView //todo this is janky and should be proply typed
-            val response = it.response
-            var parse: dynamic
-            try {
-                parse = JsonUtil.parse(response)
-                controller.model.loadBillData(parse, true)
-                view.appendModelData((this.model).getBillData())
-                view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
-                view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
-                view.generateAndDisplayAllBills(false)
-            } catch (e: Throwable) {
-                error("Error parsing json response from data source while querying for next page: \n\t" + e.toString())
-            }
+        val controller = this
+        this.requestService.sendBillRequest(nextQuery, {
+
         })
+        //todo finish this
+//        this.loadEndpoint(nextQuery, {
+//            //val controller = it.controller
+//            val view = controller.view
+//            val response = it.rawResponse
+//            var parse: dynamic
+//            try {
+//                parse = JsonUtil.parse(response)
+//                controller.model.loadBillData(parse, true)
+//                view.appendModelData((this.model).getBillData())
+//                view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
+//                view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
+//                view.generateAndDisplayAllBills(false)
+//            } catch (e: Throwable) {
+//                error("Error parsing json response from data source while querying for next page: \n\t" + e.toString())
+//            }
+//        })
     }
 
     /**
      * Main point to load new data from remote endpoint
      */
-    fun downloadBillsLoadData(requestUrl: BillRestQuery,
-                              onDownload: (BrowseBillsController) -> Unit) {
+    fun downloadBillsLoadData(requestUrl: BillRestQueryUrl,
+                              onDownload: () -> Unit) {
         val controller = this
-        this.loadEndpoint(requestUrl, {
-            val response = it.response
-            val parse: dynamic
-            try {
-                parse = JsonUtil.parse(response)
-                controller.model.loadBillData(parse, false)
-            } catch (e: Throwable) {
-                error("Error parsing json response from data source: \n\t" + e.toString())
+        this.requestService.sendBillRequest(requestUrl, {
+            val bills = it.response
+            if(bills!=null) {
+                controller.model.loadBillData(bills, false)
             }
-            onDownload(controller)
+            onDownload.invoke()
         })
     }
 }

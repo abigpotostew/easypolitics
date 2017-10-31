@@ -7,7 +7,7 @@ import bz.stew.bracken.ui.common.model.ModelItem
  * Created by stew.bracken on 2/22/17.
  */
 
-class BillProxy(val uniqueId: Int, val context: Model) {
+class BillProxy(val uniqueId: Int, val context: Model<BillData>) {
    fun getActualBill(): ModelItem {
       return context.getBillById(uniqueId)!!
    }
