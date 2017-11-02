@@ -16,7 +16,7 @@ class SingleBillRuntime(private val billId: String) : RuntimeUi {
 
         controller.init(
                 {
-                    println("done loading")
+                    println("done loading bill with id: ${this.billId}")
                 })
     }
 }

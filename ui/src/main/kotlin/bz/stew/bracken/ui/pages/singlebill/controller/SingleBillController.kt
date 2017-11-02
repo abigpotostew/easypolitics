@@ -15,7 +15,8 @@ class SingleBillController(rootElmt: HtmlSelector,
     private val requestService = BillRestService()
 
     private fun inflateUi(){
-
+        //fill in data for a template, pass that into this.view
+        this.view.constructBillView()
     }
 
     override fun init(callback: () -> Unit) {
