@@ -13,18 +13,15 @@ import bz.stew.bracken.view.HtmlSelector
 class BrowseRuntime :RuntimeUi{
     override fun execute() {
         val rootElement = HtmlSelector(Identifier.ID,"root")
-        val controller = BrowseBillsController(rootElement,
-              BillModelEasyPoliticsRest())
+        val controller = BrowseBillsController(rootElmt = rootElement,
+                requestUrl = BillRestQueryUrl(congress = 115, limit = 50),
+              model = BillModelEasyPoliticsRest())
         controller.view.setLoading(true)
 
-        controller.downloadBillsLoadData(
-              BillRestQueryUrl(congress = 115, limit = 50),
-                //"http://localhost:8080/api/v1/bills?congress=115&order_by=-current_status_date&limit=200", //use BillModelEasyPoliticsRest
-                //"https://www.govtrack.us/api/v2/bill?congress=115&order_by=-current_status_date&limit=2",
-                {
+        controller.init {
                     controller.startupSetupUi()
                     controller.view.setLoading(false)
                     println("done loading")
-                })
+                }
     }
 }

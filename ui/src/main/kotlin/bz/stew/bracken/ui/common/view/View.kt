@@ -1,11 +1,9 @@
 package bz.stew.bracken.view
 
+import bz.stew.bracken.ui.common.view.Identifier
 import bz.stew.bracken.ui.extension.jquery.ext.JQuery
 import bz.stew.bracken.ui.extension.jquery.ext.jQuery
-import bz.stew.bracken.ui.common.view.Identifier
 import org.w3c.dom.HTMLElement
-
-//import bz.stew.bracken.jquery
 
 /**
  * Created by stew on 1/23/17.

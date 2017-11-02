@@ -1,13 +1,14 @@
 package bz.stew.bracken.ui.pages.browse.controller
 
 import bz.stew.bracken.ui.common.bill.BillData
-import bz.stew.bracken.ui.common.controller.StandardController
+import bz.stew.bracken.ui.common.controller.PageController
 import bz.stew.bracken.ui.common.index.INTRO_DATE_INDEX
 import bz.stew.bracken.ui.common.index.IndexOperation
 import bz.stew.bracken.ui.common.index.MAJOR_STATUS_INDEX
 import bz.stew.bracken.ui.common.index.PARTY_INDEX
 import bz.stew.bracken.ui.common.index.STATUS_INDEX
 import bz.stew.bracken.ui.common.model.Model
+import bz.stew.bracken.ui.common.query.BillDataServiceEndpoint
 import bz.stew.bracken.ui.common.query.BillRestQueryUrl
 import bz.stew.bracken.ui.common.service.BillRestService
 import bz.stew.bracken.ui.common.view.Identifier
@@ -28,15 +29,15 @@ import org.w3c.dom.events.EventTarget
  * Created by stew on 1/25/17.
  */
 class BrowseBillsController(rootElmt: HtmlSelector,
-                            model: Model<BillData>) : StandardController<BrowseBillsView, BillData>(
+                            private val requestUrl: BillRestQueryUrl,
+                            model: Model<BillData>) : PageController<BrowseBillsView, BillData>(
         BrowseBillsView(rootElmt, BootstrapTemplates()),
         model) {
 
     private val requestService = BillRestService()
+    private var lastSuccessfulQuery: BillDataServiceEndpoint? = null
+    private var inProgressQuery: BillDataServiceEndpoint? = null
 
-    override fun onParseError() {
-        throw RuntimeException("") //To change body of created functions use File | Settings | File Templates.
-    }
 
     /**
      * Start listening to the forms
@@ -143,12 +144,12 @@ class BrowseBillsController(rootElmt: HtmlSelector,
     }
 
     private fun nextPageQuery() {
-        val lastQuery = this.requestService.lastSuccessfulQuery
-        if (this.requestService.inProgressQuery != null || lastQuery == null) {
+        val lastQuery = this.lastSuccessfulQuery
+        if (this.inProgressQuery != null || lastQuery == null) {
             Log.warning("Can't query to next page since no prior successful query or a query is in progress.")
             return
         }
-        val nextQuery = lastQuery.nextPage()
+        val nextQuery = (lastQuery as BillRestQueryUrl).nextPage()
         val controller = this
         this.requestService.sendBillRequest(nextQuery, {
             val view = controller.view
@@ -167,15 +168,17 @@ class BrowseBillsController(rootElmt: HtmlSelector,
     /**
      * Main point to load new data from remote endpoint
      */
-    fun downloadBillsLoadData(requestUrl: BillRestQueryUrl,
-                              onDownload: () -> Unit) {
+    override fun init(callback:() -> Unit) {
         val controller = this
-        this.requestService.sendBillRequest(requestUrl, {
+        this.inProgressQuery = this.requestUrl
+        this.requestService.sendBillRequest(this.requestUrl, {
+            this.lastSuccessfulQuery = this.inProgressQuery
+            this.inProgressQuery = null
             val bills = it.response
             if (bills != null) {
                 controller.model.loadBillData(bills, false)
             }
-            onDownload.invoke()
+            callback.invoke()
         })
     }
 }

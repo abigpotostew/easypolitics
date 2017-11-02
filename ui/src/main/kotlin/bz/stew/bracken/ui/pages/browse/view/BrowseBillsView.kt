@@ -45,7 +45,6 @@ class BrowseBillsView(rootElmtStr: HtmlSelector, private val templater: Template
      * Each call replaces the html values in the filter with those passed in. Repeatable.
      * TODO define these filters in another place
      */
-    //
     fun loadStatusFilter(filterEntry: BillFilters,
                          allStatus: Set<FixedStatus>) {
         val parent = getElement(filterEntry.htmlSelector())
