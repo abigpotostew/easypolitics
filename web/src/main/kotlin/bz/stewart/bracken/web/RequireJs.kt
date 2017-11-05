@@ -14,7 +14,8 @@ class RequireJs (val scripts:Array<ScriptSrcConstants>, val callbackFuncName:Str
 
         outBuilder.append("\n\n")
         //outBuilder.append(UiApiActions().doSingleBillAction("pizza"))
-        outBuilder.append("requirejs(['kotlin', 'kotlinx-html-js', 'app/easypolitics-ui'],\n" +
+        outBuilder.append(
+                "requirejs(['kotlin', 'kotlinx-html-js', 'app/easypolitics-ui'],\n" +
                 "function   (        kotlin,   kotlinJsHtml, easypoliticsUi) {\n" +
                 "    (new easypoliticsUi.bz.stew.bracken.ui.api.SingleBillRuntime('yo')).execute();" +
                 "});")

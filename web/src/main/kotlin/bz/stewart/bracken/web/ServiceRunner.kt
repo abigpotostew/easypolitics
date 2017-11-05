@@ -24,10 +24,17 @@ class ServiceRunner {
         Spark.get("/browse") { _, _ ->
             WebsiteSkeleton(BrowseBillsView(), BrowsePageConfig()).render()
         }
-        Spark.get("/main.js") { _,response ->
+        Spark.get("/browse.js") { _,response ->
             response.status(200)
             response.type("text/javascript")
-            RequireJs(arrayOf(ScriptSrcConstants.KOTLIN_JS_FROM_UI_LOCAL, ScriptSrcConstants.KOTLINX_JS_FROM_UI_LOCAL, ScriptSrcConstants.EASYPOLITICS_UI_JS_FROM_UI_LOCAL), "EasyPoliticsExecute").text()
+            UiApiActions().doBrowseAction()
+            //RequireJs(arrayOf(ScriptSrcConstants.KOTLIN_JS_FROM_UI_LOCAL, ScriptSrcConstants.KOTLINX_JS_FROM_UI_LOCAL, ScriptSrcConstants.EASYPOLITICS_UI_JS_FROM_UI_LOCAL), "EasyPoliticsExecute").text()
+        }
+        Spark.get("/bill.js") { _,response ->
+            response.status(200)
+            response.type("text/javascript")
+            UiApiActions().doSingleBillAction("pizza")//this won't accept input. the initial html request needs to place this code in the html, NOT as a separate request
+            //RequireJs(arrayOf(ScriptSrcConstants.KOTLIN_JS_FROM_UI_LOCAL, ScriptSrcConstants.KOTLINX_JS_FROM_UI_LOCAL, ScriptSrcConstants.EASYPOLITICS_UI_JS_FROM_UI_LOCAL), "EasyPoliticsExecute").text()
         }
     }
 }

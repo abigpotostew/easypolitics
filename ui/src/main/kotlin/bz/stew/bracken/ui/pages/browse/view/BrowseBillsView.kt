@@ -7,6 +7,7 @@ import bz.stew.bracken.ui.extension.jquery.actual
 import bz.stew.bracken.ui.extension.jquery.ext.JQuery
 import bz.stew.bracken.ui.extension.jquery.ext.jQuery
 import bz.stew.bracken.ui.common.bill.BillData
+import bz.stew.bracken.ui.common.view.BillViewItem
 import bz.stew.bracken.ui.util.animation.Animation
 import bz.stew.bracken.ui.util.log.Log
 import bz.stew.bracken.ui.common.view.Form

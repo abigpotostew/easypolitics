@@ -1,7 +1,6 @@
-package bz.stew.bracken.ui.pages.browse.view
+package bz.stew.bracken.ui.common.view
 
 import bz.stew.bracken.ui.common.bill.BillData
-import bz.stew.bracken.ui.common.view.Identifier
 import bz.stew.bracken.view.HtmlSelector
 import bz.stew.bracken.view.item.ViewItem
 

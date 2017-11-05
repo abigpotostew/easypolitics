@@ -4,7 +4,7 @@ import bz.stew.bracken.ui.extension.kotlinx.ac
 import bz.stew.bracken.ui.util.ui.UIFormatter
 import bz.stew.bracken.ui.common.view.Classes
 import bz.stew.bracken.ui.common.view.SubTemplate
-import bz.stew.bracken.ui.pages.browse.view.BillViewItem
+import bz.stew.bracken.ui.common.view.BillViewItem
 import kotlinx.html.FlowContent
 import kotlinx.html.div
 import kotlinx.html.h4

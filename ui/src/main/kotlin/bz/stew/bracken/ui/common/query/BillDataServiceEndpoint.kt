@@ -7,6 +7,6 @@ abstract class BillDataServiceEndpoint(private val baseUrl: BillServiceEndpointT
     abstract fun getSearchParameters(): String
 
     final override fun getUrl(): String {
-        return "${this.baseUrl}${getSearchParameters()}"
+        return "${this.baseUrl.devUrl}${getSearchParameters()}"
     }
 }

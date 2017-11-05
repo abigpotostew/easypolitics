@@ -1,5 +1,6 @@
 package bz.stew.bracken.ui.pages.browse.view
 
+import bz.stew.bracken.ui.common.view.BillViewItem
 import bz.stew.bracken.ui.common.view.HtmlRenderOutput
 import bz.stew.bracken.ui.common.view.Templates
 
