@@ -8,8 +8,6 @@ String mainResourcesRel = "main"
 String testResourcesRel = "test"
 
 String sharedSrc = "../shared/src/main/kotlin"
-String genTargetDir = "build/gen"
-//String genTargetDir = baseBuildDir + 'gen'
 
 String resourcesDir = "src/main/resources"
 
@@ -17,46 +15,36 @@ String MAIN_CLASS = 'bz.stewart.bracken.db.MainKt'
 
 //
 
+
+
 buildscript {
-    ext.kotlin_version = "${kotlin_version}"
 
     repositories {
         mavenCentral()
-
         maven { url 'http://dl.bintray.com/vermeulen-mp/gradle-plugins' }
-        //jcenter() //argparser
-        //maven{url 'https://dl.bintray.com/xenomachina/maven'}
-
     }
 
     dependencies {
-        //classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.wiredforcode:gradle-spawn-plugin:0.6.0'
-
     }
 }
 
 
-apply plugin: "kotlin"
+apply plugin: "kotlin-platform-jvm"
 apply plugin: 'com.wiredforcode.spawn'
-apply plugin: 'application'
 
-defaultTasks 'run'
+
+archivesBaseName = 'easypolitics-db'
 
 repositories {
-    //mavenCentral()
-    //maven{url 'https://dl.bintray.com/xenomachina/maven/'}
-    //maven{  url 'http://repository.jetbrains.com/kotlin-nosql' }
-    //jcenter()
+
     maven{url 'https://dl.bintray.com/xenomachina/maven'}
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile libraries.kotlin_stdlib
     compile "org.litote.kmongo:kmongo:3.3.5"
     compile 'io.github.microutils:kotlin-logging:1.4.3'
-    //compile("org.jetbrains.kotlin:kotlin-nosql-mongodb:0.1-SNAPSHOT")
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.22' //required at compile time
     compile "com.xenomachina:kotlin-argparser:2.0.0"
 
@@ -64,43 +52,22 @@ dependencies {
 
     //runtime 'startdb'
 
-    testCompile 'junit:junit:4.9'
-    testCompile "org.mockito:mockito-core:1.9.5"
-    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    //testCompile 'junit:junit:4.9'
+//    testCompile "org.mockito:mockito-core:1.9.5"
+//    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
-    //compile project(':shared')
+
+    testCompile libraries.junit
+    testCompile libraries.mockito
+    testCompile libraries.kotlin_test
+
 
     runtime "org.slf4j:slf4j-log4j12:1.7.24" //todo figure out how to exclude this from rest
 
-
-    //compile files(sharedSrc)
-    //compile task copySharedCode
+    expectedBy project(":shared")
 
 }
 
-
-
-
-
-sourceSets {
-    main.kotlin.srcDirs += 'src/main/kotlin'
-    main.kotlin.srcDirs += 'build/gen'
-    //main.kotlin.srcDirs += '../shared/src/main'
-    test.kotlin.srcDirs += 'src/test/kotlin'
-
-    //main.java.srcDirs += 'src/main/myJava'
-}
-
-kotlin {
-    experimental {
-        coroutines 'enable'
-    }
-
-}
-
-compileKotlin {
-    kotlinOptions.suppressWarnings = true
-}
 
 
 task startdb(type: SpawnProcessTask, dependsOn: 'assemble'){
@@ -141,57 +108,20 @@ task copyMainResources(dependsOn:build){
 
 }
 
-
-
-test{
-    //dependsOn startdb
-    systemProperty "test.resources", "$baseBuildDir/resources/test"
-    //systemProperty "test.resources", project.getProperty("test.resources") // can use gw test -Ptest.resources=sdfasd
-}
-
-jar {
-    manifest {
-        attributes 'Main-Class': "$MAIN_CLASS"
-    }
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-}
-
-
-
-run {
-    //dependsOn startdb
-    mainClassName = "$MAIN_CLASS"
-    //systemProperty "-data", project.getProperty("data") // can use gw test -Ptest.resources=sdfasd
+task run(dependsOn: classes, type: JavaExec) {
+    main = "$MAIN_CLASS"
+    classpath = sourceSets.main.runtimeClasspath
+    ignoreExitValue(true)
     if ( project && project.hasProperty("appArgs") ) {
         args Eval.me(appArgs)
     }
-
 }
 
-task debugRun(dependsOn:assemble){
-    doFirst{
-        tasks.run.debug = true
-        try{
-            tasks.run.execute()
-        }finally{
-            tasks.run.debug = false
-        }
-    }
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.kotlin
 }
 
-task copySharedCode(type: Copy){
-    doFirst{
-        println("Copying shared code into $genTargetDir")
-    }
-    from sharedSrc
-    into genTargetDir
-    eachFile { println ("Copying: ${it.file}" )}
-    doLast{
-        println("finished copying '$sharedSrc' into '$genTargetDir'.")
-    }
-}
-
-
-assemble {
-    dependsOn copySharedCode
+artifacts {
+    archives sourcesJar
 }

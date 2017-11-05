@@ -1,71 +1,22 @@
+apply plugin: 'kotlin-platform-common'
 
-apply plugin: 'kotlin2js'
-//apply plugin: 'kotlin'
-//
-//buildscript {
-//    ext.kotlin_version = '1.1.2'
-//    repositories {
-//        mavenCentral()
-//    }
-//    dependencies {
-//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-//    }
-//}
+archivesBaseName = 'easypolitics-shared'
 
-sourceSets {
-    main.kotlin.srcDirs += 'src/main/kotlin'
-    //test.kotlin.srcDirs += 'src/test/kotlin'
-}
-dependencies{
-//    compile "org.litote.kmongo:kmongo:3.3.5"
-//    compile 'io.github.microutils:kotlin-logging:1.4.3'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-js:${kotlin_version}" //for kot>=1.1
+repositories {
+    jcenter()
+    mavenCentral()
 }
 
-compileKotlin2Js {
-    kotlinOptions.metaInfo = true
-    kotlinOptions.sourceMap = true
-    kotlinOptions.outputFile = "shared/build/shared.js"
-    kotlinOptions.suppressWarnings = true
-    kotlinOptions.verbose = true
-
+dependencies {
+    compile libraries.kotlin_stdlib_common
+    testCompile libraries.kotlin_test_common
 }
 
-jar.dependsOn(compileKotlin2Js)
-task outJar(type: Jar) {
-    archiveName = "hello_js.jar"
-    from("build") {
-        include '**'
-    }
-    with jar
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.kotlin
 }
 
-build{
-    enabled = false
-}
-
-jar {
-    enabled = false
-}
-
-assemble {
-    enabled=false
-}
-
-compileKotlin2Js{
-    enabled=false
-}
-
-compileJava{
-    enabled=false
-}
-
-classes{
-    enabled=false
-}
-compileJava{
-    enabled=false
-}
-processResources{
-    enabled=false
+artifacts {
+    archives sourcesJar
 }

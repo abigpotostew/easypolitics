@@ -26,4 +26,7 @@ class UiApiActions {
     }
 
 
+    fun mainAll():JsBlock{
+        return JsBlock(RequireJs(emptyArray()).text())
+    }
 }

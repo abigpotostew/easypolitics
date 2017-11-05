@@ -8,6 +8,7 @@ import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.mainBody
 import mu.KotlinLogging
 import java.io.File
+import kotlin.system.exitProcess
 
 
 /**
@@ -35,7 +36,7 @@ fun removeModeArg(argv: Array<String>): Array<String> {
 
 fun hardFail(msg: String) {
    logger.error(msg)
-   error(msg)
+   exitProcess(0)
 }
 
 enum class MainMode(val flag: String) {

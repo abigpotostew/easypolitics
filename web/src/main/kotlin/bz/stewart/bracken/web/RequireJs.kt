@@ -2,7 +2,7 @@ package bz.stewart.bracken.web
 
 import java.lang.StringBuilder
 
-class RequireJs (val scripts:Array<ScriptSrcConstants>, val callbackFuncName:String){
+class RequireJs (val scripts:Array<ScriptSrcConstants>){
 
     fun text():String{
         //build out the require js format:
@@ -17,7 +17,7 @@ class RequireJs (val scripts:Array<ScriptSrcConstants>, val callbackFuncName:Str
         outBuilder.append(
                 "requirejs(['kotlin', 'kotlinx-html-js', 'app/easypolitics-ui'],\n" +
                 "function   (        kotlin,   kotlinJsHtml, easypoliticsUi) {\n" +
-                "    (new easypoliticsUi.bz.stew.bracken.ui.api.SingleBillRuntime('yo')).execute();" +
+                "    console.log(\"easypolitics finished loading\");" +
                 "});")
 
         return outBuilder.toString()

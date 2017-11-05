@@ -1,24 +1,15 @@
-
-
-
-buildscript {
-    ext.kotlin_version = "${kotlin_version}"
-    repositories {
-        mavenCentral()
-    }
-}
 plugins {
     id "org.kravemir.gradle.sass" version "1.2.2"
 }
-version 'unspecified'
 
 apply plugin: 'java'
-apply plugin: "kotlin"
+apply plugin: "kotlin-platform-jvm"
 
 String MAIN_CLASS = 'bz.stewart.bracken.web.MainKt'
 String projName = "easypoliticsweb" //${project.name}
 String buildRootDir = "$buildDir"
 String buildResources = "${buildRootDir}/resources"
+archivesBaseName = 'easypolitics-web'
 
 configurations{
     uiJsSource
@@ -37,14 +28,17 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile libraries.kotlin_stdlib
     compile 'com.sparkjava:spark-core:2.3'
     compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4"
     compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4", configuration:"sources"
     compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4", configuration: "javadoc"
-    testCompile group: 'junit', name: 'junit', version: '4.+'
+    testCompile libraries.junit
+    testCompile libraries.mockito
+    testCompile libraries.kotlin_test
     //compile project(":ui")
     uiJsSource project(path:":ui", configuration:"jsArtifact")
+    expectedBy project(":shared")
 }
 
 //task prepare(type: Copy) {
@@ -74,13 +68,6 @@ task prepare {
     dependsOn ":ui:build"
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
 mainSass{
     doFirst{
         println("Compiling Sass...")
@@ -103,9 +90,23 @@ task fatJar(type: Jar, dependsOn:build) {
     }
 }
 
-task run(type:JavaExec,dependsOn:[fatJar,prepare]){
+task run(type:JavaExec,dependsOn:[classes,fatJar,prepare]){
     main = MAIN_CLASS
     classpath = sourceSets.main.runtimeClasspath
+    ignoreExitValue(true)
+
+    if ( project && project.hasProperty("appArgs") ) {
+        args Eval.me(appArgs)
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.kotlin
+}
+
+artifacts {
+    archives sourcesJar
 }
 
 

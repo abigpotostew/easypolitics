@@ -1,13 +1,14 @@
 package bz.stewart.bracken.web.view
 
 import bz.stewart.bracken.web.HtmlConstants
+import bz.stewart.bracken.web.RequireJsDataMain
 import bz.stewart.bracken.web.ScriptSrcConstants
 import bz.stewart.bracken.web.html.PageConfig
 import bz.stewart.bracken.web.html.config.BasicConfig
 import bz.stewart.bracken.web.html.config.ScriptConfig
+import bz.stewart.bracken.web.html.config.ScriptDataMainConfig
 import bz.stewart.bracken.web.html.config.TagConfiguration
 import bz.stewart.bracken.web.html.config.TitleConfig
-import kotlinx.html.HTMLTag
 import kotlinx.html.LINK
 import kotlinx.html.META
 import kotlinx.html.SCRIPT
@@ -47,14 +48,15 @@ open class MainPageConfig : PageConfig{
                 ScriptConfig(ScriptSrcConstants.VELOCITY_EXT),
                 ScriptConfig(ScriptSrcConstants.VELOCITY_UI_MIN_EXT),
                 ScriptConfig(ScriptSrcConstants.TETHER_MIN_EXT),
-                ScriptConfig(ScriptSrcConstants.BOOSTRAP_MIN_EXT))
+                ScriptConfig(ScriptSrcConstants.BOOSTRAP_MIN_EXT),
+                ScriptDataMainConfig(RequireJsDataMain.REQUIREJS_APP))
     }
 
     override fun getEndBodyScripts(): Set<TagConfiguration<SCRIPT>> {
-        val out = mutableSetOf<ScriptConfig>()
+        val out = mutableSetOf<TagConfiguration<SCRIPT>>()
         for(enum in ScriptSrcConstants.values().iterator()){
             out.add(ScriptConfig(enum))
         }
-        return out
+        return emptySet()//out
     }
 }

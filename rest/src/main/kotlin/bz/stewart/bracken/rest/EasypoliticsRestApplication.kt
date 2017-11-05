@@ -27,7 +27,3 @@ class EasypoliticsRestApplication: CommandLineRunner {
         println("YO PIZZA")
     }
 }
-
-fun main(args: Array<String>) {
-    SpringApplication.run(EasypoliticsRestApplication::class.java, *args)
-}
