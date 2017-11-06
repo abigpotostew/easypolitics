@@ -9,6 +9,7 @@ plugins {
    // id "com.eriwen.gradle.js" version "2.14.1" //combine js files
 }
 apply plugin: 'kotlin-platform-js'
+apply plugin: 'com.moowork.node'
 //apply plugin: "com.eriwen.gradle.js" //combine js files
 
 
@@ -17,11 +18,8 @@ apply plugin: 'kotlin-platform-js'
 ///////////////////////////////////////////////////////////////////////////
 version '1.0-SNAPSHOT'
 String projName = "easypolitics-ui" //${project.name}
-String buildRootDir = "${projectDir}/build"
+String buildRootDir = "${buildDir}"//"${projectDir}/build"
 String buildOutDir = "${buildRootDir}/${projName}"
-
-String sharedSrc = "../shared/src/main/kotlin"
-String genTargetDir = "$buildOutDir/gen"
 
 String resourcesDir = "src/main/resources"
 
@@ -37,7 +35,7 @@ configurations {
 sass {
     main {
         srcDir = file("$projectDir/src/main/sass")
-        outDir = file("$buildOutDir")
+        outDir = file("${buildDir}/resources/main/style")
     }
 }
 
@@ -45,9 +43,22 @@ repositories {
     mavenCentral()
     jcenter()
 }
+
+dependencies {
+    ktlint 'com.github.shyiko:ktlint:0.8.1'
+
+    def kotlinx_html_version = "0.6.4"
+    compile libraries.kotlin_stdlib_js
+    compile "org.jetbrains.kotlinx:kotlinx-html-js:${kotlinx_html_version}"
+    compile "org.jetbrains.kotlinx:kotlinx-html-js:${kotlinx_html_version}:sources"
+    expectedBy project(":shared")
+
+    testCompile libraries.kotlin_test_js
+}
+
 compileKotlin2Js {
     //kotlinOptions.metaInfo = true
-    kotlinOptions.outputFile = "${buildOutDir}/${projName}.js"
+    //kotlinOptions.outputFile = "${buildOutDir}/${projName}.js"
 
     kotlinOptions.sourceMap = true
     kotlinOptions.sourceMapEmbedSources = "always"
@@ -61,29 +72,56 @@ compileKotlin2Js {
     kotlinOptions.moduleKind = "umd"
 }
 
-dependencies {
-    def kotlinx_html_version = "0.6.4"
+node {
+    version = nodeVersion
+    download = true
+}
 
-    ktlint 'com.github.shyiko:ktlint:0.8.1'
-    compile libraries.kotlin_stdlib_js
-    testCompile libraries.kotlin_test_js
-    compile "org.jetbrains.kotlinx:kotlinx-html-js:${kotlinx_html_version}"
-    compile "org.jetbrains.kotlinx:kotlinx-html-js:${kotlinx_html_version}:sources"
-    expectedBy project(":shared")
+task installJquery(type: NpmTask) {
+    inputs.property('jqueryVersion', jqueryVersion)
+    outputs.dir file('node_modules/jquery')
+
+    args = ['install', "jquery@${jqueryVersion}"]
+}
+
+task installJqueryActual(type: NpmTask) {
+    inputs.property('jqueryActualVersion', jqueryActualVersion)
+    outputs.dir file('node_modules/jquery.actual')
+
+    args = ['install', "jquery.actual@${jqueryActualVersion}"]
 }
 
 
-task copyJsResources(type:Copy) {
-    doFirst {
-        logger.info("COPYING UI resources from $resourcesDir into build directory $buildOutDir")
+task populateNodeModules(type: Copy, dependsOn: [compileKotlin2Js, installJquery, installJqueryActual]) {
+    from compileKotlin2Js.destinationDir
+
+    configurations.compile.each {
+        from zipTree(it.absolutePath).matching { include '*.js' }
     }
-    from resourcesDir
-    into "${buildOutDir}"
-    doLast {
-        logger.info("Finished copying UI resources into build folder...")
-    }
-    dependsOn mainSass
+
+    into "${buildDir}/node_modules"
 }
+
+task copyNodeLibraries(type:Copy, dependsOn: populateNodeModules){
+    from "node_modules/jquery.actual/jquery.actual.min.js"
+    from "node_modules/jquery/dist/jquery.min.js"
+    into "${buildDir}/resources/main/lib"
+}
+//build.dependsOn installJquery
+//build.dependsOn installJqueryActual
+assemble.dependsOn copyNodeLibraries
+
+//task copyJsResources(type:Copy) {
+//    doFirst {
+//        logger.info("COPYING UI resources from $resourcesDir into build directory ${buildDir}")
+//    }
+//    from resourcesDir
+//    into "${buildDir}"
+//    doLast {
+//        logger.info("Finished copying UI resources into build folder...")
+//    }
+//    dependsOn mainSass
+//}
 //assemble.dependsOn.add(copyJsResources)
 
 //task assembleWeb(type: Copy) {
@@ -129,12 +167,14 @@ mainSass{
     }
 }
 
-tasks.build.doLast() {
-    tasks.copyJsResources.execute()
-    tasks.mainSass.execute()
+//tasks.build.doLast() {
+//    //tasks.copyJsResources.execute()
+//    tasks.mainSass.execute()
+//
+//    logger.info("Finished UI build!")
+//}
 
-    logger.info("Finished UI build!")
-}
+build.dependsOn mainSass
 
 task cleaner(type: Delete) {
     doLast{

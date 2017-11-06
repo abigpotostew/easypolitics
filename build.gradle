@@ -41,6 +41,8 @@ task buildUi(dependsOn: ":ui:build"){
 ext {
     nodeVersion = '6.11.3'
     qunitjsVersion = '2.4.0'
+    jqueryVersion = '3.2.1'
+    jqueryActualVersion = '1.0.19'
     libraries = [
             junit: "junit:junit:4.12",
             mockito: "org.mockito:mockito-core:1.9.5",
