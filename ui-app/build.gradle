@@ -32,6 +32,8 @@ combineJs {
     source = [
             // The order is important. That's why the documented way with a reference to a source set using wildcards
             // is not used.
+            "${buildDir}/classes/kotlin/main/min/jquery.actual.js",
+            "${buildDir}/classes/kotlin/main/min/jquery.js",
             "${buildDir}/classes/kotlin/main/min/kotlin.js",
             "${buildDir}/classes/kotlin/main/min/easypolitics-ui.js",
             "${buildDir}/classes/kotlin/main/min/ui-app.js"
@@ -58,6 +60,12 @@ task minifiedJar(type: Jar) {
     from minifyJs
 }
 
+task devJar(type: Jar) {
+    classifier = 'combined'
+    from combineJs
+}
+
 artifacts {
     archives minifiedJar
+    archives devJar
 }
