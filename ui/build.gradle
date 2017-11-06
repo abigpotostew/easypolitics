@@ -25,6 +25,7 @@ String genTargetDir = "$buildOutDir/gen"
 
 String resourcesDir = "src/main/resources"
 
+archivesBaseName = 'easypolitics-ui'
 
 configurations {
     ktlint
@@ -45,7 +46,7 @@ repositories {
     jcenter()
 }
 compileKotlin2Js {
-    kotlinOptions.metaInfo = true
+    //kotlinOptions.metaInfo = true
     kotlinOptions.outputFile = "${buildOutDir}/${projName}.js"
 
     kotlinOptions.sourceMap = true
@@ -53,7 +54,6 @@ compileKotlin2Js {
     //kotlinOptions.suppressWarnings = false
     kotlinOptions.verbose = true
 
-    kotlinOptions.moduleKind = "umd"
     //kotlin.incremental=true //only re-build changed files
 }
 
@@ -86,33 +86,33 @@ task copyJsResources(type:Copy) {
 }
 //assemble.dependsOn.add(copyJsResources)
 
-task assembleWeb(type: Copy) {
-    configurations.compile.each { File file ->
-        from(zipTree(file.absolutePath), {
-            includeEmptyDirs = false
-            include { fileTreeElement ->
-                def path = fileTreeElement.path
-                path.endsWith(".js") && (path.startsWith("META-INF/resources/") ||
-                        !path.startsWith("META-INF/"))
-            }
-        })
-    }
-    from compileKotlin2Js.destinationDir
-    into "${buildOutDir}/lib"
-
-    dependsOn classes
-
-
-    //dependsOn tasks.copySharedCode
-
-    doLast{
-        logger.info("Copied kotlin.js from jar")
-    }
-}
+//task assembleWeb(type: Copy) {
+//    configurations.compile.each { File file ->
+//        from(zipTree(file.absolutePath), {
+//            includeEmptyDirs = false
+//            include { fileTreeElement ->
+//                def path = fileTreeElement.path
+//                path.endsWith(".js") && (path.startsWith("META-INF/resources/") ||
+//                        !path.startsWith("META-INF/"))
+//            }
+//        })
+//    }
+//    from compileKotlin2Js.destinationDir
+//    into "${buildOutDir}/lib"
+//
+//    dependsOn classes
+//
+//
+//    //dependsOn tasks.copySharedCode
+//
+//    doLast{
+//        logger.info("Copied kotlin.js from jar")
+//    }
+//}
 
 //compileKotlin2Js.dependsOn copySharedCode
 assemble {
-    dependsOn copyJsResources, assembleWeb
+    //dependsOn copyJsResources
 
 }
 //assemble.dependsOn.add(assembleWeb)

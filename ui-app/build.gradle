@@ -1,0 +1,63 @@
+import com.google.javascript.jscomp.CompilerOptions
+
+apply plugin: 'kotlin2js'
+apply plugin: 'kotlin-dce-js'
+apply plugin: "com.eriwen.gradle.js"
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':ui')
+    compile libraries.kotlin_stdlib_js
+}
+
+[compileKotlin2Js, compileTestKotlin2Js]*.configure {
+    kotlinOptions.moduleKind = "umd"
+}
+
+compileKotlin2Js {
+    kotlinOptions.sourceMap = true
+    kotlinOptions.sourceMapEmbedSources = "always"
+}
+
+project.afterEvaluate {
+    unpackDependenciesKotlinJs.dependsOn(':ui:assemble')
+    unpackDependenciesTestKotlinJs.dependsOn(':ui:assemble')
+}
+
+combineJs {
+    source = [
+            // The order is important. That's why the documented way with a reference to a source set using wildcards
+            // is not used.
+            "${buildDir}/classes/kotlin/main/min/kotlin.js",
+            "${buildDir}/classes/kotlin/main/min/easypolitics-ui.js",
+            "${buildDir}/classes/kotlin/main/min/ui-app.js"
+    ]
+    dest = file("${buildDir}/classes/kotlin/main/combined/${archivesBaseName}-combined.js")
+}
+
+minifyJs {
+    source = combineJs
+    dest = file("${buildDir}/classes/kotlin/main/minified/${archivesBaseName}-minified.js")
+    closure {
+        compilerOptions = new CompilerOptions().with {
+            setLanguage(CompilerOptions.LanguageMode.ECMASCRIPT5)
+            return it
+        }
+    }
+}
+
+combineJs.dependsOn runDceKotlinJs
+build.dependsOn minifyJs
+
+task minifiedJar(type: Jar) {
+    classifier = 'minified'
+    from minifyJs
+}
+
+artifacts {
+    archives minifiedJar
+}
