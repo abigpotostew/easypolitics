@@ -21,6 +21,7 @@ enum class ScriptSrcConstants(val jsName:String,
     KOTLIN_JS_FROM_UI_LOCAL("kotlin","lib/lib/kotlin"), //todo squish with ui code
     KOTLINX_JS_FROM_UI_LOCAL("kotlinHtmlJs","lib/lib/kotlinx-html-js"), //must be before easypolitics-ui.js
     EASYPOLITICS_UI_JS_FROM_UI_LOCAL("easypoliticsUi","lib/easypolitics-ui"),// todo add integrity
+    UIAPP_LOCAL("uiApp","/lib/ui-app.js"),// todo add integrity
     ;
 
     override fun get(): String {

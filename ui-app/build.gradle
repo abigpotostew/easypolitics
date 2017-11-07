@@ -32,18 +32,18 @@ combineJs {
     source = [
             // The order is important. That's why the documented way with a reference to a source set using wildcards
             // is not used.
-            "${buildDir}/classes/kotlin/main/min/jquery.actual.js",
-            "${buildDir}/classes/kotlin/main/min/jquery.js",
+            "${buildDir}/classes/kotlin/main/dependencies-tmp/lib/jquery.actual.min.js",
+            "${buildDir}/classes/kotlin/main/dependencies-tmp/lib/jquery.min.js",
             "${buildDir}/classes/kotlin/main/min/kotlin.js",
             "${buildDir}/classes/kotlin/main/min/easypolitics-ui.js",
             "${buildDir}/classes/kotlin/main/min/ui-app.js"
     ]
-    dest = file("${buildDir}/classes/kotlin/main/combined/${archivesBaseName}-combined.js")
+    dest = file("${buildDir}/classes/kotlin/main/combined/${archivesBaseName}.js")
 }
 
 minifyJs {
     source = combineJs
-    dest = file("${buildDir}/classes/kotlin/main/minified/${archivesBaseName}-minified.js")
+    dest = file("${buildDir}/classes/kotlin/main/minified/${archivesBaseName}.js")
     closure {
         compilerOptions = new CompilerOptions().with {
             setLanguage(CompilerOptions.LanguageMode.ECMASCRIPT5)
@@ -65,7 +65,14 @@ task devJar(type: Jar) {
     from combineJs
 }
 
+configurations {
+    devJsArtifact
+    prodJsArtifact
+}
+
 artifacts {
     archives minifiedJar
     archives devJar
+    devJsArtifact devJar
+    prodJsArtifact minifiedJar
 }

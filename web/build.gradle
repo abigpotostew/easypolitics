@@ -4,6 +4,7 @@ plugins {
 
 apply plugin: 'java'
 apply plugin: "kotlin-platform-jvm"
+apply plugin: 'com.moowork.node'
 
 String MAIN_CLASS = 'bz.stewart.bracken.web.MainKt'
 String projName = "easypoliticsweb" //${project.name}
@@ -37,7 +38,7 @@ dependencies {
     testCompile libraries.mockito
     testCompile libraries.kotlin_test
     //compile project(":ui")
-    uiJsSource project(path:":ui", configuration:"jsArtifact")
+    uiJsSource project(path:":ui-app", configuration:"devJsArtifact")
     expectedBy project(":shared")
 }
 
@@ -60,13 +61,35 @@ task prepare {
     doLast {
         configurations.uiJsSource.resolvedConfiguration.resolvedArtifacts.each { artifact ->
             copy {
-                from project.tarTree(artifact.getFile())
+                from project.zipTree(artifact.getFile())
+                exclude "META-INF/"
                 into "$buildDir/resources/main/static/lib"
             }
         }
     }
     dependsOn ":ui:build"
 }
+
+node {
+    version = nodeVersion
+    download = true
+}
+
+
+task installRequireJs(type: NpmTask) {
+    inputs.property('requireJsVersion', requireJsVersion)
+    outputs.dir file("node_modules/requirejs")
+
+    args = ['install', "requirejs@${requireJsVersion}"]
+}
+
+task copyNodeLibraries(type:Copy, dependsOn: installRequireJs){
+    from "node_modules/requirejs/require.js"
+    into "${buildDir}/resources/main/static/lib"
+}
+//build.dependsOn installJquery
+//build.dependsOn installJqueryActual
+prepare.dependsOn copyNodeLibraries
 
 mainSass{
     doFirst{

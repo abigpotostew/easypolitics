@@ -43,6 +43,7 @@ ext {
     qunitjsVersion = '2.4.0'
     jqueryVersion = '3.2.1'
     jqueryActualVersion = '1.0.19'
+    requireJsVersion = '2.3.5'
     libraries = [
             junit: "junit:junit:4.12",
             mockito: "org.mockito:mockito-core:1.9.5",

@@ -44,19 +44,23 @@ open class MainPageConfig : PageConfig{
 
     override fun getBeginBodyScripts(): Set<TagConfiguration<SCRIPT>> {
         return setOf(ScriptConfig(ScriptSrcConstants.JQUERY_MIN_EXT),
-                ScriptConfig(ScriptSrcConstants.JQUERY_ACTUAL_LOCAL),
+                //ScriptConfig(ScriptSrcConstants.JQUERY_ACTUAL_LOCAL),
                 ScriptConfig(ScriptSrcConstants.VELOCITY_EXT),
                 ScriptConfig(ScriptSrcConstants.VELOCITY_UI_MIN_EXT),
                 ScriptConfig(ScriptSrcConstants.TETHER_MIN_EXT),
                 ScriptConfig(ScriptSrcConstants.BOOSTRAP_MIN_EXT),
-                ScriptDataMainConfig(RequireJsDataMain.REQUIREJS_APP))
+                ScriptConfig(ScriptSrcConstants.BOOSTRAP_MIN_EXT)
+                //ScriptDataMainConfig(RequireJsDataMain.REQUIREJS_APP)
+        )
     }
 
     override fun getEndBodyScripts(): Set<TagConfiguration<SCRIPT>> {
         val out = mutableSetOf<TagConfiguration<SCRIPT>>()
         for(enum in ScriptSrcConstants.values().iterator()){
-            out.add(ScriptConfig(enum))
+            //out.add(ScriptConfig(enum))
         }
-        return emptySet()//out
+        out.add(ScriptConfig(ScriptSrcConstants.UIAPP_LOCAL))
+        return out
+        //emptySet()//out
     }
 }

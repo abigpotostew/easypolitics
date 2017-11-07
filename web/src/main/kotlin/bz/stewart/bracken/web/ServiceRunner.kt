@@ -23,7 +23,7 @@ class ServiceRunner {
             WebsiteSkeleton(SingleBillView(), SingleBillConfig(req.params("id"))).render()
         }
         Spark.get(AppServices.BROWSE_BILL.path) { _, _ ->
-            WebsiteSkeleton(BrowseBillsView(), BrowsePageConfig()).render()
+            WebsiteSkeleton(BrowseBillsView(), MainPageConfig()).render()
         }
         Spark.get("/main.js") { _, response ->
             response.status(200)
