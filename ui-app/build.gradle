@@ -35,6 +35,7 @@ combineJs {
             "${buildDir}/classes/kotlin/main/dependencies-tmp/lib/jquery.actual.min.js",
             "${buildDir}/classes/kotlin/main/dependencies-tmp/lib/jquery.min.js",
             "${buildDir}/classes/kotlin/main/min/kotlin.js",
+            "${buildDir}/classes/kotlin/main/min/kotlinx-html-js.js",
             "${buildDir}/classes/kotlin/main/min/easypolitics-ui.js",
             "${buildDir}/classes/kotlin/main/min/ui-app.js"
     ]
