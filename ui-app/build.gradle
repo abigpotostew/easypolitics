@@ -3,6 +3,7 @@ import com.google.javascript.jscomp.CompilerOptions
 apply plugin: 'kotlin2js'
 apply plugin: 'kotlin-dce-js'
 apply plugin: "com.eriwen.gradle.js"
+apply plugin: "com.dorongold.task-tree"
 
 repositories {
     jcenter()
