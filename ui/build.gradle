@@ -101,7 +101,7 @@ task populateNodeModules(type: Copy, dependsOn: [compileKotlin2Js, installJquery
 
 //copies dev versions
 task copyNodeLibraries(type: Copy, dependsOn: populateNodeModules) {
-    from "node_modules/bootstrap-beta/dist/js/bootstrap-bundle.js"
+    from "node_modules/bootstrap-beta/dist/js/bootstrap.bundle.js"
     from "node_modules/jquery.actual/jquery.actual.js"
     from "node_modules/jquery/dist/jquery.js"
     into "${buildDir}/resources/main/lib"
