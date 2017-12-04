@@ -1,9 +1,10 @@
 package bz.stew.bracken.ui.pages.browse.view.mixins
 
-import bz.stew.bracken.ui.extension.kotlinx.ac
-import bz.stew.bracken.ui.extension.kotlinx.set
 import bz.stew.bracken.ui.common.view.Classes
 import bz.stew.bracken.ui.common.view.SubTemplate
+import bz.stew.bracken.ui.extension.jquery.ext.jQuery
+import bz.stew.bracken.ui.extension.kotlinx.ac
+import bz.stew.bracken.ui.extension.kotlinx.set
 import bz.stew.bracken.ui.pages.browse.view.Bill
 import kotlinx.html.FlowContent
 import kotlinx.html.a
@@ -23,6 +24,7 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
             div {
                 ac(Classes.boots_card_header)
                 ul {
+                    id = "tabs${billView.selector().suffix()}"
                     ac("nav flex-column flex-sm-row nav-pills card-header-pills")
                     set("role", "tablist")
                     var i = 0
@@ -32,17 +34,18 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                             ac("flex-sm-fill text-sm-center nav-item")
                             a {
                                 id = tabLabelId(i)
-                                val tabContentId = tabId(i)
-                                ac("nav-link ")// + id)//pizza
-                                this.attributes.put("aria-controls", tabContentId)
+                                ac("nav-link")// + id)//pizza
+                                this.attributes.put("aria-controls", tabId(i))
                                 if (i == 0) {
                                     ac("active")//only first tab is active
+                                    set("aria-selected", "true")
                                 }
                                 set("data-toggle", "tab")
                                 set("role", "tab")
-                                href = "#" + tabContentId
+                                href = "#${tabId(i)}"
                                 +tabNames[i]
                             }
+
                         }
                         ++i
                     }
@@ -63,8 +66,8 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                         attributes.put("aria-labelledby", tabLabelId(i))
                         if (i == 0) {
                             ac("active")
-                            set("role", "tabpanel")
                         }
+                        set("role", "tabpanel")
                         div {
                             ac(Classes.boots_container, Classes.billExpandedTabContent)
                             tabTemplates[i].renderIn(this)

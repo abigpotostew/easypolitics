@@ -773,6 +773,8 @@ external interface JQuery {
     fun queue(callback: Function<*>): JQuery
     fun queue(queueName: String, newQueue: Array<Function<*>>): JQuery
     fun queue(queueName: String, callback: Function<*>): JQuery
+
+    fun tab(tabAction:String):JQuery
 }
 
 @Suppress("NOTHING_TO_INLINE")
