@@ -1,17 +1,12 @@
-
-
 ///////////////////////////////////////////////////////////////////////////
 // PLUGINS
 ///////////////////////////////////////////////////////////////////////////
 
 plugins {
     id "org.kravemir.gradle.sass" version "1.2.2"
-   // id "com.eriwen.gradle.js" version "2.14.1" //combine js files
 }
 apply plugin: 'kotlin-platform-js'
 apply plugin: 'com.moowork.node'
-//apply plugin: "com.eriwen.gradle.js" //combine js files
-
 
 ///////////////////////////////////////////////////////////////////////////
 // BUILD LOCATIONS
@@ -57,14 +52,9 @@ dependencies {
 }
 
 compileKotlin2Js {
-    //kotlinOptions.metaInfo = true
-    //kotlinOptions.outputFile = "${buildOutDir}/${projName}.js"
-
     kotlinOptions.sourceMap = true
     kotlinOptions.sourceMapEmbedSources = "always"
-    //kotlinOptions.suppressWarnings = false
     kotlinOptions.verbose = true
-
     //kotlin.incremental=true //only re-build changed files
 }
 
@@ -102,90 +92,40 @@ task populateNodeModules(type: Copy, dependsOn: [compileKotlin2Js, installJquery
     into "${buildDir}/node_modules"
 }
 
-task copyNodeLibraries(type:Copy, dependsOn: populateNodeModules){
+task copyNodeLibraries(type: Copy, dependsOn: populateNodeModules) {
     from "node_modules/jquery.actual/jquery.actual.min.js"
     from "node_modules/jquery/dist/jquery.min.js"
     into "${buildDir}/resources/main/lib"
 }
-//build.dependsOn installJquery
-//build.dependsOn installJqueryActual
 assemble.dependsOn copyNodeLibraries
 
-//task copyJsResources(type:Copy) {
-//    doFirst {
-//        logger.info("COPYING UI resources from $resourcesDir into build directory ${buildDir}")
-//    }
-//    from resourcesDir
-//    into "${buildDir}"
-//    doLast {
-//        logger.info("Finished copying UI resources into build folder...")
-//    }
-//    dependsOn mainSass
-//}
-//assemble.dependsOn.add(copyJsResources)
 
-//task assembleWeb(type: Copy) {
-//    configurations.compile.each { File file ->
-//        from(zipTree(file.absolutePath), {
-//            includeEmptyDirs = false
-//            include { fileTreeElement ->
-//                def path = fileTreeElement.path
-//                path.endsWith(".js") && (path.startsWith("META-INF/resources/") ||
-//                        !path.startsWith("META-INF/"))
-//            }
-//        })
-//    }
-//    from compileKotlin2Js.destinationDir
-//    into "${buildOutDir}/lib"
-//
-//    dependsOn classes
-//
-//
-//    //dependsOn tasks.copySharedCode
-//
-//    doLast{
-//        logger.info("Copied kotlin.js from jar")
-//    }
-//}
 
-//compileKotlin2Js.dependsOn copySharedCode
 assemble {
-    //dependsOn copyJsResources
 
 }
-//assemble.dependsOn.add(assembleWeb)
 
-//classes.dependsOn copySharedCode
-//tasks.classes.dependsOn(copySharedCode)
-
-mainSass{
-    doFirst{
+mainSass {
+    doFirst {
         logger.info("Compiling UI Sass...")
     }
-    doLast{
+    doLast {
         logger.info("Finished compiling UI Sass!")
     }
 }
 
-//tasks.build.doLast() {
-//    //tasks.copyJsResources.execute()
-//    tasks.mainSass.execute()
-//
-//    logger.info("Finished UI build!")
-//}
-
 build.dependsOn mainSass
 
 task cleaner(type: Delete) {
-    doLast{
-        [buildRootDir, "out"].each({ String s->
+    doLast {
+        [buildRootDir, "out"].each({ String s ->
             logger.info("Deleting: ${s}")
             delete s
         })
         followSymlinks = true
     }
 }
-tasks.clean.doLast{
+tasks.clean.doLast {
     tasks.cleaner.execute()
 }
 
@@ -195,7 +135,6 @@ task ktlint(type: JavaExec) {
     classpath = configurations.ktlint
     args "src/**/*.kt"
 }
-//check.dependsOn ktlint
 
 task ktlintFormat(type: JavaExec) {
     main = "com.github.shyiko.ktlint.Main"
@@ -203,59 +142,16 @@ task ktlintFormat(type: JavaExec) {
     args "-F", "src/**/*.kt"
 }
 
-task webArtifact(type:Tar){
-    //inputs.file copyJsResources
+task webArtifact(type: Tar) {
     compression 'gzip'
     from "build/$projName"
-    //into "bui/bundle"
     exclude "$buildDir/bundle"
     exclude "gen"
-    //outputs.dir "$buildDir/bundle"
-    //dependsOn "$buildDir"
 }
 
 ///////////////////////////////////////////////////////////////////////////
 // Configurations
 ///////////////////////////////////////////////////////////////////////////
-
-
-//javascript.source {
-//    dev {
-//        js {
-//            srcDir "$buildDir"
-//            include "*.js"
-//            exclude "*.meta.js"
-//        }
-//    }
-////    prod {
-////        js {
-////            srcDir buildDir
-////            include "*.min.js"
-////            exclude "*.meta.js"
-////        }
-////    }
-//}
-//
-//combineJs {
-////    dependencies{
-////        compile
-////    }
-//    encoding = "UTF-8"
-//    source = javascript.source.dev.js.files
-//    dest = file("${buildDir}/${projName}-all.js")
-//}
-//combineJs.dependsOn build
-////// Create new CombineJsTasks if you have multiple sets of JS files
-////task jsDev(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
-////    source = ["${projectDir}/js/file1.js", "${projectDir}/js/file2.js"]
-////    dest = file("${buildDir}/all-debug.js")
-////}
-////
-////task jsProd(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
-////    source = ["${projectDir}/js/file1.js", "${projectDir}/js/file2.js"]
-////    dest = file("${buildDir}/all.js")
-////}
-
 configurations {
     // New configuration to associate
     // dist task output with.

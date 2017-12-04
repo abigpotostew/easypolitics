@@ -12,7 +12,7 @@ String buildRootDir = "$buildDir"
 String buildResources = "${buildRootDir}/resources"
 archivesBaseName = 'easypolitics-web'
 
-configurations{
+configurations {
     uiJsSource
 }
 
@@ -32,28 +32,14 @@ dependencies {
     compile libraries.kotlin_stdlib
     compile 'com.sparkjava:spark-core:2.3'
     compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4"
-    compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4", configuration:"sources"
+    compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4", configuration: "sources"
     compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4", configuration: "javadoc"
     testCompile libraries.junit
     testCompile libraries.mockito
     testCompile libraries.kotlin_test
-    //compile project(":ui")
-    uiJsSource project(path:":ui-app", configuration:"devJsArtifact")
+    uiJsSource project(path: ":ui-app", configuration: "devJsArtifact")
     expectedBy project(":shared")
 }
-
-//task prepare(type: Copy) {
-//    into "$buildDir/resources/main/static/lib"
-//
-//    // Use the artifacts from the other projects.
-//    // Gradle knows that tasks that created the artifacts
-//    // and will invoke them for us.
-//
-//    from {
-//
-//        tarTree(configurations.uiJsSource.resolvedConfiguration.resolvedArtifacts)
-//    }
-//}
 
 task prepare {
     inputs.file configurations.uiJsSource//.resolvedConfiguration.resolvedArtifacts
@@ -83,19 +69,17 @@ task installRequireJs(type: NpmTask) {
     args = ['install', "requirejs@${requireJsVersion}"]
 }
 
-task copyNodeLibraries(type:Copy, dependsOn: installRequireJs){
+task copyNodeLibraries(type: Copy, dependsOn: installRequireJs) {
     from "node_modules/requirejs/require.js"
     into "${buildDir}/resources/main/static/lib"
 }
-//build.dependsOn installJquery
-//build.dependsOn installJqueryActual
 prepare.dependsOn copyNodeLibraries
 
-mainSass{
-    doFirst{
+mainSass {
+    doFirst {
         println("Compiling Sass...")
     }
-    doLast{
+    doLast {
         println("Finished compiling Sass!")
     }
 }
@@ -104,7 +88,7 @@ tasks.build.doLast {
     tasks.mainSass.execute()
 }
 
-task fatJar(type: Jar, dependsOn:build) {
+task fatJar(type: Jar, dependsOn: build) {
     baseName = project.name + '-fat'
     from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
@@ -113,12 +97,12 @@ task fatJar(type: Jar, dependsOn:build) {
     }
 }
 
-task run(type:JavaExec,dependsOn:[classes,fatJar,prepare]){
+task run(type: JavaExec, dependsOn: [classes, fatJar, prepare]) {
     main = MAIN_CLASS
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue(true)
 
-    if ( project && project.hasProperty("appArgs") ) {
+    if (project && project.hasProperty("appArgs")) {
         args Eval.me(appArgs)
     }
 }
@@ -131,34 +115,3 @@ task sourcesJar(type: Jar) {
 artifacts {
     archives sourcesJar
 }
-
-
-//task copyUi(dependsOn:[build, mainSass, "ui:build"]) {
-//
-//    doFirst {
-//        //println("COPYING resources from $resourcesDir into build directory $buildOutDir")
-//    }
-//    doLast {
-//        copy {
-//            project(':ui').configurations.
-//            //from resourcesDir
-//            into "${buildOutDir}"
-//            //exclude { details -> details.isDirectory() }
-//        }
-//        //copy kotlin.js into lib folder
-//        configurations.compile.each { File file ->
-//            copy {
-//                includeEmptyDirs = false
-//                from zipTree(file.absolutePath)
-//                into "${buildOutDir}/lib"
-//                include { fileTreeElement ->
-//                    def path = fileTreeElement.path
-//                    path.endsWith(".js") && (path.startsWith("META-INF/resources/")
-//                            || !path.startsWith("META-INF/"))
-//                }
-//            }
-//        }
-//        println("Copied kotlin.js from jar")
-//        println("Finished copying resources into build folder...")
-//    }
-//}
