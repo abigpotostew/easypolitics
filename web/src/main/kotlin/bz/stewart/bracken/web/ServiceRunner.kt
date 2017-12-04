@@ -7,7 +7,6 @@ import bz.stewart.bracken.web.view.MainPageConfig
 import bz.stewart.bracken.web.view.PrintInputView
 import bz.stewart.bracken.web.view.SingleBillView
 import bz.stewart.bracken.web.view.bill.SingleBillConfig
-import bz.stewart.bracken.web.view.browse.BrowsePageConfig
 import spark.Spark
 
 class ServiceRunner {

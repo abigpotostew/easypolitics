@@ -1,17 +1,18 @@
 package bz.stew.bracken.ui.util.ui
 
 import kotlin.js.Date
-import kotlin.js.Math
+import kotlin.math.floor
+import kotlin.math.round
 
 /**
  * Created by stew on 1/28/17.
  */
 
-public class UIFormatter {
+class UIFormatter {
     companion object DateCompanion {
-        public fun prettyDate(date: Date): String {
+        fun prettyDate(date: Date): String {
             // Make a fuzzy time
-            val delta = Math.round(((Date().getTime()) - (date.getTime())) / 1000)
+            val delta = round(((Date().getTime()) - (date.getTime())) / 1000)
 
             val isFuture = delta < 0
             val minute = 60
@@ -28,13 +29,13 @@ public class UIFormatter {
                     delta < 30 -> "just now"
                     delta < minute -> delta.toString() + " seconds ago"
                     delta < 2 * minute -> "a minute ago"
-                    delta < hour -> Math.floor(delta / minute).toString() + " minutes ago"
-                    Math.floor(delta / hour) == 1 -> "1 hour ago"
-                    delta < day -> Math.floor(delta / hour).toString() + " hours ago"
+                    delta < hour -> floor(delta / minute).toString() + " minutes ago"
+                    floor(delta / hour) == 1.0 -> "1 hour ago"
+                    delta < day -> floor(delta / hour).toString() + " hours ago"
                     delta < day * 2 -> "yesterday"
-                    delta < 2 * week -> Math.floor(delta / day).toString() + " days ago"
-                    delta < month -> Math.floor(delta / week).toString() + " weeks ago"
-                    delta < year -> Math.floor(delta / month).toString() + " months ago"
+                    delta < 2 * week -> floor(delta / day).toString() + " days ago"
+                    delta < month -> floor(delta / week).toString() + " weeks ago"
+                    delta < year -> floor(delta / month).toString() + " months ago"
                     else -> "over a year ago"
                 }
             } else {
@@ -42,9 +43,9 @@ public class UIFormatter {
                     delta > -30 -> "very recently"
                     delta > minute -> "in " + delta.toString() + " seconds"
                     delta > 2 * minute -> "in a minute"
-                    delta > hour -> "in " + Math.floor(delta / minute).toString() + " minutes"
-                    Math.floor(delta / hour) == -1 -> "in 1 hour"
-                    delta > day -> "in " + Math.floor(delta / hour).toString() + " hours"
+                    delta > hour -> "in " + floor(delta / minute).toString() + " minutes"
+                    floor(delta / hour) == -1.0 -> "in 1 hour"
+                    delta > day -> "in " + floor(delta / hour).toString() + " hours"
                     delta > day * 2 -> "tomorrow"
                     else -> "in a while"
                 }

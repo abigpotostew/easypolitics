@@ -120,49 +120,46 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
     }
 
     override fun build(govInput: dynamic): BillData {
-        val gi = govInput
-        val title = gi.officialTitle
-        val shortTitle = gi.billName
-        val uniqueParsedId: String = gi.billId
+        val title = govInput.officialTitle
+        val shortTitle = govInput.billName
+        val uniqueParsedId: String = govInput.billId
         val uniqueId: Int = uniqueParsedId.hashCode()
-        val congress: Int = gi.congress
-        val subjectsArrDyn = gi.subjects
+        val congress: Int = govInput.congress
+        val subjectsArrDyn = govInput.subjects
 
         //val btVals = BillType.values()
-        val bill_type: BillType = TypeHelperDefaults.defaultBillTypeMatcher(gi.billType)
-        val bill_res_type = matchVisibleType(BillResolutionType.values(), gi.resolutionType,
+        val bill_type: BillType = TypeHelperDefaults.defaultBillTypeMatcher(govInput.billType)
+        val bill_res_type = matchVisibleType(BillResolutionType.values(), govInput.resolutionType,
             VisibleTypeMatcher.LOWER)
 
-        val majorActions = resolveMajorActions(gi.actions)
-        val resolvedFixedStatus = FixedStatus.valueOfDb(gi.currentStatus)
+        val majorActions = resolveMajorActions(govInput.actions)
+        val resolvedFixedStatus = FixedStatus.valueOfDb(govInput.currentStatus)
 
         //todo status label and description not entered
 
         val currentStatus = BillStatusData(fixedStatus = resolvedFixedStatus,
-              date = jsParseDate(gi.currentStatusAt),
+              date = jsParseDate(govInput.currentStatusAt),
               majorActions = majorActions,
-              description = gi.currentStatusDescription,
-              label = gi.currentStatusLabel)
+              description = govInput.currentStatusDescription,
+              label = govInput.currentStatusLabel)
 
-        val number = (gi.number as String).toInt()
+        val number = (govInput.number as String).toInt()
 
-        val link = gi.url
-        val is_alive = true
-        val is_current = true
-        val intro_date = jsParseDate(gi.introducedAt) // todo this is just a number now
+        val link = govInput.url
+        val intro_date = jsParseDate(govInput.introducedAt) // todo this is just a number now
 
-        val parsedSponsor = resolveLegislator(gi.sponsor)
+        val parsedSponsor = resolveLegislator(govInput.sponsor)
         if (parsedSponsor == null) {
             Log.error("sponsor is null for bill: $uniqueParsedId of congress $congress")
         }
         val sponsor = parsedSponsor ?: emptyLegislator()
 
-        val cosponsors = resolveCosponsors(gi.cosponsors)
+        val cosponsors = resolveCosponsors(govInput.cosponsors)
 
-        val topSubject: String = gi.subjectsTopTerm ?: ""
+        val topSubject: String = govInput.subjectsTopTerm ?: ""
         val subjects = resolveSubjects(subjectsArrDyn)
 
-        val actions = resolveActions(gi.actions)
+        val actions = resolveActions(govInput.actions)
 
         return BillData(
               officialTitle = title,
@@ -177,7 +174,7 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
               intro_date = intro_date,
               sponsor = sponsor,
               cosponsors = cosponsors,
-              origData = gi,
+              origData = govInput,
               subjects = subjects,
               subjectsTopTerm = topSubject,
               actions = actions

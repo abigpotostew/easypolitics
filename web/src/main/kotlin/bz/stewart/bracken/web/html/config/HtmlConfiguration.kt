@@ -8,7 +8,7 @@ import kotlinx.html.TITLE
 import javax.xml.ws.RequestWrapper
 import kotlin.reflect.KClass
 
-class HtmlConfiguration(val tagConfigurations: Set<out TagConfiguration<HTMLTag>>) {
+class HtmlConfiguration(val tagConfigurations: Set<TagConfiguration<HTMLTag>>) {
     fun getWithTag(type: KClass<out HTMLTag>): List<TagConfiguration<HTMLTag>> {
         val out = mutableListOf<TagConfiguration<HTMLTag>>()
         for (conf in tagConfigurations) {
@@ -20,10 +20,7 @@ class HtmlConfiguration(val tagConfigurations: Set<out TagConfiguration<HTMLTag>
     }
 }
 
-abstract class TagConfiguration<T : HTMLTag>(type: KClass<T>, attributes: Map<String, String> = emptyMap()) {
-    //, conf:T.()->Unit
-    val type = type
-    val attributes = attributes
+abstract class TagConfiguration<T : HTMLTag>(val type: KClass<T>, private val attributes: Map<String, String> = emptyMap()) {
     protected abstract fun doConfig(tag: T)
     fun apply(tag: T) {
         for ((k, v) in attributes.entries) {

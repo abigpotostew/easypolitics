@@ -81,8 +81,15 @@ task installJqueryActual(type: NpmTask) {
     args = ['install', "jquery.actual@${jqueryActualVersion}"]
 }
 
+task installBootstrapBeta(type:NpmTask) {
+    inputs.property('bootstrapBetaVersion', bootstrapBetaVersion)
+    outputs.dir file('node_modules/bootstrap-beta')
 
-task populateNodeModules(type: Copy, dependsOn: [compileKotlin2Js, installJquery, installJqueryActual]) {
+    args = ['install', "bootstrap-beta@${bootstrapBetaVersion}"]
+}
+
+
+task populateNodeModules(type: Copy, dependsOn: [compileKotlin2Js, installJquery, installJqueryActual, installBootstrapBeta]) {
     from compileKotlin2Js.destinationDir
 
     configurations.compile.each {
@@ -92,9 +99,11 @@ task populateNodeModules(type: Copy, dependsOn: [compileKotlin2Js, installJquery
     into "${buildDir}/node_modules"
 }
 
+//copies dev versions
 task copyNodeLibraries(type: Copy, dependsOn: populateNodeModules) {
-    from "node_modules/jquery.actual/jquery.actual.min.js"
-    from "node_modules/jquery/dist/jquery.min.js"
+    from "node_modules/bootstrap-beta/dist/js/bootstrap-bundle.js"
+    from "node_modules/jquery.actual/jquery.actual.js"
+    from "node_modules/jquery/dist/jquery.js"
     into "${buildDir}/resources/main/lib"
 }
 assemble.dependsOn copyNodeLibraries

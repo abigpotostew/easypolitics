@@ -17,7 +17,7 @@ class RequireJs (val scripts:Array<ScriptSrcConstants>){
         outBuilder.append("\n\n")
         //outBuilder.append(UiApiActions().doSingleBillAction("pizza"))
         outBuilder.append(
-                "requirejs(['kotlin','kotlinx-html-js', easypolitics-ui'],\n" +
+                "requirejs(['jquery','jquery.actual','bootstrap','kotlin','kotlinx-html-js', easypolitics-ui'],\n" +
                 "function   (        uiApp) {\n" +
                 "    console.log(\"easypolitics finished loading\");\n" +
                 "});")

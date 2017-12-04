@@ -33,13 +33,5 @@ private val emptyAction = object : MajorAction {
 }
 
 fun emptyMajorAction(): MajorAction {
-    //val dt1 = Date(1990,10,23)
-    val dt2 = jsDate(1990, 10, 23)
-    val dt3 = jsDate()
-
-    //val dtt1 : Date = dt1
-    val dtt2: Date = dt2
-    val dtt3: Date = dt3
-
     return emptyAction
 }

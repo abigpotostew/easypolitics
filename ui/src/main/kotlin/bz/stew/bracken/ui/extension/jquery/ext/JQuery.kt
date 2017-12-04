@@ -773,8 +773,11 @@ external interface JQuery {
     fun queue(callback: Function<*>): JQuery
     fun queue(queueName: String, newQueue: Array<Function<*>>): JQuery
     fun queue(queueName: String, callback: Function<*>): JQuery
-    @nativeInvoke
-    operator fun invoke(obj:JQuery?= definedExternally):JQuery
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline operator fun JQuery.invoke(obj:JQuery?):JQuery {
+    return asDynamic()(obj)
 }
 //external var jQuery: JQueryStatic = definedExternally
 //@JsModule("jquery")
