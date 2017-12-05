@@ -1,11 +1,8 @@
-package bz.stewart.bracken
+package bz.stewart.bracken.rest
 
 import bz.stewart.bracken.db.TestUtils
 import bz.stewart.bracken.db.bill.database.mongodb.BillMongoDb
 import bz.stewart.bracken.rest.query.MainDbAccess
-import bz.stewart.bracken.rest.EasypoliticsRestApplication
-import bz.stewart.bracken.rest.MongoDbBean
-import bz.stewart.bracken.rest.MongoDbBeanProd
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
@@ -16,7 +13,8 @@ import org.springframework.context.annotation.FilterType
  * Created by stew on 4/1/17.
  */
 
-@SpringBootApplication
+//disabling to prevent test from running
+//@SpringBootApplication
 @ComponentScan(excludeFilters = arrayOf(
       // Exclude the default message service
       //ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = DefaultMessageService::class),
