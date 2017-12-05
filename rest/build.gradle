@@ -7,21 +7,19 @@ final String MAIN_CLASS = "bz.stewart.bracken.rest.Main"
 buildscript {
 	ext {
 		//restKotlinVersion = "$kotlin_version"//"1.1.3-2" //normally using "$kotlin_version" but >1.1.3 breaks spring boot web
-		spring_boot_version = '1.5.4.RELEASE'
+		//spring_boot_version = '1.5.4.RELEASE'
 	}
 	repositories {
 		jcenter()
 	}
 	dependencies {
-		classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version" // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
-		classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
+		//classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version" // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
+		//classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
 	}
 }
 
+apply plugin: 'java'
 apply plugin: "kotlin-platform-jvm"
-apply plugin: 'kotlin-spring'
-//apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
 
 archivesBaseName = 'easypolitics-rest'
 
@@ -41,21 +39,17 @@ sourceCompatibility = 1.8
 
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web"){
-		//exclude group: 'ch.qos.logback', module: 'logback-classic'
-		//exclude group: 'org.slf4j', module:'jcl-over-slf4j'
-	}
-	compile("org.springframework.boot:spring-boot-starter-data-rest"){
-		exclude group: 'org.slf4j', module: 'jcl-over-slf4j'
-	}
-	compile("org.springframework.boot:spring-boot-starter-data-mongodb"){
-		exclude group: 'org.slf4j', module: 'jcl-over-slf4j'
-	}
-	//compile('org.springframework.boot:spring-boot-starter')
-	//compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+//    compile("org.springframework.boot:spring-boot-starter-web"){
+//	}
+//	compile("org.springframework.boot:spring-boot-starter-data-rest"){
+//		exclude group: 'org.slf4j', module: 'jcl-over-slf4j'
+//	}
+//	compile("org.springframework.boot:spring-boot-starter-data-mongodb"){
+//		exclude group: 'org.slf4j', module: 'jcl-over-slf4j'
+//	}
+	compile 'com.sparkjava:spark-core:2.7.+'
 	compile libraries.kotlin_stdlib
 	compile libraries.kotlin_reflect
-	//compile("org.jetbrains.kotlin:kotlin-nosql-mongodb:0.1-SNAPSHOT")
 	compile (project(':db')){
         //exclude module: 'log4j-over-slf4j'
         exclude module: 'log4j-over-slf4j'
@@ -63,18 +57,13 @@ dependencies {
         exclude module: 'jcl-to-slf4j'
 		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
-	compile 'org.litote.kmongo:kmongo:3.3.5'
+	compile 'org.litote.kmongo:kmongo:3.5.+'
 
-
-	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile project(':db').sourceSets.test.output
 
 	expectedBy project(":shared")
 
     runtime (project(':db')){
-//        exclude module: 'log4j-over-slf4j'
-//        exclude module: 'jcl-over-slf4j'
-//        exclude module: 'jcl-to-slf4j'
 		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 
@@ -83,53 +72,45 @@ dependencies {
 	//compile project(':shared')
 }
 
-task copySharedCode(type: Copy){
-	doFirst{
-		println("Copying shared code into $genTargetDir")
-	}
-	from sharedSrc
-	into genTargetDir
-	eachFile { println ("Copying: ${it.file}" )}
-	doLast{
-		println("finished copying '$sharedSrc' into '$genTargetDir'.")
-	}
+task bootJar(type: Jar, dependsOn: build) {
+    baseName = project.name + '-fat'
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    manifest {
+        attributes 'Main-Class': MAIN_CLASS
+    }
 }
 
+task bootRun(type: JavaExec, dependsOn: [classes, bootJar]) {
+    main = MAIN_CLASS
+    classpath = sourceSets.main.runtimeClasspath
+    ignoreExitValue(true)
+    jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.db.name=congress2']
 
-//assemble {
-//	dependsOn copySharedCode
+    if (project && project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
+}
+
+//bootRun{
+//		jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.db.name=congress2']//, '-Dbz.stewart.bracken.db.collection=bills'
+//
+//	main = "$MAIN_CLASS"
 //}
 
 
-bootRun{
-	//dependsOn projects.db.startdb
-   //debug = true
-	//run {
-		jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.db.name=congress2']//, '-Dbz.stewart.bracken.db.collection=bills'
-	//}
-	main = "$MAIN_CLASS"
-}
 
-test{
-	//dependsOn projects.db.startdb
-	//jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=y']
-}
-
-
-task bootRunDebug(){
-	doFirst{
-		boolean priorDebugVal = tasks.bootRun.debug
-		tasks.bootRun.debug = true
-		try{
-			tasks.bootRun.execute()
-		}finally{
-			tasks.run.debug = priorDebugVal
-		}
-	}
-}
-
-//springBoot {
-//	mainClass = "bz.stewart.bracken.rest.EasypoliticsRestApplication"
+//
+//task bootRunDebug(){
+//	doFirst{
+//		boolean priorDebugVal = tasks.bootRun.debug
+//		tasks.bootRun.debug = true
+//		try{
+//			tasks.bootRun.execute()
+//		}finally{
+//			tasks.run.debug = priorDebugVal
+//		}
+//	}
 //}
 
 task sourcesJar(type: Jar) {

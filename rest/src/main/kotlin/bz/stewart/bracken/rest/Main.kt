@@ -1,13 +1,20 @@
 package bz.stewart.bracken.rest
 
-import org.springframework.boot.SpringApplication
+import bz.stewart.bracken.rest.spark.RestServiceRunner
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 class Main {
 
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            SpringApplication.run(EasypoliticsRestApplication::class.java, *args)
+            RestServiceRunner().run()
         }
     }
+}
+
+//this isn't registering, weird
+fun main(args: Array<String>) {
+    RestServiceRunner().run()
 }

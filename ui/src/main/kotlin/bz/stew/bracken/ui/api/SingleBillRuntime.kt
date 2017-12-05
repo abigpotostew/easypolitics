@@ -14,9 +14,9 @@ class SingleBillRuntime(private val billId: String) : RuntimeUi {
         val controller = SingleBillController(rootElement, this.billId)
         controller.view.setLoading(true)
 
-        controller.init(
-                {
-                    println("done loading bill with id: ${this.billId}")
-                })
+        controller.init({
+            println("done loading bill with id: ${this.billId}")
+            controller.view.setLoading(false)
+        })
     }
 }
