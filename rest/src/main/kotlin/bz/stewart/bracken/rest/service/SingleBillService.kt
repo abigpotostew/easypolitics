@@ -1,10 +1,13 @@
-package bz.stewart.bracken.rest.spark
+package bz.stewart.bracken.rest.service
 
 import bz.stewart.bracken.rest.query.QueryResult
 import bz.stewart.bracken.rest.query.SingleBillQuery
 import bz.stewart.bracken.rest.query.emptyQueryResult
+import bz.stewart.bracken.rest.route.RouteService
+import bz.stewart.bracken.rest.route.RouteContext
+import bz.stewart.bracken.rest.qp
 
-class SingleBillRoute : RouteBehavior<QueryResult> {
+class SingleBillService : RouteService<QueryResult> {
     override fun execute(context: RouteContext): QueryResult {
         val billId = context.request.qp("bill_id")
         if (billId==null){

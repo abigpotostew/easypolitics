@@ -1,4 +1,4 @@
-package bz.stewart.bracken.rest.bills
+package bz.stewart.bracken.rest.data.bills
 
 import bz.stewart.bracken.db.bill.data.BillHistory
 import bz.stewart.bracken.db.bill.data.RelatedBill

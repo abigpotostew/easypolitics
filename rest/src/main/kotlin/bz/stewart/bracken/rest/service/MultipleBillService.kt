@@ -1,14 +1,17 @@
-package bz.stewart.bracken.rest.spark
+package bz.stewart.bracken.rest.service
 
-import bz.stewart.bracken.rest.bills.BillExample
+import bz.stewart.bracken.rest.data.bills.BillExample
 import bz.stewart.bracken.rest.query.BillQueryBuilder
 import bz.stewart.bracken.rest.query.QueryResult
 import bz.stewart.bracken.rest.query.emptyQueryResult
+import bz.stewart.bracken.rest.route.RouteService
+import bz.stewart.bracken.rest.route.RouteContext
+import bz.stewart.bracken.rest.qp
 import bz.stewart.bracken.shared.data.BadStateException
 import bz.stewart.bracken.shared.data.BillType
 import bz.stewart.bracken.shared.data.TypeHelperDefaults
 
-class MultipleBillRoute : RouteBehavior<QueryResult> {
+class MultipleBillService : RouteService<QueryResult> {
     override fun execute(context: RouteContext): QueryResult {
         val req = context.request
         val response = context.response

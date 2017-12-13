@@ -1,7 +1,6 @@
 package bz.stewart.bracken.rest.query
 
-import bz.stewart.bracken.rest.bills.BillDelegated
-import bz.stewart.bracken.rest.bills.BillExample
+import bz.stewart.bracken.rest.data.bills.BillExample
 import bz.stewart.bracken.rest.util.MathUtil
 import com.mongodb.BasicDBObject
 import mu.KLogging

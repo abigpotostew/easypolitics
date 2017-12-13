@@ -1,8 +1,8 @@
 package bz.stewart.bracken.rest.query
 
 import bz.stewart.bracken.db.bill.data.Bill
-import bz.stewart.bracken.rest.bills.BillDelegated
-import bz.stewart.bracken.rest.bills.toPublicBillCollection
+import bz.stewart.bracken.rest.data.bills.BillDelegated
+import bz.stewart.bracken.rest.data.bills.toPublicBillCollection
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.mongodb.client.FindIterable
 

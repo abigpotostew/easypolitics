@@ -1,20 +1,19 @@
 package bz.stewart.bracken.rest
 
-import bz.stewart.bracken.rest.spark.RestServiceRunner
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-
 class Main {
 
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
+            EnvProperties.values()
+                    .filter { it.required && it.isEmpty() }
+                    .forEach { error("Missing required java property: ${it.propName}") }
             RestServiceRunner().run()
         }
     }
 }
 
 //this isn't registering, weird
-fun main(args: Array<String>) {
-    RestServiceRunner().run()
-}
+//fun main(args: Array<String>) {
+//    RestServiceRunner().run()
+//}

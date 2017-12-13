@@ -1,4 +1,4 @@
-package bz.stewart.bracken.rest.legislators
+package bz.stewart.bracken.rest.data.legislators
 
 import bz.stewart.bracken.db.leglislators.data.LegislatorData
 import bz.stewart.bracken.db.leglislators.data.TermData

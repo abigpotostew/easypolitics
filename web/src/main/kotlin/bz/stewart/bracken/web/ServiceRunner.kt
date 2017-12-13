@@ -11,6 +11,15 @@ import spark.Spark
 
 class ServiceRunner {
     fun run() {
+        printPath("")
+        printPath("/")
+        printResPath("")
+        printResPath("/")
+        printTextPath("")
+        printTextPath("/")
+
+        Spark.port(EnvProperties.PORT.getOrDefault().toInt())
+
         Spark.staticFileLocation("/static")
         Spark.get(AppServices.MAIN.path) { _, _ ->
             WebsiteSkeleton(PrintInputView("pizza"), MainPageConfig()).render()
@@ -31,6 +40,30 @@ class ServiceRunner {
             RequireJs(emptyArray())
             UiApiActions().mainAll().js
         }
+    }
+    fun printPath(path:String){
+        println("Path is: $path")
+        val rc = this::class.java.classLoader.getResource(path)
+        val path = rc?.path
+        println("class loader resource: $rc")
+        println("class loader path: $path")
+        println("--")
+    }
+
+    fun printResPath(path:String){
+        println("Path is: $path")
+        val rc = this::class.java.getResource(path)
+        val path = rc?.path
+        println("res resource: $rc")
+        println("res path: $path")
+        println("--")
+    }
+
+    fun printTextPath(path:String){
+        println("Path is: $path")
+        val rc = this::class.java.getResource(path).readText()
+        println("class loader text: $path")
+        println("--")
     }
 }
 

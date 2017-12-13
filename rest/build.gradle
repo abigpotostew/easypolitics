@@ -85,7 +85,7 @@ task bootRun(type: JavaExec, dependsOn: [classes, bootJar]) {
     main = MAIN_CLASS
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue(true)
-    jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.db.name=congress2']
+    jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.rest.port=8080','-Dbz.stewart.bracken.rest.database.name=congress2']
 
     if (project && project.hasProperty("appArgs")) {
         args Eval.me(appArgs)

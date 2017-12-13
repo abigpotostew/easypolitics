@@ -1,4 +1,4 @@
-package bz.stewart.bracken.rest.spark
+package bz.stewart.bracken.rest.http
 
 import spark.Filter
 import spark.Spark

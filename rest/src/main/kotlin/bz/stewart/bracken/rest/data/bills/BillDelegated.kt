@@ -1,9 +1,9 @@
-package bz.stewart.bracken.rest.bills
+package bz.stewart.bracken.rest.data.bills
 
 import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.bill.data.parse.DbDateSerializer
 import bz.stewart.bracken.db.leglislators.data.LegislatorData
-import bz.stewart.bracken.rest.legislators.DelegatedLegislator
+import bz.stewart.bracken.rest.data.legislators.DelegatedLegislator
 import bz.stewart.bracken.shared.data.*
 import bz.stewart.bracken.shared.data.person.PublicLegislator
 import com.fasterxml.jackson.annotation.JsonIgnore

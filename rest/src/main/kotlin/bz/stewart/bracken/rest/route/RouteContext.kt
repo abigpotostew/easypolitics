@@ -1,6 +1,6 @@
-package bz.stewart.bracken.rest.spark
+package bz.stewart.bracken.rest.route
 
-import bz.stewart.bracken.rest.bills.BillDAO
+import bz.stewart.bracken.rest.data.bills.BillDAO
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KLogger
 import spark.Request

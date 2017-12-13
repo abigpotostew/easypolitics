@@ -1,6 +1,5 @@
 package bz.stewart.bracken.rest.query
 
-import bz.stewart.bracken.rest.bills.BillDelegated
 import com.mongodb.BasicDBObject
 import org.bson.conversions.Bson
 

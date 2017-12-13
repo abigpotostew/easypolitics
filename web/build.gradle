@@ -5,12 +5,15 @@ plugins {
 apply plugin: 'java'
 apply plugin: "kotlin-platform-jvm"
 apply plugin: 'com.moowork.node'
+apply plugin: 'application'
 
 String MAIN_CLASS = 'bz.stewart.bracken.web.MainKt'
 String projName = "easypoliticsweb" //${project.name}
 String buildRootDir = "$buildDir"
 String buildResources = "${buildRootDir}/resources"
+
 archivesBaseName = 'easypolitics-web'
+mainClassName = MAIN_CLASS
 
 configurations {
     uiJsSource
@@ -97,10 +100,11 @@ task fatJar(type: Jar, dependsOn: build) {
     }
 }
 
-task run(type: JavaExec, dependsOn: [classes, fatJar, prepare]) {
+task runWeb(type: JavaExec, dependsOn: [classes, fatJar, prepare]) {
     main = MAIN_CLASS
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue(true)
+    jvmArgs = ['-Dbz.stewart.bracken.web.port=4567']
 
     if (project && project.hasProperty("appArgs")) {
         args Eval.me(appArgs)
@@ -115,3 +119,7 @@ task sourcesJar(type: Jar) {
 artifacts {
     archives sourcesJar
 }
+
+// Application stuff
+//todo this should pull in from build environment and bundle into the distribution
+applicationDefaultJvmArgs=["-Dbz.stewart.bracken.web.port=4567"]

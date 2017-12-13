@@ -1,6 +1,8 @@
-package bz.stewart.bracken.rest.spark
+package bz.stewart.bracken.rest.route
 
-class ExecuteRoute<T : RouteBehavior<R>, R>(behavior: T) {
+import bz.stewart.bracken.rest.service.IllegalQueryInput
+
+class ExecuteRoute<T : RouteService<R>, R>(behavior: T) {
     private val behavior = behavior
     fun execute(context: RouteContext): String {
         return try {

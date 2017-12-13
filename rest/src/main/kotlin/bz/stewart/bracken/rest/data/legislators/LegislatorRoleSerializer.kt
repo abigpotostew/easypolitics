@@ -1,4 +1,4 @@
-package bz.stewart.bracken.rest.legislators
+package bz.stewart.bracken.rest.data.legislators
 
 import bz.stewart.bracken.shared.data.person.LegislatorRole
 import com.fasterxml.jackson.core.JsonGenerator

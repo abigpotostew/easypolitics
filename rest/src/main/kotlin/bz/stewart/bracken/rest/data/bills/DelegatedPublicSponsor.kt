@@ -1,4 +1,4 @@
-package bz.stewart.bracken.rest.bills
+package bz.stewart.bracken.rest.data.bills
 
 import bz.stewart.bracken.db.bill.data.Sponsor
 import bz.stewart.bracken.shared.data.PublicSponsor
