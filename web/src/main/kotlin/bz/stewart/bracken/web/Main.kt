@@ -1,16 +1,15 @@
 package bz.stewart.bracken.web
 
-import java.io.File
+import bz.stewart.bracken.web.conf.EnvironmentProperties
+import bz.stewart.bracken.web.conf.MainProperties
+import bz.stewart.bracken.web.conf.WebProperties
+import bz.stewart.bracken.web.conf.asDefault
 
 fun main(args: Array<String>) {
-    EnvProperties.values()
+    EnvironmentProperties.values()
             .filter { it.required && it.isEmpty() }
             .forEach { error("Missing required java property: ${it.propName}") }
-    println("user.dir: "+System.getProperty("user.dir"))
-    val file = File("")
-    println(file.getAbsolutePath())
-    println(file.path)
-
-    ServiceRunner().run()
+    val props = MainProperties(EnvironmentProperties.PROGRAM_PROPS_FILE.propName, asDefault(WebProperties.values()))
+    ServiceRunner(MainSparkConfig()).run()
 
 }

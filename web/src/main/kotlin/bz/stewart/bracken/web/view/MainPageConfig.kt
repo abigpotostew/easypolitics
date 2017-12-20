@@ -61,7 +61,7 @@ open class MainPageConfig : PageConfig{
         for(enum in ScriptSrcConstants.values().iterator()){
             //out.add(ScriptConfig(enum))
         }
-        out.add(ScriptConfig(ScriptSrcConstants.UIAPP_LOCAL))
+        out.add(ScriptConfig(ScriptSrcConstants.UIAPP_LOCAL_TMP))
         return out
         //emptySet()//out
     }

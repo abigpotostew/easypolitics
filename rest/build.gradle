@@ -3,6 +3,7 @@ String sharedSrc = "../shared/src/main/kotlin"
 String genTargetDir = "$buildOutDir/gen"
 final String MAIN_CLASS = "bz.stewart.bracken.rest.Main"
 
+//resourcesStagingDir = new File("$buildDir/resources")
 
 buildscript {
 	ext {
@@ -92,25 +93,10 @@ task bootRun(type: JavaExec, dependsOn: [classes, bootJar]) {
     }
 }
 
-//bootRun{
-//		jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.db.name=congress2']//, '-Dbz.stewart.bracken.db.collection=bills'
-//
-//	main = "$MAIN_CLASS"
-//}
-
-
-
-//
-//task bootRunDebug(){
-//	doFirst{
-//		boolean priorDebugVal = tasks.bootRun.debug
-//		tasks.bootRun.debug = true
-//		try{
-//			tasks.bootRun.execute()
-//		}finally{
-//			tasks.run.debug = priorDebugVal
-//		}
-//	}
+//task copyConfStagingFiles(type: Copy) {
+//	from _wherever your files reside_
+//	into confDir
+//	include('**/*.properties') // your configuration files
 //}
 
 task sourcesJar(type: Jar) {

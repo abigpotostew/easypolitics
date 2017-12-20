@@ -122,4 +122,17 @@ artifacts {
 
 // Application stuff
 //todo this should pull in from build environment and bundle into the distribution
-applicationDefaultJvmArgs=["-Dbz.stewart.bracken.web.port=4567"]
+String appHomeSub = '$APP_HOME'
+applicationDefaultJvmArgs=["-Dbz.stewart.bracken.web.port=19884", "-Dbz.stewart.bracken.web.externalstaticfiles=$appHomeSub/conf/static"]
+
+
+//copy resources as static files outside of the jar
+distributions {
+    main {
+        contents {
+            from("$buildDir/resources/main") {
+                into "conf"
+            }
+        }
+    }
+}

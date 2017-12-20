@@ -1,6 +1,6 @@
 package bz.stewart.bracken.shared.util
 
-interface JavaProperty {
+interface Property {
     val propName: String
     val defaultValue: String
     val required: Boolean
