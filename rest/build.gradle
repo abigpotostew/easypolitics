@@ -1,14 +1,26 @@
 final String MAIN_CLASS = "bz.stewart.bracken.rest.Main"
 
+
+////////////////////////////////////////////////////////////////////////
+//Read in my.properties, use props.getProperty("propName")
+def props = new Properties()
+file("../my.properties").withInputStream { props.load(it) }
+
+////////////////////////////////////////////////////////////////////////
+//  LOAD IN SOME MY PROPS
+String DBNAME = props.getProperty("DBNAME")
+
+
+// Do the rest
 buildscript {
     repositories {
 		jcenter()
 	}
 }
 
-apply plugin: 'java'
 apply plugin: "kotlin-platform-jvm"
 apply plugin: 'application'
+apply plugin: 'java'
 
 
 archivesBaseName = 'easypolitics-web'
@@ -38,6 +50,7 @@ dependencies {
 
 	testCompile project(':db').sourceSets.test.output
 
+    compile project(":shared") //huh, choose!?
 	expectedBy project(":shared")
 
     runtime (project(':db')){
@@ -58,7 +71,7 @@ task bootRun(type: JavaExec, dependsOn: [classes, bootJar]) {
     main = MAIN_CLASS
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue(true)
-    jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.rest.port=8080','-Dbz.stewart.bracken.rest.database.name=congress2']
+    jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.rest.port=8080', "-Dbz.stewart.bracken.rest.database.name=${DBNAME}"]
 
     if (project && project.hasProperty("appArgs")) {
         args Eval.me(appArgs)

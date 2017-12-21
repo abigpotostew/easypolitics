@@ -13,9 +13,18 @@ String resourcesDir = "src/main/resources"
 
 String MAIN_CLASS = 'bz.stewart.bracken.db.MainKt'
 
-//
+////////////////////////////////////////////////////////////////////////
+//Read in my.properties, use props.getProperty("propName")
+def props = new Properties()
+file("../my.properties").withInputStream { props.load(it) }
+
+////////////////////////////////////////////////////////////////////////
+//  LOAD IN SOME MY PROPS
+String DB_PATH = props.getProperty("DB_PATH")
 
 
+////////////////////////////////////////////////////////////////////////
+// rest of gradle build
 
 buildscript {
 
@@ -48,31 +57,18 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.22' //required at compile time
     compile "com.xenomachina:kotlin-argparser:2.0.0"
 
-    //this causes rest porject to fail, need to understand fix
-
-    //runtime 'startdb'
-
-    //testCompile 'junit:junit:4.9'
-//    testCompile "org.mockito:mockito-core:1.9.5"
-//    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-
-
     testCompile libraries.junit
     testCompile libraries.mockito
     testCompile libraries.kotlin_test
 
-
     runtime "org.slf4j:slf4j-log4j12:1.7.24" //todo figure out how to exclude this from rest
 
     expectedBy project(":shared")
-
 }
-
-
 
 task startdb(type: SpawnProcessTask, dependsOn: 'assemble'){
 
-    command "mongod --dbpath /Users/stew/Documents/db/congress1"
+    command "mongod --dbpath ${DB_PATH}"
     ready 'waiting for connections on port'
 
 }
@@ -86,26 +82,17 @@ task copyMainResources(dependsOn:build){
 
     dependencies{
         build
-        //runtime files('resources')//, 'resources/index.html')
     }
     doLast {
         copy {
             from resourcesDir
             into "${baseBuildDir}"
             exclude {details -> details.isDirectory()}
-            //include['*.html', '*.js', '*.css']
-            /*exclude { details ->
-                details.file.name.endsWith('.html') &&
-                        details.file.text.contains('staging')
-            }*/
+
             eachFile { println ("Copying resource for build: ${it.file}" )}
         }
-
-
         println("Finished copying resources into build folder...")
     }
-
-
 }
 
 task run(dependsOn: classes, type: JavaExec) {
