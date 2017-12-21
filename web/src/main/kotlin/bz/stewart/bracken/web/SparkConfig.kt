@@ -1,29 +1,30 @@
 package bz.stewart.bracken.web
 
-import bz.stewart.bracken.web.conf.WebProperties
+import bz.stewart.bracken.web.conf.MainProperties
+import bz.stewart.bracken.web.conf.WebDefaultProperties
 import spark.Spark
-import java.util.Properties
 
 interface SparkConfig {
     fun config()
 }
 
-class MainSparkConfig(private val webProps: Properties) : SparkConfig {
+class MainSparkConfig(private val mainProperties: MainProperties) : SparkConfig {
     override fun config() {
-        if (webProps.getProperty(WebProperties.EXT_STATIC_FILES.propName) != "") {
-            println("Using external static file location: " + webProps.getProperty(WebProperties.EXT_STATIC_FILES.propName))
-            Spark.externalStaticFileLocation(webProps.getProperty(WebProperties.EXT_STATIC_FILES.propName))
+        if (mainProperties.getProperty(WebDefaultProperties.EXT_STATIC_FILES.propName) != "") {
+            println("Using external static file location: " + mainProperties.getProperty(WebDefaultProperties.EXT_STATIC_FILES.propName))
+            Spark.externalStaticFileLocation(mainProperties.getProperty(WebDefaultProperties.EXT_STATIC_FILES.propName))
         } else {
-            Spark.staticFileLocation(webProps.getProperty(WebProperties.INT_STATIC_FILES.propName))
-            webProps.getProperty(WebProperties.INT_STATIC_FILES.propName)
+            Spark.staticFileLocation(mainProperties.getProperty(WebDefaultProperties.INT_STATIC_FILES.propName))
+            mainProperties.getProperty(WebDefaultProperties.INT_STATIC_FILES.propName)
         }
 
-        Spark.port(WebProperties.PORT.getOrDefault().toInt())
+        println("Using Port: ${mainProperties.getProperty(WebDefaultProperties.PORT.propName).toInt()}")
+        Spark.port(mainProperties.getProperty(WebDefaultProperties.PORT.propName).toInt())
 
-        doAllPrints("")
-        doAllPrints("/")
-        doAllPrints(webProps.getProperty(WebProperties.INT_STATIC_FILES.propName))
-        doAllPrints(webProps.getProperty(WebProperties.EXT_STATIC_FILES.propName))
+//        doAllPrints("")
+//        doAllPrints("/")
+//        doAllPrints(mainProperties.getProperty(WebDefaultProperties.INT_STATIC_FILES.propName))
+//        doAllPrints(mainProperties.getProperty(WebDefaultProperties.EXT_STATIC_FILES.propName))
     }
 
     fun doAllPrints(path: String) {

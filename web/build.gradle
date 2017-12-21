@@ -104,7 +104,8 @@ task runWeb(type: JavaExec, dependsOn: [classes, fatJar, prepare]) {
     main = MAIN_CLASS
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue(true)
-    jvmArgs = ['-Dbz.stewart.bracken.web.port=4567']
+    jvmArgs = ["-Dbz.stewart.bracken.web.properties=$projectDir/main.properties"]
+    //'-Dbz.stewart.bracken.web.port=4567',
 
     if (project && project.hasProperty("appArgs")) {
         args Eval.me(appArgs)
@@ -122,8 +123,9 @@ artifacts {
 
 // Application stuff
 //todo this should pull in from build environment and bundle into the distribution
-String appHomeSub = '$APP_HOME'
-applicationDefaultJvmArgs=["-Dbz.stewart.bracken.web.port=19884", "-Dbz.stewart.bracken.web.externalstaticfiles=$appHomeSub/conf/static"]
+String appHomeSub = '\$APP_HOME'
+applicationDefaultJvmArgs=["-Dbz.stewart.bracken.web.properties=$appHomeSub/conf/main.properties"]
+//,"-Dbz.stewart.bracken.web.port=19884", "-Dbz.stewart.bracken.web.externalstaticfiles=$appHomeSub/conf/static"
 
 
 //copy resources as static files outside of the jar
@@ -131,6 +133,9 @@ distributions {
     main {
         contents {
             from("$buildDir/resources/main") {
+                into "conf"
+            }
+            from("$projectDir/main.properties"){
                 into "conf"
             }
         }

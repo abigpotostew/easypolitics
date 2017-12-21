@@ -5,7 +5,7 @@ import bz.stewart.bracken.shared.util.Property
 enum class EnvironmentProperties(override val propName: String,
                                  override val defaultValue: String,
                                  override val required: Boolean = false):Property {
-    PROGRAM_PROPS_FILE("bz.stewart.bracken.web.properties", "", true)
+    WEB_PROPS_FILE("bz.stewart.bracken.web.properties", "", true)
     ;
 
     override fun getOrDefault(): String {

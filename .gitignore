@@ -14,3 +14,4 @@ my.properties
 ui/src/main/sass/hover/
 out/
 node_modules
+main.properties
