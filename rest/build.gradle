@@ -78,6 +78,7 @@ task bootRun(type: JavaExec, dependsOn: [classes, bootJar]) {
     }
 }
 
+
 task sourcesJar(type: Jar) {
 	classifier = 'sources'
 	from sourceSets.main.kotlin
@@ -90,13 +91,3 @@ artifacts {
 ///////////////////
 // Distribution
 ///////////////////
-//copy resources as static files outside of the jar
-distributions {
-    main {
-        contents {
-            from("$projectDir/main.properties"){
-                into "conf"
-            }
-        }
-    }
-}
