@@ -4,6 +4,7 @@ import bz.bracken.stewart.db.AssertAllFound
 import bz.stewart.bracken.db.TestUtils
 import bz.stewart.bracken.db.database.mongo.CollectionWriter
 import bz.stewart.bracken.db.database.Database
+import bz.stewart.bracken.db.database.mongo.DefaultMongoClient
 import bz.stewart.bracken.db.database.mongo.emptyDatabaseWriter
 import bz.stewart.bracken.db.leglislators.*
 import bz.stewart.bracken.db.leglislators.data.IdData
@@ -30,7 +31,7 @@ class LegislatorDbTest {
    @Before
    fun testSetup() {
       writer = LegislatorDbWriter() as CollectionWriter<LegislatorData, Database<LegislatorData>>
-      db = LegislatorCreateDb(dbName, writer!!)
+      db = LegislatorCreateDb(DefaultMongoClient(dbName), writer!!)
    }
 
    @After
@@ -49,7 +50,7 @@ class LegislatorDbTest {
    fun testLoadAllData() {
 
       val writer = LegislatorDbWriter() as CollectionWriter<LegislatorData, Database<LegislatorData>>
-      val db = LegislatorCreateDb(dbName, writer)
+      val db = LegislatorCreateDb(DefaultMongoClient(dbName), writer)
       db.openDatabase()
       writer.before(db)
 
@@ -107,7 +108,7 @@ class LegislatorDbTest {
       runtime.execute()
 
       val writer = LegislatorDbWriter() as CollectionWriter<LegislatorData, Database<LegislatorData>>
-      val db = LegislatorCreateDb(dbName, writer)
+      val db = LegislatorCreateDb(DefaultMongoClient(dbName), writer)
 
       db.openDatabase()
       db.queryCollection(collectionName, {
@@ -126,7 +127,7 @@ class LegislatorDbTest {
       val runtime = LegislatorRuntime(args = args)
       runtime.execute()
 
-      val db = LegislatorCreateDb(dbName, emptyDatabaseWriter())
+      val db = LegislatorCreateDb(DefaultMongoClient(dbName), emptyDatabaseWriter())
       db.openDatabase()
       assertSampleData(db)
       //rely on cleanup from teardown
@@ -141,7 +142,7 @@ class LegislatorDbTest {
       val runtime = LegislatorRuntime(args)
       runtime.execute()
 
-      val db = LegislatorCreateDb(dbName, emptyDatabaseWriter())
+      val db = LegislatorCreateDb(DefaultMongoClient(dbName), emptyDatabaseWriter())
       db.openDatabase()
       assertSampleData(db, true)
 

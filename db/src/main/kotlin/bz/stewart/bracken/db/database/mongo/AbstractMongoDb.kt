@@ -13,12 +13,12 @@ import mu.KLogging
 /**
  * Created by stew on 3/9/17.
  */
-abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "",
+abstract class AbstractMongoDb<T : DbItem>(private val dbClient: DatabaseClient<MongoClient>,
                                            val clazz: Class<T>,
-                                           val collWriter: CollectionWriter<T, Database<T>> = emptyDatabaseWriter(),
-                                           private val dbClient: DatabaseClient<MongoClient> = DevMongoClient(_databaseName)) : Database<T>() {
+                                           val collWriter: CollectionWriter<T, Database<T>> = emptyDatabaseWriter()) : Database<T>() {
 
-    //constructor(dbClient: DatabaseClient<MongoClient>, clazz:Class<T>, collWriter: CollectionWriter<T, Database<T>>)
+    constructor(_databaseName: String, clazz:Class<T>, collWriter: CollectionWriter<T, Database<T>>) : this(
+            DefaultMongoClient(_databaseName), clazz, collWriter)
 
     /**
      * do not use
@@ -28,7 +28,7 @@ abstract class AbstractMongoDb<T : DbItem>(_databaseName: String = "",
     internal var db: MongoDatabase? = null
         private set
     private var isOpen = false
-    var databaseName: String = _databaseName
+    var databaseName: String = dbClient.databaseName
 
     companion object : KLogging()
 

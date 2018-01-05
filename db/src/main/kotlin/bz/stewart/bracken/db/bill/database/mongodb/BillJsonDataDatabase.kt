@@ -3,11 +3,13 @@ package bz.stewart.bracken.db.bill.database.mongodb
 import bz.stewart.bracken.db.RuntimeMode
 import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.database.Database
+import bz.stewart.bracken.db.database.DatabaseClient
 import bz.stewart.bracken.db.database.mongo.CollectionWriter
 import bz.stewart.bracken.db.file.DataWalk
 import bz.stewart.bracken.db.file.FileUtils
 import bz.stewart.bracken.db.file.parse.AbstractJacksonParser
 import bz.stewart.bracken.db.file.parse.Parser
+import com.mongodb.MongoClient
 import com.mongodb.util.JSONParseException
 import mu.KLogging
 import org.litote.kmongo.find
@@ -20,11 +22,12 @@ import java.util.Date
  * Sync the database with the congress data
  * Created by stew on 3/9/17.
  */
-class BillJsonDataDatabase(val dataRoot: File, dbName: String,
+class BillJsonDataDatabase(val dataRoot: File,
+                           dbClient: DatabaseClient<MongoClient>,
                            private val collName: String = "bills",
                            val runtimeMode: RuntimeMode = RuntimeMode.NONE,
                            val testRun: Boolean = true,
-                           writer: BillWriter) : BillMongoDb(dbName,
+                           writer: BillWriter) : BillMongoDb(dbClient,
         writer as CollectionWriter<Bill, Database<Bill>>) {
 
     companion object : KLogging()

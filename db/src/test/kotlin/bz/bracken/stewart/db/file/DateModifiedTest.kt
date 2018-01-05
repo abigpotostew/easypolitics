@@ -6,6 +6,7 @@ import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.database.mongo.AbstractMongoDb
 import bz.stewart.bracken.db.bill.database.mongodb.BillJsonDataDatabase
 import bz.stewart.bracken.db.bill.database.mongodb.BillWriter
+import bz.stewart.bracken.db.database.mongo.DefaultMongoClient
 import bz.stewart.bracken.db.file.FileUtils
 import bz.stewart.bracken.shared.DateUtils
 import org.bson.types.ObjectId
@@ -29,7 +30,7 @@ class DateModifiedTest {
 
    @Before
    fun testSetupDb() {
-      testDb = BillJsonDataDatabase(File(TestUtils.getTestResourcesData()), "congress1",
+      testDb = BillJsonDataDatabase(File(TestUtils.getTestResourcesData()), DefaultMongoClient("congress1"),
                                     "test1235", RuntimeMode.NONE,
                                     true,
                                     writer = object : BillWriter() {

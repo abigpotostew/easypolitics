@@ -48,7 +48,7 @@ enum class RuntimeMode {
    fun getDbRuntime(args: BillArguments): DbRuntime<out DbItem> {
       return when (this) {
          NONE -> emptyDbRuntime()
-         RESET, UPDATE -> SetupDbRuntime<Bill>(args)
+         RESET, UPDATE -> SetupBillRuntime<Bill>(args)
       }
    }
 

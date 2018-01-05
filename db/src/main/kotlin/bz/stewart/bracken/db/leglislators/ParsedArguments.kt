@@ -8,42 +8,54 @@ import java.io.File
  * Created by stew on 5/21/17.
  */
 class ParsedArguments(parser: ArgParser) : LegislatorArguments {
-   override val files by parser.adding("-f", "--file", help="Path(s) to legislator json files."){
-      File(this)
-   }
-   val socialMediaFiles by parser.storing("-s", "--social", help="Path to social media json file.").default("")
-   override val testMode by parser.flagging("-t", "--test", help="Turns on test run mode. No data will be written.")
-   override val dbName:String by parser.storing("-b", "--database", help="Name of db to write to.")
+    override val files by parser.adding("-f", "--file", help = "Path(s) to legislator json files.") {
+        File(this)
+    }
+    val socialMediaFiles by parser.storing("-s", "--social", help = "Path to social media json file.").default("")
+    override val testMode by parser.flagging("-t", "--test", help = "Turns on test run mode. No data will be written.")
+    override val dbName: String by parser.storing("-b", "--database", help = "Name of db to write to.")
 
-   override var socialFile:File?=null
+    override val hostname: String? by parser.storing("--host", help = "Hostname for a remote db connection.").default(
+            null)
+    override val port: String? by parser.storing("--port", help = "Port for a remote db connection.").default(null)
+    override val username: String? by parser.storing("-u", "--user", help = "Username for db authentication.").default(
+            null)
+    override val password: String? by parser.storing("-p", "--pass", help = "Password for db authentication.").default(
+            null)
 
-   override fun toString(): String {
-      return "TestMode: $testMode, dbName: $dbName, files: $files, social-files: $socialMediaFiles"
-   }
+    override var socialFile: File? = null
 
-   fun invalidArgsMessage():String?{
-      for (f: java.io.File in files){
-         if(!validJsonFile(f)){
-            return "File '$f' is unreadable, or is not a .json file. Only accepts files ending with .json."
-         }
-      }
+    override fun toString(): String {
+        return "TestMode: $testMode, dbName: $dbName, files: $files, social-files: $socialMediaFiles"
+    }
 
-      if( dbName.isNullOrBlank() ){
-         return "Database name is empty."
-      }
+    fun invalidArgsMessage(): String? {
+        for (f: java.io.File in files) {
+            if (!validJsonFile(f)) {
+                return "File '$f' is unreadable, or is not a .json file. Only accepts files ending with .json."
+            }
+        }
 
-      if(!socialMediaFiles.isNullOrBlank()){
-         val _socialFile = java.io.File(socialMediaFiles)
-         if(!validJsonFile(_socialFile)){
-            return "Social file is unreadable or not a json file: ${socialMediaFiles}"
-         }
-         socialFile = _socialFile
-      }
+        if (dbName.isNullOrBlank()) {
+            return "Database name is empty."
+        }
 
-      return null
-   }
+        if (!socialMediaFiles.isNullOrBlank()) {
+            val _socialFile = java.io.File(socialMediaFiles)
+            if (!validJsonFile(_socialFile)) {
+                return "Social file is unreadable or not a json file: ${socialMediaFiles}"
+            }
+            socialFile = _socialFile
+        }
 
-   private fun validJsonFile(file: java.io.File):Boolean{
-      return file.isFile && file.canRead() && (file.extension.equals("json") || file.extension.equals("jsn"))
-   }
+        if (this.hostname != null && (this.username == null || this.password == null)) {
+            return "Username (-u) and password (-p) are required when specifying the host (--host)"
+        }
+
+        return null
+    }
+
+    private fun validJsonFile(file: java.io.File): Boolean {
+        return file.isFile && file.canRead() && (file.extension.equals("json") || file.extension.equals("jsn"))
+    }
 }
