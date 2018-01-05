@@ -1,7 +1,7 @@
 package bz.stewart.bracken.rest.query
 
 import bz.stewart.bracken.db.bill.data.Bill
-import bz.stewart.bracken.db.database.CompositeMongoDb
+import bz.stewart.bracken.db.database.mongo.CompositeMongoDb
 import bz.stewart.bracken.db.leglislators.data.LegislatorData
 import bz.stewart.bracken.rest.data.bills.BillDelegated
 import bz.stewart.bracken.rest.data.bills.toPublicBillCollection

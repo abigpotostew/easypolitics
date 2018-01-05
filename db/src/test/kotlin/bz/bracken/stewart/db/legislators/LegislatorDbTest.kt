@@ -2,9 +2,9 @@ package bz.bracken.stewart.db.legislators
 
 import bz.bracken.stewart.db.AssertAllFound
 import bz.stewart.bracken.db.TestUtils
-import bz.stewart.bracken.db.database.CollectionWriter
+import bz.stewart.bracken.db.database.mongo.CollectionWriter
 import bz.stewart.bracken.db.database.Database
-import bz.stewart.bracken.db.database.emptyDatabaseWriter
+import bz.stewart.bracken.db.database.mongo.emptyDatabaseWriter
 import bz.stewart.bracken.db.leglislators.*
 import bz.stewart.bracken.db.leglislators.data.IdData
 import bz.stewart.bracken.db.leglislators.data.LegislatorData

@@ -1,6 +1,6 @@
 package bz.stewart.bracken.db.leglislators
 
-import bz.stewart.bracken.db.database.DefaultAbstractWriter
+import bz.stewart.bracken.db.database.mongo.DefaultAbstractWriter
 import bz.stewart.bracken.db.leglislators.data.LegislatorData
 
 /**

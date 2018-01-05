@@ -1,5 +1,6 @@
 package bz.stewart.bracken.db.database
 
+import bz.stewart.bracken.db.database.mongo.CollectionWriter
 import java.util.*
 
 /**

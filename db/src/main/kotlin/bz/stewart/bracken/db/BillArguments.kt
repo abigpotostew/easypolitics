@@ -3,6 +3,7 @@ package bz.stewart.bracken.db
 import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.database.DbItem
 import com.xenomachina.argparser.ArgParser
+import com.xenomachina.argparser.default
 import java.io.File
 
 /**
@@ -34,6 +35,11 @@ class BillArguments(parser: ArgParser) {
          { this.toInt() }
 
    val dbName:String by parser.storing("-b", "--database", help="The database name.")
+
+   val hostname:String? by parser.storing("--host", help = "Hostname for a remote db connection.").default(null)
+   val port:String? by parser.storing("--port", help = "Port for a remote db connection.").default(null)
+   val username:String? by parser.storing("-u", "--user", help = "Username for db authentication.").default(null)
+   val password:String? by parser.storing("-p", "--pass", help = "Password for db authentication.").default(null)
 }
 
 enum class RuntimeMode {

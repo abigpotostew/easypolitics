@@ -2,8 +2,8 @@ package bz.stewart.bracken.db.bill.database.mongodb
 
 import bz.stewart.bracken.db.RuntimeMode
 import bz.stewart.bracken.db.bill.data.Bill
-import bz.stewart.bracken.db.database.CollectionWriter
 import bz.stewart.bracken.db.database.Database
+import bz.stewart.bracken.db.database.mongo.CollectionWriter
 import bz.stewart.bracken.db.file.DataWalk
 import bz.stewart.bracken.db.file.FileUtils
 import bz.stewart.bracken.db.file.parse.AbstractJacksonParser
@@ -21,11 +21,11 @@ import java.util.Date
  * Created by stew on 3/9/17.
  */
 class BillJsonDataDatabase(val dataRoot: File, dbName: String,
-    private val collName: String = "bills",
-    val runtimeMode: RuntimeMode = RuntimeMode.NONE,
-    val testRun: Boolean = true,
-    writer: BillWriter) : BillMongoDb(dbName,
-    writer as CollectionWriter<Bill, Database<Bill>>) {
+                           private val collName: String = "bills",
+                           val runtimeMode: RuntimeMode = RuntimeMode.NONE,
+                           val testRun: Boolean = true,
+                           writer: BillWriter) : BillMongoDb(dbName,
+        writer as CollectionWriter<Bill, Database<Bill>>) {
 
     companion object : KLogging()
 
@@ -38,15 +38,15 @@ class BillJsonDataDatabase(val dataRoot: File, dbName: String,
     fun billModifiedSinceLastTime(externalModTime: Date?, billFromDb: Bill): Boolean {
         val externalModifiedTime = externalModTime ?: MIN_DATE
         val internalLastModifiedTime = billFromDb.getLastModified() ?: throw RuntimeException(
-            "Bill from database shouldn't have a null modified date: $billFromDb")
+                "Bill from database shouldn't have a null modified date: $billFromDb")
         return externalModifiedTime.after(internalLastModifiedTime)
 
     }
 
     fun shouldUpdate(externalModTime: Date?, billFromDb: Bill?): Boolean {
         return billFromDb == null || runtimeMode == RuntimeMode.RESET || (runtimeMode == RuntimeMode.UPDATE && billModifiedSinceLastTime(
-            externalModTime,
-            billFromDb))
+                externalModTime,
+                billFromDb))
     }
 
     /**
@@ -71,56 +71,56 @@ class BillJsonDataDatabase(val dataRoot: File, dbName: String,
         getWriter().before(this)
 
         val fileWalker = DataWalk(dataRoot, onlyParseCongresNum,
-            object : AbstractJacksonParser<Bill>(clazz), Parser {
-                override fun parseData(uniqueId: String, data: File,
-                    lastModified: File?) {
+                object : AbstractJacksonParser<Bill>(clazz), Parser {
+                    override fun parseData(uniqueId: String, data: File,
+                                           lastModified: File?) {
 
-                    val bill = readMap(data)
-                    var existingBill: Bill? = null
-                    countParsed++
+                        val bill = readMap(data)
+                        var existingBill: Bill? = null
+                        countParsed++
 
-                    try {// TODO skip this query if in reset mode?
-                        parent.queryCollection(collName, {
-                            val found = find(
-                                "{bill_id:${bill.bill_id.json} }".formatJson())
-                            existingBill = found.first()
-                        })
-                    } catch (e: JSONParseException) {
-                        logger.info { "Error $e" }
+                        try {// TODO skip this query if in reset mode?
+                            parent.queryCollection(collName, {
+                                val found = find(
+                                        "{bill_id:${bill.bill_id.json} }".formatJson())
+                                existingBill = found.first()
+                            })
+                        } catch (e: JSONParseException) {
+                            logger.info { "Error $e" }
+                        }
+                        val externalModTime = getBillExternalModifiedTime(
+                                lastModified, bill)
+                        if (shouldUpdate(externalModTime, existingBill)) {
+                            //if((runtimeMode==RuntimeMode.UPDATE && shouldUpdate(lastModified,bill,existingBill)) || runtimeMode==RuntimeMode.RESET ){
+                            //need to do the lastmodified logic here
+                            bill.setLastModified(externalModTime)
+                            getWriter().write(bill, collName, parent)
+                            countWritten++
+                        } else {
+                            skippedWrite.add(bill)
+                            logger.debug { "Skipping ${bill.bill_id} because db entry is up to date." }
+                        }
                     }
-                    val externalModTime = getBillExternalModifiedTime(
-                        lastModified, bill)
-                    if (shouldUpdate(externalModTime, existingBill)) {
-                        //if((runtimeMode==RuntimeMode.UPDATE && shouldUpdate(lastModified,bill,existingBill)) || runtimeMode==RuntimeMode.RESET ){
-                        //need to do the lastmodified logic here
-                        bill.setLastModified(externalModTime)
-                        getWriter().write(bill, collName, parent)
-                        countWritten++
-                    } else {
-                        skippedWrite.add(bill)
-                        logger.debug { "Skipping ${bill.bill_id} because db entry is up to date." }
-                    }
-                }
 
-                override fun onComplete() {
-                    getWriter().after(parent)
+                    override fun onComplete() {
+                        getWriter().after(parent)
 //            println("============================================================")
 //            println("== Parsed: $countParsed\n== Wrote: $countWritten")
 //            println("============================================================")
-                    logger.info { "============================================================" }
-                    logger.info { "== Finished parsing data. Stats:" }
-                    if (runtimeMode == RuntimeMode.RESET) {
-                        logger.info { "== Dropped: $droppedCount" }
+                        logger.info { "============================================================" }
+                        logger.info { "== Finished parsing data. Stats:" }
+                        if (runtimeMode == RuntimeMode.RESET) {
+                            logger.info { "== Dropped: $droppedCount" }
+                        }
+                        logger.info { "== Parsed: $countParsed" }
+                        logger.info { "== Wrote: $countWritten" }
+                        logger.info { "== Skipped: ${skippedWrite.size}" }
+                        if (testRun) {
+                            logger.info { "== Test mode: no data was written to database." }
+                        }
+                        logger.info { "============================================================" }
                     }
-                    logger.info { "== Parsed: $countParsed" }
-                    logger.info { "== Wrote: $countWritten" }
-                    logger.info { "== Skipped: ${skippedWrite.size}" }
-                    if (testRun) {
-                        logger.info { "== Test mode: no data was written to database." }
-                    }
-                    logger.info { "============================================================" }
-                }
-            })
+                })
         //try {
         if (runtimeMode == RuntimeMode.RESET) {
             //writer.before(this)
@@ -139,7 +139,7 @@ class BillJsonDataDatabase(val dataRoot: File, dbName: String,
     }
 
     @Deprecated(
-        "Collection should not be persisted, pass in collection name each call rather than save it.")
+            "Collection should not be persisted, pass in collection name each call rather than save it.")
     override fun getCollectionName(): String {
         return collName
     }

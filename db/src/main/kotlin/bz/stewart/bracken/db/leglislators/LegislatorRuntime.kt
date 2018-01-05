@@ -1,8 +1,8 @@
 package bz.stewart.bracken.db.leglislators
 
-import bz.stewart.bracken.db.database.CollectionWriter
+import bz.stewart.bracken.db.database.mongo.CollectionWriter
 import bz.stewart.bracken.db.database.Database
-import bz.stewart.bracken.db.database.emptyDatabaseWriter
+import bz.stewart.bracken.db.database.mongo.emptyDatabaseWriter
 import bz.stewart.bracken.db.leglislators.data.LegislatorData
 import bz.stewart.bracken.db.leglislators.data.SocialMapper
 import mu.KLogging
@@ -14,7 +14,7 @@ class LegislatorRuntime(private val args: LegislatorArguments) {
 
    fun execute() {
       val writer = if (args.testMode) {
-         emptyDatabaseWriter<LegislatorData, Database<LegislatorData>>()
+          emptyDatabaseWriter<LegislatorData, Database<LegislatorData>>()
       }
       else {
          LegislatorDbWriter()

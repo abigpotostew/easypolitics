@@ -1,5 +1,7 @@
-package bz.stewart.bracken.db.database
+package bz.stewart.bracken.db.database.mongo
 
+import bz.stewart.bracken.db.database.Database
+import bz.stewart.bracken.db.database.DbItem
 import com.mongodb.client.MongoDatabase
 
 /**
