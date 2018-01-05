@@ -1,5 +1,4 @@
-db = db.getSiblingDB("DB_NAME");
-db = db.getSiblingDB('admin')
+db = db.getSiblingDB('admin');
 
 db.createUser(
   {
@@ -9,6 +8,7 @@ db.createUser(
   }
 )
 
+db = db.getSiblingDB("DB_NAME");
 db.createUser(
   {
     user: "easypolitics",

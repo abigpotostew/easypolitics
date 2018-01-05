@@ -17,6 +17,7 @@ import java.io.File
 import java.util.Date
 
 /**
+ * Sync the database with the congress data
  * Created by stew on 3/9/17.
  */
 class BillJsonDataDatabase(val dataRoot: File, dbName: String,
