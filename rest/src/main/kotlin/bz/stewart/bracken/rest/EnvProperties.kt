@@ -1,10 +1,10 @@
 package bz.stewart.bracken.rest
 
-import bz.stewart.bracken.shared.util.Property
+import bz.stewart.bracken.shared.conf.EnvProperty
 
 enum class EnvProperties constructor(override val propName: String,
                                                    override val defaultValue: String,
-                                                   override val required: Boolean = false) : Property {
+                                                   override val required: Boolean = false) : EnvProperty {
     PORT("bz.stewart.bracken.rest.port", "8080", true),
     DB_NAME("bz.stewart.bracken.rest.database.name", "", true),
 

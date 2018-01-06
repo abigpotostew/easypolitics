@@ -1,4 +1,4 @@
-package bz.stewart.bracken.web.conf
+package bz.stewart.bracken.shared.conf
 
 import java.io.BufferedReader
 import java.io.FileNotFoundException
@@ -7,9 +7,9 @@ import java.io.IOException
 import java.lang.IllegalArgumentException
 import java.util.Properties
 
-class MainProperties(defaults: Properties = Properties()) {
+class FileProperties<T : Property>(defaults: Properties = Properties()) {
 
-    private val props = defaults
+    val properties = defaults
 
     fun loadFile(propPath: String) {
         try {
@@ -17,7 +17,7 @@ class MainProperties(defaults: Properties = Properties()) {
             val inStream = BufferedReader(FileReader(propPath))
             fileProps.load(inStream)
             inStream.close()
-            this.props.putAll(fileProps) //merge the props with default
+            this.properties.putAll(fileProps) //merge the props with default
         } catch (e: FileNotFoundException) {
             throw Exception("Required main property path not found at '$propPath'")
         } catch (e: IOException) {
@@ -27,15 +27,11 @@ class MainProperties(defaults: Properties = Properties()) {
         }
     }
 
-    fun validateRequired(propDefintions:Array<WebDefaultProperties>) {
-        for (propDef in propDefintions){
-            if (this.props.getProperty(propDef.propName) == null){
-                throw Exception("Missing required main property '${propDef.name}'")
-            }
-        }
+    fun getProperty(propName: String): String {
+        return this.properties.getProperty(propName)
     }
 
-    fun getProperty(propName: String): String {
-        return this.props.getProperty(propName)
+    fun getProperty(prop: T): String {
+        return getProperty(prop.propName)
     }
 }

@@ -22,6 +22,7 @@ include 'ui'
 include 'ui-app'
 include 'rest'
 include 'shared'
+include 'shared-jvm'
 include 'web'
 //include 'legislators'
 

@@ -1,0 +1,23 @@
+apply plugin: 'kotlin-platform-jvm'
+
+archivesBaseName = 'easypolitics-shared-jvm'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    compile project(":shared")
+    compile libraries.kotlin_stdlib
+    testCompile libraries.kotlin_test
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.kotlin
+}
+
+artifacts {
+    archives sourcesJar
+}

@@ -32,6 +32,7 @@ repositories {
 }
 
 dependencies {
+    compile project(":shared-jvm")
     compile libraries.kotlin_stdlib
     compile 'com.sparkjava:spark-core:2.3'
     compile group: "org.jetbrains.kotlinx", name: "kotlinx-html-jvm", version: "0.6.4"
