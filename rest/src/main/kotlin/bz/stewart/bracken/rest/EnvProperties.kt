@@ -7,7 +7,7 @@ enum class EnvProperties constructor(override val propName: String,
                                                    override val required: Boolean = false) : EnvProperty {
     PORT("bz.stewart.bracken.rest.port", "8080", true),
     DB_NAME("bz.stewart.bracken.rest.database.name", "", true),
-
+    REST_PROPS_FILE("bz.stewart.bracken.rest.properties", "", true)
     ;
 
     override fun getOrDefault(): String {

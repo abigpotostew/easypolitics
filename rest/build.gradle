@@ -37,18 +37,19 @@ sourceCompatibility = 1.8
 
 
 dependencies {
-	compile 'com.sparkjava:spark-core:2.7.+'
-	compile libraries.kotlin_stdlib
-	compile libraries.kotlin_reflect
-	compile (project(':db')){
+    compile project(":shared-jvm") //huh, choose!?
+    compile 'com.sparkjava:spark-core:2.7.+'
+    compile libraries.kotlin_stdlib
+    compile libraries.kotlin_reflect
+    compile (project(':db')){
         exclude module: 'log4j-over-slf4j'
         exclude module: 'jcl-over-slf4j'
         exclude module: 'jcl-to-slf4j'
-		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
-	compile 'org.litote.kmongo:kmongo:3.5.+'
+    compile 'org.litote.kmongo:kmongo:3.5.+'
 
-	testCompile project(':db').sourceSets.test.output
+    testCompile project(':db').sourceSets.test.output
 
     compile project(":shared") //huh, choose!?
 	expectedBy project(":shared")

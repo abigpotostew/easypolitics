@@ -1,5 +1,7 @@
 package bz.stewart.bracken.rest
 
+import bz.stewart.bracken.shared.conf.FileProperties
+
 class Main {
 
     companion object {
@@ -8,7 +10,22 @@ class Main {
             EnvProperties.values()
                     .filter { it.required && it.isEmpty() }
                     .forEach { error("Missing required java property: ${it.propName}") }
-            RestServiceRunner().run()
+
+            val props = FileProperties<RestDefaultProperties>(RestDefaultProperties.values().toList())
+            props.loadFile(EnvProperties.REST_PROPS_FILE.getOrDefault())
+            validateProperties(props)
+
+            val runner = RestServiceRunner(props)
+            runner.run()
+        }
+
+        fun validateProperties(props:FileProperties<RestDefaultProperties>) {
+            val host = props.getProperty(RestDefaultProperties.DB_HOSTNAME)
+            val user = props.getProperty(RestDefaultProperties.DB_USERNAME)
+            val pass = props.getProperty(RestDefaultProperties.DB_PASSWORD)
+            if (!host.isEmpty() && (user.isEmpty() || pass.isEmpty())){
+                throw Exception("User and host properties are required when specifying the host.")
+            }
         }
     }
 }

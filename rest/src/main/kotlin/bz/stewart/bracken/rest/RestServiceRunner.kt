@@ -6,6 +6,7 @@ import bz.stewart.bracken.rest.route.ExecuteRoute
 import bz.stewart.bracken.rest.route.StandardRouteContext
 import bz.stewart.bracken.rest.service.MultipleBillService
 import bz.stewart.bracken.rest.service.SingleBillService
+import bz.stewart.bracken.shared.conf.FileProperties
 import bz.stewart.bracken.shared.rest.RestServices
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import mu.KLogging
@@ -13,7 +14,7 @@ import spark.Request
 import spark.Spark
 import spark.Spark.port
 
-class RestServiceRunner {
+class RestServiceRunner(private val properties: FileProperties<RestDefaultProperties>) {
 
     val mapper = jacksonObjectMapper()
     val billDao = BillDAO(EnvProperties.DB_NAME.getOrDefault())

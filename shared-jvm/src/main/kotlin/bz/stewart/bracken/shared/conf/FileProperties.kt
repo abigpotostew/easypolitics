@@ -7,9 +7,9 @@ import java.io.IOException
 import java.lang.IllegalArgumentException
 import java.util.Properties
 
-class FileProperties<T : Property>(defaults: Properties = Properties()) {
-
-    val properties = defaults
+class FileProperties<T : Property>(propDef: List<Property>) {
+    private val propDefList = propDef
+    val properties = asProperties(propDef)
 
     fun loadFile(propPath: String) {
         try {
@@ -33,5 +33,22 @@ class FileProperties<T : Property>(defaults: Properties = Properties()) {
 
     fun getProperty(prop: T): String {
         return getProperty(prop.propName)
+    }
+
+    fun getMissingRequiredFromDef(): List<Property> {
+        val out = this.propDefList
+            .filter { this.properties.getProperty(it.propName) == null }
+            .map { it }
+        return out
+    }
+
+    fun hasMissingRequiredDef(): Boolean {
+        return getMissingRequiredFromDef().isNotEmpty()
+    }
+
+    fun getMissingPropertyException(): Exception {
+        val words = getMissingRequiredFromDef()
+            .joinToString { it.propName }
+        return Exception("Missing required main properties: $words")
     }
 }
