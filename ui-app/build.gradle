@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     compile project(':ui')
+    compile project(':shared')
     compile libraries.kotlin_stdlib_js
 }
 

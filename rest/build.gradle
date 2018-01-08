@@ -3,6 +3,7 @@ final String MAIN_CLASS = "bz.stewart.bracken.rest.Main"
 
 ////////////////////////////////////////////////////////////////////////
 //Read in my.properties, use props.getProperty("propName")
+def localRuntimeProps = "/Users/stew/code/kotlin/easypolitics/rest/main.properties"
 def props = new Properties()
 file("../my.properties").withInputStream { props.load(it) }
 
@@ -42,10 +43,10 @@ dependencies {
     compile libraries.kotlin_stdlib
     compile libraries.kotlin_reflect
     compile (project(':db')){
-        exclude module: 'log4j-over-slf4j'
-        exclude module: 'jcl-over-slf4j'
-        exclude module: 'jcl-to-slf4j'
-        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+//        exclude module: 'log4j-over-slf4j'
+//        exclude module: 'jcl-over-slf4j'
+//        exclude module: 'jcl-to-slf4j'
+//        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
     compile 'org.litote.kmongo:kmongo:3.5.+'
 
@@ -54,9 +55,11 @@ dependencies {
     compile project(":shared") //huh, choose!?
 	expectedBy project(":shared")
 
-    runtime (project(':db')){
-		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-    }
+//    runtime (project(':db')){
+//		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+//    }
+
+//    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.10.0'
 }
 
 task bootJar(type: Jar, dependsOn: build) {
@@ -72,7 +75,8 @@ task bootRun(type: JavaExec, dependsOn: [classes, bootJar]) {
     main = MAIN_CLASS
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue(true)
-    jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n', '-Dbz.stewart.bracken.rest.port=8080', "-Dbz.stewart.bracken.rest.database.name=${DBNAME}"]
+    //'-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n',
+    jvmArgs = ["-Dbz.stewart.bracken.rest.properties=${localRuntimeProps}"]
 
     if (project && project.hasProperty("appArgs")) {
         args Eval.me(appArgs)
@@ -92,3 +96,14 @@ artifacts {
 ///////////////////
 // Distribution
 ///////////////////
+applicationDefaultJvmArgs=["-Dbz.stewart.bracken.rest.properties=main.properties"]
+//copy resources as static files outside of the jar
+distributions {
+    main {
+        contents {
+            from("$projectDir/main.properties"){
+                into "conf"
+            }
+        }
+    }
+}

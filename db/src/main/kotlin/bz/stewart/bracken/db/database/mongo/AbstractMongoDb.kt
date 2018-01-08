@@ -13,7 +13,7 @@ import mu.KLogging
 /**
  * Created by stew on 3/9/17.
  */
-abstract class AbstractMongoDb<T : DbItem>(private val dbClient: DatabaseClient<MongoClient>,
+abstract class AbstractMongoDb<T : DbItem>(protected val dbClient: DatabaseClient<MongoClient>,
                                            val clazz: Class<T>,
                                            val collWriter: CollectionWriter<T, Database<T>> = emptyDatabaseWriter()) : Database<T>() {
 

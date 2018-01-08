@@ -9,5 +9,6 @@ enum class AppServices(val path: String) {
     RESPOND("/respond/:id"),
     SINGLE_BILL("/bill/:id"),
     BROWSE_BILL("/browse"),
+    SERVICE_URL("/serviceurl"),
     ;
 }

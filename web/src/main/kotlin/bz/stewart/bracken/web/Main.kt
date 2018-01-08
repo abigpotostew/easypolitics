@@ -14,5 +14,5 @@ fun main(args: Array<String>) {
     if (props.hasMissingRequiredDef())
         throw props.getMissingPropertyException()
 
-    ServiceRunner(MainSparkConfig(props)).run()
+    ServiceRunner(MainSparkConfig(props), props.getProperty(WebDefaultProperties.REST_SERVICE_URL)).run()
 }

@@ -4,6 +4,7 @@ import bz.stew.bracken.ui.pages.browse.controller.BrowseBillsController
 import bz.stew.bracken.ui.common.query.BillRestQueryUrl
 import bz.stew.bracken.ui.pages.browse.model.BillModelEasyPoliticsRest
 import bz.stew.bracken.ui.common.view.Identifier
+import bz.stew.bracken.ui.context.PageContext
 import bz.stew.bracken.view.HtmlSelector
 
 /**
@@ -11,11 +12,11 @@ import bz.stew.bracken.view.HtmlSelector
  */
 @Suppress("unused")
 class BrowseRuntime :RuntimeUi{
-    override fun execute() {
+    override fun execute(context: PageContext) {
         val rootElement = HtmlSelector(Identifier.ID,"root")
         val controller = BrowseBillsController(rootElmt = rootElement,
-                requestUrl = BillRestQueryUrl(congress = 115, limit = 50),
-              model = BillModelEasyPoliticsRest())
+                requestUrl = BillRestQueryUrl(pageContext = context, congress = 115, limit = 50),
+              model = BillModelEasyPoliticsRest(), pageContext = context)
         controller.view.setLoading(true)
 
         controller.init {

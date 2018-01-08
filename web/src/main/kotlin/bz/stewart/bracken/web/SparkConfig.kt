@@ -10,7 +10,7 @@ interface SparkConfig {
 
 class MainSparkConfig(private val mainProperties: FileProperties<WebDefaultProperties>) : SparkConfig {
     override fun config() {
-        if (mainProperties.getProperty(WebDefaultProperties.EXT_STATIC_FILES) != "") {
+        if (mainProperties.getProperty(WebDefaultProperties.EXT_STATIC_FILES).isNotEmpty()) {
             println("Using external static file location: " + mainProperties.getProperty(WebDefaultProperties.EXT_STATIC_FILES))
             Spark.externalStaticFileLocation(mainProperties.getProperty(WebDefaultProperties.EXT_STATIC_FILES))
         } else {

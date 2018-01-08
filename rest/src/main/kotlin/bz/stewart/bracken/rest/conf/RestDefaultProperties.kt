@@ -1,4 +1,4 @@
-package bz.stewart.bracken.rest
+package bz.stewart.bracken.rest.conf
 
 import bz.stewart.bracken.shared.conf.Property
 

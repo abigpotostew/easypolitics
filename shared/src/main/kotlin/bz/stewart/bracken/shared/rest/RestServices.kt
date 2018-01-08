@@ -7,5 +7,8 @@ package bz.stewart.bracken.shared.rest
 enum class RestServices(val path: String) {
     MULTI_BILLS("/bills"),
     SINGLE_BILL("/bill"),
+    HOME("/")
     ;
+
+
 }

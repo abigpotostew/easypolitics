@@ -9,6 +9,7 @@ import bz.stewart.bracken.rest.qp
 
 class SingleBillService : RouteService<QueryResult> {
     override fun execute(context: RouteContext): QueryResult {
+        context.response.type("application/json")
         val billId = context.request.qp("bill_id")
         if (billId==null){
             throw IllegalQueryInput("Required")

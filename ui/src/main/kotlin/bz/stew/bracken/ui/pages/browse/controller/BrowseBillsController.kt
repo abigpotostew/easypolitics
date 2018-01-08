@@ -12,6 +12,7 @@ import bz.stew.bracken.ui.common.query.BillDataServiceEndpoint
 import bz.stew.bracken.ui.common.query.BillRestQueryUrl
 import bz.stew.bracken.ui.common.service.BillRestService
 import bz.stew.bracken.ui.common.view.Identifier
+import bz.stew.bracken.ui.context.PageContext
 import bz.stew.bracken.ui.extension.niceClamp
 import bz.stew.bracken.ui.pages.browse.view.BootstrapTemplates
 import bz.stew.bracken.ui.pages.browse.view.BrowseBillsView
@@ -30,9 +31,9 @@ import org.w3c.dom.events.EventTarget
  */
 class BrowseBillsController(rootElmt: HtmlSelector,
                             private val requestUrl: BillRestQueryUrl,
-                            model: Model<BillData>) : PageController<BrowseBillsView, BillData>(
-        BrowseBillsView(rootElmt, BootstrapTemplates()),
-        model) {
+                            model: Model<BillData>,
+                            pageContext: PageContext)
+    : PageController<BrowseBillsView, BillData>(BrowseBillsView(rootElmt, BootstrapTemplates()), model, pageContext) {
 
     private val requestService = BillRestService()
     private var lastSuccessfulQuery: BillDataServiceEndpoint? = null
@@ -52,10 +53,10 @@ class BrowseBillsController(rootElmt: HtmlSelector,
             introducedDateFilter(it, IndexOperation.LessThanOrEqual)
         })
         this.view.getElement(BillFilters.LASTMAJORSTATUS.htmlSelector()).addEventListener("change",
-                this::billMajorStatusFilter)
+            this::billMajorStatusFilter)
 
         this.view.getElement(HtmlSelector(identifier = Identifier.ID,
-                selectorText = "loadNextPageBtn")).addEventListener("click", {
+            selectorText = "loadNextPageBtn")).addEventListener("click", {
             nextPageQuery()
         })
     }
@@ -65,7 +66,7 @@ class BrowseBillsController(rootElmt: HtmlSelector,
         //TODO use this
         this.view.getElement(BillFilters.PARTY.htmlSelector()).removeEventListener("change", this::partyFilter)
         this.view.getElement(BillFilters.FIXEDSTATUS.htmlSelector()).removeEventListener("change",
-                this::billStatusFilter)
+            this::billStatusFilter)
     }
 
     private fun introducedDateFilter(event: Event,
@@ -78,10 +79,10 @@ class BrowseBillsController(rootElmt: HtmlSelector,
                 0.0
             }
             val validDate = niceClamp(inputDate, INTRO_DATE_INDEX.minKey(), INTRO_DATE_INDEX.maxKey(),
-                    operator == IndexOperation.GreaterThanOrEqual)
+                operator == IndexOperation.GreaterThanOrEqual)
             println("VALUE IS: $validDate")
             this.view.showSelectedBills(
-                    INTRO_DATE_INDEX.instancesByOperator(operator, validDate))
+                INTRO_DATE_INDEX.instancesByOperator(operator, validDate))
         }
     }
 
@@ -168,9 +169,10 @@ class BrowseBillsController(rootElmt: HtmlSelector,
     /**
      * Main point to load new data from remote endpoint
      */
-    override fun init(callback:() -> Unit) {
+    override fun init(callback: () -> Unit) {
         val controller = this
         this.inProgressQuery = this.requestUrl
+
         this.requestService.sendBillRequest(this.requestUrl, {
             this.lastSuccessfulQuery = this.inProgressQuery
             this.inProgressQuery = null

@@ -1,21 +1,23 @@
 package bz.stewart.bracken.rest.query
 
 import bz.stewart.bracken.db.bill.data.Bill
+import bz.stewart.bracken.db.database.DatabaseClient
 import bz.stewart.bracken.db.database.mongo.CompositeMongoDb
 import bz.stewart.bracken.db.leglislators.data.LegislatorData
 import bz.stewart.bracken.rest.data.bills.BillDelegated
 import bz.stewart.bracken.rest.data.bills.toPublicBillCollection
 import bz.stewart.bracken.rest.util.MathUtil
 import com.mongodb.BasicDBObject
+import com.mongodb.MongoClient
 import com.mongodb.client.FindIterable
 import org.bson.conversions.Bson
 import org.litote.kmongo.MongoOperator
 import org.litote.kmongo.find
 import org.litote.kmongo.formatJson
 
-class MainDbAccess(_databaseName: String) :
+class MainDbAccess(dbClient:DatabaseClient<MongoClient>) :
       CompositeMongoDb<Bill, LegislatorData>(
-            _databaseName,
+          dbClient,
             Bill::class.java,
             "bills",
             LegislatorData::class.java,

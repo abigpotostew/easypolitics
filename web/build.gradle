@@ -78,6 +78,7 @@ task copyNodeLibraries(type: Copy, dependsOn: installRequireJs) {
     into "${buildDir}/resources/main/static/lib"
 }
 prepare.dependsOn copyNodeLibraries
+classes.dependsOn prepare
 
 mainSass {
     doFirst {
@@ -87,10 +88,7 @@ mainSass {
         println("Finished compiling Sass!")
     }
 }
-
-tasks.build.doLast {
-    tasks.mainSass.execute()
-}
+processResources.dependsOn mainSass
 
 task fatJar(type: Jar, dependsOn: build) {
     baseName = project.name + '-fat'

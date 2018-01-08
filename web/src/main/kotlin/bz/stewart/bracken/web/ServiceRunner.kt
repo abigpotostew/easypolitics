@@ -9,7 +9,7 @@ import bz.stewart.bracken.web.view.SingleBillView
 import bz.stewart.bracken.web.view.bill.SingleBillConfig
 import spark.Spark
 
-class ServiceRunner(val config: SparkConfig) {
+class ServiceRunner(val config: SparkConfig, private val restUrl:String) {
 
     init {
         config.config()
@@ -34,6 +34,10 @@ class ServiceRunner(val config: SparkConfig) {
             response.type("text/javascript")
             RequireJs(emptyArray())
             UiApiActions().mainAll().js
+        }
+        Spark.get(AppServices.SERVICE_URL.path) { _, response ->
+            response.type("text/html")
+            restUrl
         }
     }
 }

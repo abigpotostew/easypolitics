@@ -1,5 +1,8 @@
 package bz.stewart.bracken.rest
 
+import bz.stewart.bracken.rest.conf.EnvProperties
+import bz.stewart.bracken.rest.conf.RestDefaultProperties
+import bz.stewart.bracken.rest.conf.RestRuntimeContext
 import bz.stewart.bracken.shared.conf.FileProperties
 
 class Main {
@@ -15,7 +18,9 @@ class Main {
             props.loadFile(EnvProperties.REST_PROPS_FILE.getOrDefault())
             validateProperties(props)
 
-            val runner = RestServiceRunner(props)
+            val runtimeContext = RestRuntimeContext.builder().setClientFromProps(props).servingPort(props).build()
+
+            val runner = RestServiceRunner(runtimeContext)
             runner.run()
         }
 
