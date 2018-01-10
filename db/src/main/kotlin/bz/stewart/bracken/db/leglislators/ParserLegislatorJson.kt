@@ -36,13 +36,13 @@ abstract class ParsersdfAllJson<T> (private val typeName:String="JsonObject"){
    }
 }
 
-class ParserLegislatorJson():ParsersdfAllJson<LegislatorData>("LegislatorData"){
+class ParserLegislatorJson :ParsersdfAllJson<LegislatorData>("LegislatorData"){
    override fun readValue(src: Reader): List<LegislatorData> {
       return mapper.readValue(src)
    }
 }
 
-class ParserSocialJson():ParsersdfAllJson<LegislatorSocialInfo>("LegislatorSocialInfo"){
+class ParserSocialJson :ParsersdfAllJson<LegislatorSocialInfo>("LegislatorSocialInfo"){
    override fun readValue(src: Reader): List<LegislatorSocialInfo> {
       return mapper.readValue(src)
    }

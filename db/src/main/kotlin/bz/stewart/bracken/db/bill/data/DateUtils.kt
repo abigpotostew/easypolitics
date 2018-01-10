@@ -105,7 +105,7 @@ class DateUtils {
        * Parses using various known formats (iso860-1, RFC822,
        */
       fun flexibleDateParser(dateString:String): Date {
-         if (dateString.isNullOrEmpty()){
+         if (dateString.isEmpty()){
             return defaultDate()
          }
          for(format in allDateFormats()) { //usually the first format (iso8601) will work but here's some backups

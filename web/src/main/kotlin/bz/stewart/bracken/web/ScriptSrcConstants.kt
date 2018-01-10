@@ -17,12 +17,11 @@ enum class ScriptSrcConstants(val jsName:String,
     TETHER_MIN_EXT("tether","https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js", "sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" ,"anonymous"),
     BOOSTRAP_MIN_EXT("bootstrap","https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js", "sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn", "anonymous"),
 
-    //REQUIREJS_LOCAL("require","/lib/require.js"), //todo squish with ui code
-    KOTLIN_JS_FROM_UI_LOCAL("kotlin","lib/lib/kotlin"), //todo squish with ui code
+    KOTLIN_JS_FROM_UI_LOCAL("kotlin","lib/lib/kotlin"),
     KOTLINX_JS_FROM_UI_LOCAL("kotlinHtmlJs","lib/lib/kotlinx-html-js"), //must be before easypolitics-ui.js
     EASYPOLITICS_UI_JS_FROM_UI_LOCAL("easypoliticsUi","lib/easypolitics-ui"),// todo add integrity
-    UIAPP_LOCAL("uiApp","/lib/ui-app.js"),// todo add integrity
-    UIAPP_LOCAL_TMP("uiApp","/ui-app.js"),// todo add integrity
+    UIAPP_LOCAL("uiApp","/lib/ui-app.js"),
+    UIAPP_LOCAL_TMP("uiApp","/ui-app.js"),
     ;
 
     override fun get(): String {

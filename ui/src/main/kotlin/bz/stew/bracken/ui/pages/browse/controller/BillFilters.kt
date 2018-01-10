@@ -11,7 +11,7 @@ import bz.stewart.bracken.shared.data.party.Party
  *
  * Created by stew on 2/6/17.
  */
-enum class BillFilters(public val idxDef: IndexEnum,
+enum class BillFilters(val idxDef: IndexEnum,
                        val predicate: (BillData, Any?) -> Boolean = ::identity) {
    /**********************************************************
     * These names are liked to HTML, be careful editing them

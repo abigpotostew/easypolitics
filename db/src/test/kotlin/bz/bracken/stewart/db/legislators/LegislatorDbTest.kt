@@ -4,6 +4,7 @@ import bz.bracken.stewart.db.AssertAllFound
 import bz.stewart.bracken.db.TestUtils
 import bz.stewart.bracken.db.database.mongo.CollectionWriter
 import bz.stewart.bracken.db.database.Database
+import bz.stewart.bracken.db.database.mongo.AbstractMongoDb
 import bz.stewart.bracken.db.database.mongo.DefaultMongoClient
 import bz.stewart.bracken.db.database.mongo.emptyDatabaseWriter
 import bz.stewart.bracken.db.leglislators.*
@@ -25,12 +26,12 @@ class LegislatorDbTest {
    val collectionName = "legislators"
    val currentDataPath = TestUtils.getTestLegislatorsCurrentData()
    val socialDataPath = TestUtils.getTestLegislatorsSocialData()
-   var writer: CollectionWriter<LegislatorData, Database<LegislatorData>>? = null
+   var writer: CollectionWriter<LegislatorData, AbstractMongoDb<LegislatorData>>? = null
    var db: LegislatorCreateDb? = null
 
    @Before
    fun testSetup() {
-      writer = LegislatorDbWriter() as CollectionWriter<LegislatorData, Database<LegislatorData>>
+      writer = LegislatorDbWriter()
       db = LegislatorCreateDb(DefaultMongoClient(dbName), writer!!)
    }
 
@@ -49,7 +50,7 @@ class LegislatorDbTest {
    @Test
    fun testLoadAllData() {
 
-      val writer = LegislatorDbWriter() as CollectionWriter<LegislatorData, Database<LegislatorData>>
+      val writer = LegislatorDbWriter()
       val db = LegislatorCreateDb(DefaultMongoClient(dbName), writer)
       db.openDatabase()
       writer.before(db)
@@ -107,7 +108,7 @@ class LegislatorDbTest {
       val runtime = LegislatorRuntime(args = args)
       runtime.execute()
 
-      val writer = LegislatorDbWriter() as CollectionWriter<LegislatorData, Database<LegislatorData>>
+      val writer = LegislatorDbWriter()
       val db = LegislatorCreateDb(DefaultMongoClient(dbName), writer)
 
       db.openDatabase()

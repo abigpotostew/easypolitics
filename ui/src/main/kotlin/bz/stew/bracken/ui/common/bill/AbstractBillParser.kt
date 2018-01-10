@@ -16,15 +16,13 @@ abstract class AbstractBillParser :Parser<BillData>{
     override fun parse(json: dynamic): Collection<BillData> {
         val bills = getBillsArray(json)
         val n: Int = getBillCount(json)
-        var i: Int = 0
+        var i = 0
         val out = mutableListOf<BillData>()
         while (i < n) {
             try {
                 val o: dynamic = bills[i]
-                val bill: BillData = parseBill(o)//BillDataGovTrack(this).build(o)
+                val bill: BillData = parseBill(o)
                 out.add(bill)
-//            bills.put(o.id,
-//                      bill)
             } catch (e: IllegalStateException) { //should only catch parse errors
                 throw RuntimeException(
                         "Issue parsing bill data, please improve this exception to see which parse failed: \n\t" + e.toString())

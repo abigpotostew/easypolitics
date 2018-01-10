@@ -36,14 +36,14 @@ class ParsedArguments(parser: ArgParser) : LegislatorArguments {
             }
         }
 
-        if (dbName.isNullOrBlank()) {
+        if (dbName.isBlank()) {
             return "Database name is empty."
         }
 
-        if (!socialMediaFiles.isNullOrBlank()) {
+        if (!socialMediaFiles.isBlank()) {
             val _socialFile = java.io.File(socialMediaFiles)
             if (!validJsonFile(_socialFile)) {
-                return "Social file is unreadable or not a json file: ${socialMediaFiles}"
+                return "Social file is unreadable or not a json file: $socialMediaFiles"
             }
             socialFile = _socialFile
         }

@@ -20,7 +20,7 @@ class CorsFilter {
     }
 
     fun apply() {
-        Spark.after(Filter{ request, response ->
+        Spark.after(Filter{ _, response ->
             corsHeaders.forEach({
                 response.header(it.key, it.value)
             })

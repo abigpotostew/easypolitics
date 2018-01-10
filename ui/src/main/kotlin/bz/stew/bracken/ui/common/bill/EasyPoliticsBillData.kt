@@ -40,34 +40,33 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
                 )
                 out.add(actionObj)
             } catch (e: Exception) {
-                error("error parsing this action: ${e.toString()}")
+                error("error parsing this action: $e")
             }
         }
         return out
     }
 
     private fun resolveLegislator(sponsor: dynamic): Legislator? {
-        val s = sponsor
-        if (s == null) {
+        if (sponsor == null) {
             return null
         }
-        val cachedLegislator: Legislator? = parser.legislatorCached(s.bioguideId)
+        val cachedLegislator: Legislator? = parser.legislatorCached(sponsor.bioguideId)
         if (cachedLegislator != null) {
             return cachedLegislator
         }
-        val parsed = Legislator(bioguideId = s.bioguideId,
-            firstName = s.firstName,
-            lastName = s.lastName,
-            middleName = s.middleName,
-            officialName = s.officialName,
-            nickName = s.nickName,
-            party = matchVisibleType(Party.values(), s.party,
+        val parsed = Legislator(bioguideId = sponsor.bioguideId,
+            firstName = sponsor.firstName,
+            lastName = sponsor.lastName,
+            middleName = sponsor.middleName,
+            officialName = sponsor.officialName,
+            nickName = sponsor.nickName,
+            party = matchVisibleType(Party.values(), sponsor.party,
                 VisibleTypeMatcher.CAPS),
-            role = TypeHelperDefaults.defaultRoleTypeMatcher(s.role),
-            state = s.state,
-            twitterId = s.twitter,
-            phoneNumber = s.phoneNumber,
-            website = s.website)
+            role = TypeHelperDefaults.defaultRoleTypeMatcher(sponsor.role),
+            state = sponsor.state,
+            twitterId = sponsor.twitter,
+            phoneNumber = sponsor.phoneNumber,
+            website = sponsor.website)
         parser.saveLegislator(parsed)
         return parsed
     }

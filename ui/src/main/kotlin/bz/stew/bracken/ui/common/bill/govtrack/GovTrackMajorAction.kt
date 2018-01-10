@@ -24,8 +24,7 @@ class GovTrackMajorAction(date: String,
       val month = matchGroups[2].toInt() - 1
       val day = matchGroups[3].toInt()
       //val hour = matchGroups[4].toInt()
-      val d = jsDate(year, month, day)
-      return d
+      return jsDate(year, month, day)
    }
 
    override fun id(): Int {

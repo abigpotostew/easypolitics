@@ -13,30 +13,30 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class Action(val acted_at: String,
                   @JsonProperty("references")
                   val referencesVal: Array<
-                        BillReference>?,
+                     BillReference>?,
                   @JsonProperty("text")
                   val textVal: String,
-                  val action_code:String, //legacy??
-                  val law:String?, //public,
-                  val congress:String?,
-                  val calendar:String?, //ignore
+                  val action_code: String, //legacy??
+                  val law: String?, //public,
+                  val congress: String?,
+                  val calendar: String?, //ignore
                   val type: String?,//[vote,action], todo make type an enum
-                  val committees:Array<String>?,
-                  val bill_ids:Array<String>?,//any related bills in id form "scres10-113"
-                  val suspension:String?,
-                  val result:String?,
-                  val how:String?,
-                  val roll:String?, //int
-                  val status:String?, //code
-                  val vote_type:String?,
-                  val where:String?,
-                  val in_committee:String?, // only if in comitte, full comitte name,
-                  val in_subcommittee:String?, // full subcom name
-                  val committee:String?,
+                  val committees: Array<String>?,
+                  val bill_ids: Array<String>?,//any related bills in id form "scres10-113"
+                  val suspension: String?,
+                  val result: String?,
+                  val how: String?,
+                  val roll: String?, //int
+                  val status: String?, //code
+                  val vote_type: String?,
+                  val where: String?,
+                  val in_committee: String?, // only if in comitte, full comitte name,
+                  val in_subcommittee: String?, // full subcom name
+                  val committee: String?,
                   @JsonProperty("number")
-                  val numberVal:String?,
-                  val under:String?
-                  ): PublicAction {
+                  val numberVal: String?,
+                  val under: String?
+) : PublicAction {
 
    @JsonIgnore
    override fun getActedAt(): String {

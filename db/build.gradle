@@ -52,7 +52,7 @@ repositories {
 
 dependencies {
     compile libraries.kotlin_stdlib
-    compile "org.litote.kmongo:kmongo:3.3.5"
+    compile "org.litote.kmongo:kmongo:3.6.+"
     compile 'io.github.microutils:kotlin-logging:1.4.3'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.22' //required at compile time
     compile "com.xenomachina:kotlin-argparser:2.0.0"

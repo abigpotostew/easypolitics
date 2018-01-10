@@ -5,7 +5,7 @@ import java.io.Closeable
 /**
  * Created by stew.bracken on 3/7/17.
  */
-abstract class Database<T : DbItem>() : Closeable {
+abstract class Database<T : DbItem> : Closeable {
    abstract fun getDbName(): String
 }
 

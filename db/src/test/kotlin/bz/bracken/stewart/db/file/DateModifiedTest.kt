@@ -47,7 +47,7 @@ class DateModifiedTest {
 
    @Test
    fun lastModFormatTest() {
-      var str: String = "2017-02-18T03:08:00.128Z"
+      var str = "2017-02-18T03:08:00.128Z"
       var out = DateUtils.parseLastModifiedDateString(str)
       assertTrue(
             out != null && out.toString() == EXPECTED_TIME) //it converts to pst locale by default even though input date is in UTC

@@ -36,10 +36,9 @@ class FileProperties<T : Property>(propDef: List<Property>) {
     }
 
     fun getMissingRequiredFromDef(): List<Property> {
-        val out = this.propDefList
-            .filter { this.properties.getProperty(it.propName) == null }
-            .map { it }
-        return out
+       return propDefList
+           .filter { properties.getProperty(it.propName) == null }
+           .map { it }
     }
 
     fun hasMissingRequiredDef(): Boolean {

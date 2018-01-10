@@ -97,11 +97,11 @@ data class LeadershipRoleData(
                              )
 
 private val EMPTY_LEADER_ROLE_DATA = LeadershipRoleData(start = DateUtils.defaultDate(), end = DateUtils.defaultDate())
-public fun emptyLeadershipRoleDate():LeadershipRoleData{
+fun emptyLeadershipRoleDate():LeadershipRoleData{
    return EMPTY_LEADER_ROLE_DATA
 }
 
 private val EMPTY_TERM_DATA = TermData(start = DateUtils.defaultDate(), end = DateUtils.defaultDate())
-public fun emptyTermDate():TermData{
+fun emptyTermDate():TermData{
    return EMPTY_TERM_DATA
 }

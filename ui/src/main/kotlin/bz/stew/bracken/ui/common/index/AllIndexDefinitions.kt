@@ -22,9 +22,6 @@ val STATUS_INDEX = object : BillIndex<FixedStatus>(FixedStatus.NONE) {
         return BillFilters.FIXEDSTATUS
     }
 
-    override fun allKeys(): Set<FixedStatus> {
-        return super.allKeys()//forwardMap.keys.toList()
-    }
 }
 
 /**
@@ -39,9 +36,6 @@ val MAJOR_STATUS_INDEX = object : BillIndex<MajorStatus>(MajorStatus.NONE) {
         return BillFilters.LASTMAJORSTATUS
     }
 
-    override fun allKeys(): Set<MajorStatus> {
-        return super.allKeys()
-    }
 }
 
 val PARTY_INDEX = object : BillIndex<Party>(Party.NONE) {
@@ -53,9 +47,6 @@ val PARTY_INDEX = object : BillIndex<Party>(Party.NONE) {
         return BillFilters.PARTY
     }
 
-    override fun allKeys(): Set<Party> {
-        return super.allKeys()//forwardMap.keys.toList()
-    }
 }
 
 val INTRO_DATE_INDEX = object : NumericDoubleAbstractMappedIndex<BillData>() {
@@ -67,9 +58,6 @@ val INTRO_DATE_INDEX = object : NumericDoubleAbstractMappedIndex<BillData>() {
         return BillFilters.DATEINTROSTART
     }
 
-    override fun allKeys(): Set<Double> {
-        return super.allKeys()//forwardMap.keys.toList()
-    }
 }
 
 val LAST_UPDATED_DATE_INDEX = object : NumericDoubleAbstractMappedIndex<BillData>() {
@@ -81,9 +69,6 @@ val LAST_UPDATED_DATE_INDEX = object : NumericDoubleAbstractMappedIndex<BillData
         return BillFilters.LASTUPDATEDDATESTART
     }
 
-    override fun allKeys(): Set<Double> {
-        return super.allKeys()//forwardMap.keys.toList()
-    }
 }
 
 @Suppress("unused")

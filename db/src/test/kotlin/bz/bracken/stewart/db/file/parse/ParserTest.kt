@@ -11,13 +11,13 @@ import java.io.File
 /**
  * Created by stew on 3/10/17.
  */
-public class ParserTest () {
+class ParserTest {
 
    val dataDir = getTestResourcesData()
    val parser = DebugParser()
 
    @Test
-   public fun parserTest(){
+   fun parserTest(){
       println(System.getProperty("user.dir"))
       val fileDataDir = "$dataDir/113/bills/hconres/hconres1/data.json"
       println(fileDataDir)
@@ -25,7 +25,7 @@ public class ParserTest () {
    }
 
    @Test
-   public fun dataWalkTest(){
+   fun dataWalkTest(){
       val elementFinder = AssertAllFound<String>(
             listOf<String>("hconres1-113", "hjres1-113", "s11-113", "sres1-113",
                            "hconres1-114", "s11-115", "s71-115"), true)

@@ -47,7 +47,7 @@ class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
 
    private fun renderTwitter(root: HtmlBlockTag) {
       val l = legislator
-      if (!l.getTwitter().isNullOrBlank()) {
+      if (!l.getTwitter().isBlank()) {
          root.p {
             TwitterLink(l).renderIn(this)
          }
@@ -56,7 +56,7 @@ class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
 
    private fun renderPhone(root: HtmlBlockTag) {
       val l = legislator
-      if (!l.getPhoneNumber().isNullOrBlank()) {
+      if (!l.getPhoneNumber().isBlank()) {
          root.p {
             a {
                +l.getPhoneNumber()

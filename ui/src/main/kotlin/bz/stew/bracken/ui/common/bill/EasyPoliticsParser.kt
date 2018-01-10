@@ -7,7 +7,7 @@ import bz.stewart.bracken.shared.data.person.Legislator
 /**
  * Created by stew on 4/29/17.
  */
-class EasyPoliticsParser() : AbstractBillParser() {
+class EasyPoliticsParser : AbstractBillParser() {
    private val legislatorCache: MutableMap<String, Legislator> = mutableMapOf()
 
    override fun getBillsArray(json: dynamic): dynamic {

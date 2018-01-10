@@ -13,7 +13,7 @@ import com.mongodb.MongoClient
  * Created by stew on 4/1/17.
  */
 abstract class BillMongoDb(dbClient: DatabaseClient<MongoClient>,
-                           collWriter: CollectionWriter<Bill, Database<Bill>> = emptyDatabaseWriter())
+                           collWriter: CollectionWriter<Bill, AbstractMongoDb<Bill>> = emptyDatabaseWriter())
 
     : AbstractMongoDb<Bill>(dbClient, Bill::class.java, collWriter) {
     //TODO hardcode the 'bills' collection somewhere in here, similar to LegislatorCreateDb

@@ -6,13 +6,12 @@ import kotlinx.html.SCRIPT
 
 class UiApiActions {
     fun doBrowseAction(): TagConfiguration<SCRIPT> {
-        val config = ExecuteJsScriptConfig(
+        return ExecuteJsScriptConfig(
                 "requirejs(['kotlin', 'kotlinx-html-js', 'app/easypolitics-ui'],\n" +
                         "function   (        kotlin,   kotlinJsHtml, easypoliticsUi) {\n" +
                         "    (new easypoliticsUi.bz.stew.bracken.ui.api.BrowseRuntime()).execute();" +
                         "});"
         )
-        return config
     }
 
     fun doSingleBillAction(billId: String): TagConfiguration<SCRIPT> {

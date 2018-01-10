@@ -8,9 +8,6 @@ import com.mongodb.MongoClient
  */
 class ReadOnlyDatabase(dbClient: DatabaseClient<MongoClient>, private val collName: String
                            ) : BillMongoDb(dbClient) {
-   override fun getDbName(): String {
-      return super.getDbName()
-   }
 
    override fun getCollectionName(): String {
       return collName

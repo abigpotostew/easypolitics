@@ -18,9 +18,8 @@ class DebugParser : Parser {
    override fun parseData(uniqueId:String, data: File, lastModified: File?){
 
       val json = data.readText()
-      //println(json)
       try {
-         val bill = mapper.readValue<Bill>(json)
+         mapper.readValue<Bill>(json)
 
       }catch (e: UnrecognizedPropertyException){
          if(exceptions.containsKey(e.propertyName)){

@@ -5,7 +5,7 @@ import kotlinx.html.HtmlBlockTag
 import kotlinx.html.br
 import kotlinx.html.div
 
-class BrowseBillsView() : ViewTemplate {
+class BrowseBillsView : ViewTemplate {
     override fun renderIn(parent: HtmlBlockTag) {
         parent.div {
 

@@ -52,8 +52,7 @@ class MainDbAccess(dbClient:DatabaseClient<MongoClient>) :
       if (queryPeopleOut == null) {
          return emptyMap<String, LegislatorData>()
       }
-      val map = peopleMap(queryPeopleOut)
-      return map
+      return peopleMap(queryPeopleOut)
    }
 
    private fun peopleMap(
@@ -69,7 +68,7 @@ class MainDbAccess(dbClient:DatabaseClient<MongoClient>) :
       val iter = strings.iterator()
       val strBuilder = StringBuilder("[ \"${iter.next()}\"")
       for (str in iter) {
-         strBuilder.append(", \"${str}\"")
+         strBuilder.append(", \"$str\"")
       }
       strBuilder.append("]")
       return strBuilder.toString()

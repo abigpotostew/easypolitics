@@ -28,13 +28,6 @@ class ServiceRunner(val config: SparkConfig, private val restUrl:String) {
         Spark.get(AppServices.BROWSE_BILL.path) { _, _ ->
             WebsiteSkeleton(BrowseBillsView(), MainPageConfig()).render()
         }
-        //unused
-        Spark.get("/main.js") { _, response ->
-            response.status(200)
-            response.type("text/javascript")
-            RequireJs(emptyArray())
-            UiApiActions().mainAll().js
-        }
         Spark.get(AppServices.SERVICE_URL.path) { _, response ->
             response.type("text/html")
             restUrl

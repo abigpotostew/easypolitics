@@ -14,7 +14,7 @@ class SingleBillService : RouteService<QueryResult> {
         if (billId==null){
             throw IllegalQueryInput("Required")
         }
-        val number = context.request.qp("number") //this is ignored right now...
+        //val number = context.request.qp("number") //this is ignored right now...
         context.logger.info { "Single bill query request: '$billId'" }
         val result = try {
             SingleBillQuery(billId, context.billDAO.mainDbInst).find()

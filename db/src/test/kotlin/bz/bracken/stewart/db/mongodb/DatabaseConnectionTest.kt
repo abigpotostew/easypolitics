@@ -11,8 +11,8 @@ class DatabaseConnectionTest {
    @Test
    fun testMongoConnection() {
       val db = DebugDatabase(dbName)
-      db!!.openDatabase()
+      db.openDatabase()
 
-      db!!.closeDatabase()
+      db.closeDatabase()
    }
 }

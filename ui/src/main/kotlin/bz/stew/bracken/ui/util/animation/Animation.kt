@@ -155,12 +155,12 @@ abstract class Animation {
         val easingInOut = false
         window.requestAnimationFrame { _ ->
             if (isRunning && currentRunId == runId) {
-                val elapsedTime = (Date().getTime() - startTime).toDouble()
+                val elapsedTime = (Date().getTime() - startTime)
                 if (duration > elapsedTime) {
                     var progressNormal = if (!easingInOut) (elapsedTime) / duration
                     else
-                        Math.easeInOutQuad(Date().getTime().toDouble(),
-                                startTime.toDouble(),
+                        Math.easeInOutQuad(Date().getTime(),
+                           startTime,
                                 elapsedTime,
                                 duration.toDouble())
                     //println(progress)

@@ -1,17 +1,19 @@
 package bz.stewart.bracken.db.bill.data
 
-import bz.stewart.bracken.db.database.DbItem
-import bz.stewart.bracken.shared.DateUtils
-import bz.stewart.bracken.shared.data.*
 import bz.stewart.bracken.db.bill.data.parse.DbDateSerializer
 import bz.stewart.bracken.db.bill.data.parse.FlexibleDateParser
+import bz.stewart.bracken.db.database.DbItem
+import bz.stewart.bracken.shared.DateUtils
+import bz.stewart.bracken.shared.data.BillType
+import bz.stewart.bracken.shared.data.EnactedAs
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import org.bson.types.ObjectId
-import java.util.*
+import java.util.Arrays
+import java.util.Date
 
 /**
  * Bill that is read from congress data and stored in database
@@ -19,200 +21,85 @@ import java.util.*
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Bill(
-      val _id: org.bson.types.ObjectId? = null,
+   val _id: org.bson.types.ObjectId? = null,
 
-      val bill_id: String = "", //[bill_type][number]-[congress]
+   val bill_id: String = "", //[bill_type][number]-[congress]
 
-      @JsonProperty("actions")
-      val actionsArr: Array<Action> = emptyArray(),
+   @JsonProperty("actions")
+   val actionsArr: Array<Action> = emptyArray(),
 
-      @JsonDeserialize(using = BillTypeDeserializer::class) @JsonSerialize(using = BillTypeSerializer::class)
-      val bill_type: BillType = BillType.NONE,
+   @JsonDeserialize(using = BillTypeDeserializer::class) @JsonSerialize(using = BillTypeSerializer::class)
+   val bill_type: BillType = BillType.NONE,
 
-      val by_request: String = "",
+   val by_request: String = "",
 
-      val committee_reports: Array<String>? = null, //ignore, this is not documented
+   val committee_reports: Array<String>? = null, //ignore, this is not documented
 
-      @JsonProperty("congress")
-      val congressNum: Int = -1,
+   @JsonProperty("congress")
+   val congressNum: Int = -1,
 
-      @JsonProperty("cosponsors")
-      val cosponsorsArr: Array<Sponsor> = emptyArray(),
+   @JsonProperty("cosponsors")
+   val cosponsorsArr: Array<Sponsor> = emptyArray(),
 
-      val enacted_as: EnactedAs? = null,
+   val enacted_as: EnactedAs? = null,
 
-      @JsonProperty("history")
-      val billHistory: BillHistory = BillHistory(),
+   @JsonProperty("history")
+   val billHistory: BillHistory = BillHistory(),
 
-      @JsonDeserialize(using = FlexibleDateParser::class) @JsonSerialize(using = DbDateSerializer::class)
-      val introduced_at: Date = DateUtils.defaultDate(),
+   @JsonDeserialize(using = FlexibleDateParser::class) @JsonSerialize(using = DbDateSerializer::class)
+   val introduced_at: Date = DateUtils.defaultDate(),
 
-      @JsonProperty("number")
-      val billNumber: String = "",
+   @JsonProperty("number")
+   val billNumber: String = "",
 
-      @JsonProperty("committees")
-      @JsonIgnore
-      val committeesArr: Array<Any> = emptyArray(),
+   @JsonProperty("committees")
+   @JsonIgnore
+   val committeesArr: Array<Any> = emptyArray(),
 
-      val official_title: String = "",
+   val official_title: String = "",
 
-      val popular_title: String? = null,
+   val popular_title: String? = null,
 
-      val related_bills: Array<RelatedBill> = emptyArray(),
+   val related_bills: Array<RelatedBill> = emptyArray(),
 
-      val short_title: String? = null,
+   val short_title: String? = null,
 
-      @JsonProperty("sponsor")
-      val billSponsor: Sponsor = Sponsor(),
+   @JsonProperty("sponsor")
+   val billSponsor: Sponsor = Sponsor(),
 
-      @JsonProperty("status")
-      val currentStatus: String = "",
+   @JsonProperty("status")
+   val currentStatus: String = "",
 
-      @JsonDeserialize(using = FlexibleDateParser::class) @JsonSerialize(using = DbDateSerializer::class)
-      val status_at: Date = DateUtils.defaultDate(),
+   @JsonDeserialize(using = FlexibleDateParser::class) @JsonSerialize(using = DbDateSerializer::class)
+   val status_at: Date = DateUtils.defaultDate(),
 
-      @JsonProperty("subjects")
-      val subjectsArr: Array<String> = emptyArray(),
+   @JsonProperty("subjects")
+   val subjectsArr: Array<String> = emptyArray(),
 
-      val subjects_top_term: String? = null, //top descriptor tag for this bill
+   val subjects_top_term: String? = null, //top descriptor tag for this bill
 
-      @JsonProperty("summary")
-      val billSummary: Summary? = null,
+   @JsonProperty("summary")
+   val billSummary: Summary? = null,
 
-      @JsonProperty("titles")
-      val titlesArr: Array<Title> = emptyArray(),
+   @JsonProperty("titles")
+   val titlesArr: Array<Title> = emptyArray(),
 
-      @JsonDeserialize(using = FlexibleDateParser::class) @JsonSerialize(using = DbDateSerializer::class)
-      val updated_at: Date = DateUtils.defaultDate(),
+   @JsonDeserialize(using = FlexibleDateParser::class) @JsonSerialize(using = DbDateSerializer::class)
+   val updated_at: Date = DateUtils.defaultDate(),
 
-      @JsonProperty("url")
-      val urlBill: String = ""
-      //@JsonIgnore val lastModifiedString: Date? = DateUtils.defaultDate()
-               ) : DbItem { //use PublicBillDelagated for the public wrapper. this is just the data container
+   @JsonProperty("url")
+   val urlBill: String = ""
+) : DbItem {
 
 
    //todo, or do I??
-   @JsonDeserialize(using = FlexibleDateParser::class) @JsonSerialize(using = DbDateSerializer::class)
+   @JsonDeserialize(using = FlexibleDateParser::class)
+   @JsonSerialize(using = DbDateSerializer::class)
    private var lastModifiedDate: Date? = null//DateUtils.parseModifiedOrUpdatedStrings (lastModifiedString, updated_at) ?: DateUtils.defaultDate()
 
-   //private var _amendments: Any? = null
    var amendments: Any?
       get() = null
       @JsonIgnore set(value) {}
-
-
-   /*override fun getBillId(): String? {
-      return this.bill_id
-   }
-
-   //@JsonIgnore
-   override fun getActions(): Array<Action>? {
-      return this.actionsArr
-   }
-
-   override fun getBillType(): String? {
-      return this.bill_type
-   }
-
-   override fun getByRequest(): String? {
-      return this.by_request
-   }
-
-   override fun getCommitteeReports(): Array<String>? {
-      return this.committee_reports
-   }
-
-   //@JsonIgnore
-   override fun getCongress(): String? {
-      return this.congressNum
-   }
-
-   //@JsonIgnore
-   override fun getCosponsors(): Array<Sponsor> {
-      return this.cosponsorsArr
-   }
-
-   override fun getEnactedAs(): Document? {
-      return this.enacted_as
-   }
-
-   //@JsonIgnore
-   override fun getHistory(): BillHistory {
-      return this.billHistory
-   }
-
-   override fun getIntroducedAt(): Date {
-      return this.introduced_at
-   }
-
-   //@JsonIgnore
-   override fun getNumber(): String? {
-      return this.billNumber
-   }
-
-   //@JsonIgnore
-   override fun getCommittees(): Array<Document> {
-      return this.committeesArr
-   }
-
-   override fun getOfficialTitle(): String {
-      return this.official_title
-   }
-
-   override fun getPopularTitle(): String? {
-      return this.popular_title
-   }
-
-   override fun getRelatedBills(): Array<RelatedBill> {
-      return this.related_bills
-   }
-
-   override fun getShortTitle(): String? {
-      return this.short_title
-   }
-
-   //@JsonIgnore
-   override fun getSponsor(): Sponsor {
-      return this.billSponsor
-   }
-
-   //@JsonIgnore
-   override fun getCurrentStatus(): String {
-      return this.currentStatus
-   }
-
-   override fun getStatusAt(): String {
-      return this.status_at
-   }
-
-   //@JsonIgnore
-   override fun getSubjects(): Array<String> {
-      return this.subjectsArr
-   }
-
-   override fun getSubjectsTopTerm(): String? {
-      return this.subjects_top_term
-   }
-
-   //@JsonIgnore
-   override fun getSummary(): Document? {
-      return this.billSummary
-   }
-
-   //@JsonIgnore
-   override fun getTitles(): Array<Title> {
-      return this.titlesArr
-   }
-
-   override fun getUpdatedAt(): Date {
-      return this.updated_at
-   }
-
-   //@JsonIgnore
-   override fun getUrl(): String {
-      return this.urlBill
-   }*/
-
 
    override fun getDbId(): ObjectId? {
       return this._id
@@ -225,13 +112,6 @@ data class Bill(
    override fun getLastModified(): Date? {
       return lastModifiedDate
    }
-
-
-
-//   override fun toString():String{
-//      return bill_id
-//   }
-
 
    override fun <T : DbItem> equalLessId(other: T): Boolean {
 
@@ -268,11 +148,6 @@ data class Bill(
       if (updated_at != other.updated_at) return false
       if (urlBill != other.urlBill) return false
       if (lastModifiedDate != other.lastModifiedDate) return false
-      //if (lastModifiedDate != other.lastModifiedDate) return false
-
       return true
-
    }
-
-
 }

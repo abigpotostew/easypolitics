@@ -13,7 +13,7 @@ class BillViewItem(val billData: BillData) : ViewItem {
    //val billData:BillData=billData
 
    fun trueTitle(): String {
-      if (billData.officialTitle.isNullOrBlank()) {
+      if (billData.officialTitle.isBlank()) {
          return billData.shortTitle
       }
       return billData.officialTitle
@@ -38,6 +38,6 @@ class BillViewItem(val billData: BillData) : ViewItem {
 
    fun sponsorImageUrl(): String {
       val twitterId = this.billData.sponsor.getTwitter()
-      return "https://twitter.com/${twitterId}/profile_image?size=original"
+      return "https://twitter.com/$twitterId/profile_image?size=original"
    }
 }

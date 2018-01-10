@@ -48,7 +48,7 @@ dependencies {
 //        exclude module: 'jcl-to-slf4j'
 //        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
-    compile 'org.litote.kmongo:kmongo:3.5.+'
+    compile 'org.litote.kmongo:kmongo:3.6.+'
 
     testCompile project(':db').sourceSets.test.output
 

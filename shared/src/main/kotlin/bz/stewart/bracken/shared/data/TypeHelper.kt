@@ -18,8 +18,7 @@ enum class VisibleTypeMatcher(val func : VisibleType.()->String){
 }
 
 
-class TypeResolutionException(msg:String) :Throwable(msg){
-}
+class TypeResolutionException(msg:String) :Throwable(msg)
 
 /**
  * Matching the string value to the property defined by the matcher.

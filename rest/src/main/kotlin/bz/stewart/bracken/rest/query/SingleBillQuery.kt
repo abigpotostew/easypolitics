@@ -5,8 +5,7 @@ import com.mongodb.BasicDBObject
 class SingleBillQuery(private val billId: String,
                       private val db: MainDbAccess) : Query {
     override fun find(): QueryResult {
-        val queryRes: QueryResult = db.standardBillQuery(queryBson(), 1, null)
-        return queryRes
+       return db.standardBillQuery(queryBson(), 1, null)
     }
 
     private fun queryBson(): BasicDBObject {

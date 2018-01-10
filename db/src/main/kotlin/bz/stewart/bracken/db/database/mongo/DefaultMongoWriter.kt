@@ -8,7 +8,7 @@ import org.litote.kmongo.save
 /**
  * Default mutating collection writer.
  */
-abstract class DefaultAbstractWriter<T : DbItem> : CollectionWriter<T, AbstractMongoDb<T>> {
+abstract class DefaultMongoWriter<T : DbItem> : CollectionWriter<T, AbstractMongoDb<T>> {
    var isOpen = false
    var openToDb: AbstractMongoDb<T>? = null
 

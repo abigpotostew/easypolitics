@@ -57,10 +57,10 @@ class MongoTransaction(val dbClient: DatabaseClient<MongoClient>,
         } catch (e: MongoCommandException) {
             abort("Mongo exception: ${DebugUtils.stackTraceToString(e)}")
         } catch (e: MongoWriteException) {
-            abort("Mongo write error: $e @ ${e}")
+            abort("Mongo write error: $e @ $e")
         } catch (e: MongoTimeoutException) {
-            logger.error { "Timeout while connecting to the database. Is mongod running? @ ${e}" }
-            abort("Aborting due to mongod timeout @ ${e}")
+            logger.error { "Timeout while connecting to the database. Is mongod running? @ $e" }
+            abort("Aborting due to mongod timeout @ $e")
         } catch (e: RuntimeException) {
             abort("Unknown error, this should be fixed:\n\n ${DebugUtils.stackTraceToString(e)}")
         }

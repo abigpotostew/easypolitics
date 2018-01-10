@@ -15,10 +15,7 @@ import mu.KLogging
  */
 abstract class AbstractMongoDb<T : DbItem>(protected val dbClient: DatabaseClient<MongoClient>,
                                            val clazz: Class<T>,
-                                           val collWriter: CollectionWriter<T, Database<T>> = emptyDatabaseWriter()) : Database<T>() {
-
-    constructor(_databaseName: String, clazz:Class<T>, collWriter: CollectionWriter<T, Database<T>>) : this(
-            DefaultMongoClient(_databaseName), clazz, collWriter)
+                                           private val collWriter: CollectionWriter<T, AbstractMongoDb<T>> = emptyDatabaseWriter()) : Database<T>() {
 
     /**
      * do not use
@@ -102,7 +99,7 @@ abstract class AbstractMongoDb<T : DbItem>(protected val dbClient: DatabaseClien
         return getCollection(getCollectionName())
     }
 
-    fun getWriter(): CollectionWriter<T, in Database<T>> {
+    fun getWriter(): CollectionWriter<T, AbstractMongoDb<T>> {
         return collWriter
     }
 

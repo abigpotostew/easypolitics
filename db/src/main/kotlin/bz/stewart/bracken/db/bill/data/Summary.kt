@@ -8,5 +8,4 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class Summary(@JsonProperty("as") val asValue: String? = "",
                    val date: String? = "",
-                   val text: String? = "") : PublicSummary {
-}
+                   val text: String? = "") : PublicSummary

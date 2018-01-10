@@ -34,13 +34,12 @@ class MultipleBillService : RouteService<QueryResult> {
                 bill_type = billType,
                 congressNum = congress
         )
-        val result = try {
+        return try {
             BillQueryBuilder(context.billDAO.mainDbInst, queryExample, orderBy,
                     limit, offset).find()
         } catch (e: Exception) {
             emptyQueryResult()
         }
-        return result
     }
 
     override fun onError(): Exception {

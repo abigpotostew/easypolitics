@@ -72,8 +72,7 @@ class BillQueryBuilder(private val db: MainDbAccess,
     * TODO validate input first
     */
    override fun find():QueryResult{
-      val queryRes = db.standardBillQuery(queryBson(), limit, getSort(), offset)
-      return queryRes
+      return db.standardBillQuery(queryBson(), limit, getSort(), offset)
    }
 
 
@@ -110,6 +109,4 @@ private fun NO_OP(): String {
 }
 
 
-private class BsonPair(val key: String, val value:Any?){
-
-}
+private class BsonPair(val key: String, val value:Any?)

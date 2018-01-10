@@ -27,7 +27,7 @@ class AssertAllFound<T>(val expected: Collection<T>,
 
    private fun findComparableElement(el: T): T? {
       if (comparator != null) {
-         val comp: T.(T) -> Boolean = comparator as T.(T) -> Boolean
+         val comp: T.(T) -> Boolean = comparator
          for (item in queue) {
             if (item.comp(el)) {
                return item

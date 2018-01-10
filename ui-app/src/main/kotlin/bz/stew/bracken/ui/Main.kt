@@ -46,5 +46,6 @@ private fun executeService(pageContext: PageContext) {
         AppServices.RESPOND -> console.log("Respond: " + pathVariables["id"])
         AppServices.SINGLE_BILL -> SingleBillRuntime(pathVariables["id"]!!).execute(pageContext)
         AppServices.BROWSE_BILL -> BrowseRuntime().execute(pageContext)
+        AppServices.SERVICE_URL -> console.error("Error UI can't resolve the current page service from the URL.")
     }
 }
