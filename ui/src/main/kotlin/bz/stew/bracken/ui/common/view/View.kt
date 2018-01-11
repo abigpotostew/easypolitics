@@ -1,6 +1,5 @@
 package bz.stew.bracken.view
 
-import bz.stew.bracken.ui.common.view.Identifier
 import bz.stew.bracken.ui.extension.jquery.ext.JQuery
 import bz.stew.bracken.ui.extension.jquery.ext.jQuery
 import org.w3c.dom.HTMLElement
@@ -9,19 +8,16 @@ import org.w3c.dom.HTMLElement
  * Created by stew on 1/23/17.
  */
 
-abstract class View(val rootElementSelector: HtmlSelector = HtmlSelector(Identifier.TAG, "body")) {
+abstract class View {
 
     private var loading: Boolean = false
+    var element: HTMLElement? = null
 
     fun setLoading(isLoading: Boolean) {
         this.loading = isLoading
     }
 
-    fun clearRoot() {
-        getJq(rootElementSelector).children().remove()
-    }
-
-    fun getElement(selector: HtmlSelector): HTMLElement {
+    fun getElementBySelector(selector: HtmlSelector): HTMLElement {
         return getJq(selector).get(0)
     }
 

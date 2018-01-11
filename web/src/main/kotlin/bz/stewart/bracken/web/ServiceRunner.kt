@@ -22,8 +22,8 @@ class ServiceRunner(val config: SparkConfig, private val restUrl:String) {
         Spark.get(AppServices.RESPOND.path) { req, _ ->
             WebsiteSkeleton(PrintInputView(req.params("id")), MainPageConfig()).render()
         }
-        Spark.get(AppServices.SINGLE_BILL.path) { req, _ ->
-            WebsiteSkeleton(SingleBillView(), SingleBillConfig(req.params("id"))).render()
+        Spark.get(AppServices.SINGLE_BILL.path) { _, _ ->
+            WebsiteSkeleton(SingleBillView(), MainPageConfig()).render()
         }
         Spark.get(AppServices.BROWSE_BILL.path) { _, _ ->
             WebsiteSkeleton(BrowseBillsView(), MainPageConfig()).render()

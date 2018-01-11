@@ -54,7 +54,7 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
             div {
                 ac(Classes.boots_tab_content)
                 val tabTemplates = arrayListOf<SubTemplate>(
-                        BillOverview(template),
+                        BillOverview(template.billView),
                         BillContact(sponsor),
                         BillDetailsTab(template),
                         Paragraph("pizza")

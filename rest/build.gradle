@@ -3,13 +3,13 @@ final String MAIN_CLASS = "bz.stewart.bracken.rest.Main"
 
 ////////////////////////////////////////////////////////////////////////
 //Read in my.properties, use props.getProperty("propName")
-def localRuntimeProps = "/Users/stew/code/kotlin/easypolitics/rest/main.properties"
-def props = new Properties()
-file("../my.properties").withInputStream { props.load(it) }
-
-////////////////////////////////////////////////////////////////////////
-//  LOAD IN SOME MY PROPS
-String DBNAME = props.getProperty("DBNAME")
+def localRuntimeProps = "$rootDir/my.properties"
+//def props = new Properties()
+//file("../my.properties").withInputStream { props.load(it) }
+//
+//////////////////////////////////////////////////////////////////////////
+////  LOAD IN SOME MY PROPS
+//String DBNAME = props.getProperty("DBNAME")
 
 
 // Do the rest

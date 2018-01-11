@@ -24,8 +24,9 @@ import kotlin.browser.document
 /**
  * Created by stew on 1/25/17.
  */
-class BrowseBillsView(rootElmtStr: HtmlSelector, private val templater: Templates) : View(rootElmtStr) {
+class BrowseBillsView(private val templater: Templates) : View() {
 
+    //private val rootElmntSelector = rootElmtStr
     private val countBillsTextHtmlSelector = HtmlSelector(Identifier.ID, "nav-bar-billCount")
     private val openSpeed: Int = 250
     private val hideSpeed: Int = 200
@@ -48,7 +49,7 @@ class BrowseBillsView(rootElmtStr: HtmlSelector, private val templater: Template
      */
     fun loadStatusFilter(filterEntry: BillFilters,
                          allStatus: Set<FixedStatus>) {
-        val parent = getElement(filterEntry.htmlSelector())
+        val parent = getElementBySelector(filterEntry.htmlSelector())
         parent.removeAllChildrenNodes()
         parent.appendChild(Form.Option.generateHtml("All", mapOf(Pair("value", FixedStatus.NONE.ordinal.toString()))))
         //TODO sort these
@@ -61,7 +62,7 @@ class BrowseBillsView(rootElmtStr: HtmlSelector, private val templater: Template
 
     fun loadMajorStatusFilter(filterEntry: BillFilters,
                               allMajorStatus: Set<MajorStatus>) {
-        val parent = getElement(filterEntry.htmlSelector())
+        val parent = getElementBySelector(filterEntry.htmlSelector())
         parent.removeAllChildrenNodes()
         parent.appendChild(Form.Option.generateHtml("All", mapOf(Pair("value", MajorStatus.NONE.ordinal.toString()))))
         //TODO sort these
@@ -103,8 +104,7 @@ class BrowseBillsView(rootElmtStr: HtmlSelector, private val templater: Template
     }
 
     //Only call this once. generates
-    fun generateAndDisplayAllBills(resetVisible: Boolean = true) {
-        val billListJQ: JQuery = getJq(rootElementSelector)
+    fun generateAndDisplayAllBills(parent:HTMLElement, resetVisible: Boolean = true) {
 
         val sortedList = this.billViews.values.sorted()
 
@@ -119,7 +119,7 @@ class BrowseBillsView(rootElmtStr: HtmlSelector, private val templater: Template
               .filterNot { this.visibleBills.contains(it) }
               .forEach {
                   try {
-                      this.generateFromTemplate(it, billListJQ)
+                      this.generateFromTemplate(it, parent)
                       this.initiateBill(it)
                       this.visibleBills.add(it)
                   } catch (e: Throwable) {
@@ -185,11 +185,10 @@ class BrowseBillsView(rootElmtStr: HtmlSelector, private val templater: Template
     }
 
     private fun generateFromTemplate(billView: BillViewItem,
-                                     parentJq: JQuery): HTMLElement {
-        val billString = templater.renderBill(billView).getHtml()
-        val billNode = jQuery(billString)
-        parentJq.append(billNode)
-        return billNode.get(0)
+                                     parent: HTMLElement): HTMLElement {
+        val billNode = templater.renderBill(billView).getHtml()
+        parent.appendChild(billNode)
+        return billNode
     }
 
     /**

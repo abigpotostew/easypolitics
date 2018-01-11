@@ -43,7 +43,7 @@ object RouteMatch {
         if (urlList.size != serviceList.size) {
             return false
         }
-        for (i in (0..urlList.size)) {
+        for (i in (0 until urlList.size)) {
             val urlItem = urlList[i]
             val serviceItem = serviceList[i]
             if (serviceItem.subSequence(0, 1) != ":" && urlItem != serviceItem) {

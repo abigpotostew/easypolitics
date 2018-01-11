@@ -8,11 +8,7 @@ abstract class BillDataServiceEndpoint(override val context:PageContext, private
     abstract fun getSearchParameters(): String
 
     final override fun getUrl(): String {
-        val url = this.context.restServiceUrl//this.baseUrl.devUrl
-        val finalUrl = "$url${baseUrl.path}${getSearchParameters()}"
-        console.log("url: $url")
-        console.log("service path: ${baseUrl.path}")
-        console.log("search parms: ${getSearchParameters()}")
-        return finalUrl
+        val url = this.context.restServiceUrl
+        return "$url${baseUrl.path}${getSearchParameters()}"
     }
 }

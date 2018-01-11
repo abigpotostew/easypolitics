@@ -10,16 +10,20 @@ import bz.stew.bracken.ui.pages.singlebill.model.SingleBillModel
 import bz.stew.bracken.ui.pages.singlebill.view.SingleBillView
 import bz.stew.bracken.view.HtmlSelector
 
-class SingleBillController(rootElmt: HtmlSelector,
+class SingleBillController(private val rootElmt: HtmlSelector,
                            private val billId: String,
                            pageContext: PageContext)
-    : PageController<SingleBillView, BillData>(SingleBillView(rootElmt), SingleBillModel(), pageContext) {
+    : PageController<SingleBillView, BillData>(SingleBillView(), SingleBillModel(), pageContext) {
 
     private val requestService = BillRestService()
 
-    private fun inflateUi() {
-        //fill in data for a template, pass that into this.view
-        this.view.constructBillView(BillViewItem(this.model.getBillData()[0]))
+    private fun inflateUi(showError: Boolean) {
+        if (!showError) {
+            this.view.constructBillView(BillViewItem(this.model.getBillData()[0]))
+        } else {
+            this.view.showBillNotFound(this.billId)
+        }
+        getElementBySelector(rootElmt).appendChild(this.view.element!!)
     }
 
     override fun init(callback: () -> Unit) {
@@ -27,11 +31,12 @@ class SingleBillController(rootElmt: HtmlSelector,
         this.view.setLoading(true)
         this.requestService.sendBillRequest(url, {
             if (it.response == null) {
-                console.error("error downloading bill with id: ${this.billId}")
-                error("error")
+                this.context.log.error("Error downloading bill with id: ${this.billId}")
+            } else {
+                this.model.loadBillData(it.response, false)
             }
-            this.model.loadBillData(it.response, false)
-            inflateUi()
+            inflateUi(it.response == null)
+
             this.view.setLoading(false)
 
             callback.invoke()

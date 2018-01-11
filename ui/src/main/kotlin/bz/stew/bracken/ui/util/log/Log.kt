@@ -8,54 +8,72 @@ enum class LogLevel {
     SILENT, ERROR, WARNING, INFO, DEBUG;
 }
 
-class Log {
+interface Logger {
+    fun getLogLevel(): LogLevel
+    fun setLogLevel(level: LogLevel)
+    fun error(s: String)
+    fun error(fn: () -> String)
+    fun warning(s: String)
+    fun warning(fn: () -> String)
+    fun info(s: String)
+    fun info(fn: () -> String)
+    fun debug(s: String)
+    fun debug(fn: () -> String)
+}
+
+class PrintSaveLogger(logLevel: LogLevel = LogLevel.ERROR) : Logger {
     private val messages = HashMap<LogLevel, HashSet<String>>()
-    var logLevel = LogLevel.ERROR
-    var saveMessages = false
+    private var logLevel = logLevel
+    private var saveMessages = false
 
-    companion object LogCompanion {
-        fun getLogLevel(): LogLevel {
-            return logs.logLevel
-        }
-
-        fun setLogLevel(lvl: LogLevel) {
-            logs.logLevel = lvl
-        }
-
-        fun warning(s: String) {
-            logs.logMessage(LogLevel.WARNING, s)
-        }
-        fun debug(s: String) {
-            logs.logMessage(LogLevel.DEBUG, s)
-        }
-        fun error(s: String) {
-            logs.logMessage(LogLevel.ERROR, s)
-        }
-        fun info(s: String) {
-            logs.logMessage(LogLevel.INFO, s)
-        }
-
-        fun warning(fn: () -> String) {
-            logs.logMessage(LogLevel.WARNING, fn)
-        }
-        fun debug(fn: () -> String) {
-            logs.logMessage(LogLevel.DEBUG, fn)
-        }
-        fun error(fn: () -> String) {
-            logs.logMessage(LogLevel.ERROR, fn)
-        }
-        fun info(fn: () -> String) {
-            logs.logMessage(LogLevel.INFO, fn)
-        }
+    override fun getLogLevel(): LogLevel {
+        return this.logLevel
     }
-    fun logMessage(msgLevel: LogLevel, msg: String) {
+
+    override fun setLogLevel(lvl: LogLevel) {
+        this.logLevel = lvl
+    }
+
+    override fun warning(s: String) {
+        this.logMessage(LogLevel.WARNING, s)
+    }
+
+    override fun debug(s: String) {
+        this.logMessage(LogLevel.DEBUG, s)
+    }
+
+    override fun error(s: String) {
+        this.logMessage(LogLevel.ERROR, s)
+    }
+
+    override fun info(s: String) {
+        this.logMessage(LogLevel.INFO, s)
+    }
+
+    override fun warning(fn: () -> String) {
+        this.logMessage(LogLevel.WARNING, fn)
+    }
+
+    override fun debug(fn: () -> String) {
+        this.logMessage(LogLevel.DEBUG, fn)
+    }
+
+    override fun error(fn: () -> String) {
+        this.logMessage(LogLevel.ERROR, fn)
+    }
+
+    override fun info(fn: () -> String) {
+        this.logMessage(LogLevel.INFO, fn)
+    }
+
+    private fun logMessage(msgLevel: LogLevel, msg: String) {
         saveMessage(msgLevel, msg)
         if (logLevel != LogLevel.SILENT && logLevel.ordinal >= msgLevel.ordinal) {
-            println("Warning: " + msg)
+            console.log("Warning: " + msg)
         }
     }
 
-    fun logMessage(msgLevel: LogLevel, msg: () -> String) {
+    private fun logMessage(msgLevel: LogLevel, msg: () -> String) {
         saveMessage(msgLevel, msg)
         if (logLevel != LogLevel.SILENT && logLevel.ordinal >= msgLevel.ordinal) {
             println("Warning: " + msg())
@@ -70,14 +88,17 @@ class Log {
 
     private fun saveMessage(msgLevel: LogLevel, msg: String) {
         if (saveMessages) {
-            var set: HashSet<String>? = logs.messages.get(logLevel)
+            var set: HashSet<String>? = this.messages.get(logLevel)
             if (set == null) {
                 set = HashSet<String>()
             }
             set.add(msg)
-            logs.messages.put(msgLevel, set)
+            this.messages.put(msgLevel, set)
         }
     }
 }
 
-private val logs: Log = Log()
+/**
+ * For legacy log calls
+ */
+val Log:Logger = PrintSaveLogger()

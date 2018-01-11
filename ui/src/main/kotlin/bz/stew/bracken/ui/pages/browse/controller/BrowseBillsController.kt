@@ -21,6 +21,7 @@ import bz.stew.bracken.view.HtmlSelector
 import bz.stewart.bracken.shared.data.FixedStatus
 import bz.stewart.bracken.shared.data.MajorStatus
 import bz.stewart.bracken.shared.data.party.Party
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSelectElement
 import org.w3c.dom.events.Event
@@ -33,8 +34,9 @@ class BrowseBillsController(rootElmt: HtmlSelector,
                             private val requestUrl: BillRestQueryUrl,
                             model: Model<BillData>,
                             pageContext: PageContext)
-    : PageController<BrowseBillsView, BillData>(BrowseBillsView(rootElmt, BootstrapTemplates()), model, pageContext) {
+    : PageController<BrowseBillsView, BillData>(BrowseBillsView(BootstrapTemplates()), model, pageContext) {
 
+    private val rootSelector=rootElmt
     private val requestService = BillRestService()
     private var lastSuccessfulQuery: BillDataServiceEndpoint? = null
     private var inProgressQuery: BillDataServiceEndpoint? = null
@@ -44,18 +46,18 @@ class BrowseBillsController(rootElmt: HtmlSelector,
      * Start listening to the forms
      */
     private fun startListeningFilterForms() {
-        this.view.getElement(BillFilters.PARTY.htmlSelector()).addEventListener("change", this::partyFilter)
-        this.view.getElement(BillFilters.FIXEDSTATUS.htmlSelector()).addEventListener("change", this::billStatusFilter)
-        this.view.getElement(BillFilters.DATEINTROSTART.htmlSelector()).addEventListener("change", {
+        this.view.getElementBySelector(BillFilters.PARTY.htmlSelector()).addEventListener("change", this::partyFilter)
+        this.view.getElementBySelector(BillFilters.FIXEDSTATUS.htmlSelector()).addEventListener("change", this::billStatusFilter)
+        this.view.getElementBySelector(BillFilters.DATEINTROSTART.htmlSelector()).addEventListener("change", {
             introducedDateFilter(it, IndexOperation.GreaterThanOrEqual)
         })
-        this.view.getElement(BillFilters.DATEINTROEND.htmlSelector()).addEventListener("change", {
+        this.view.getElementBySelector(BillFilters.DATEINTROEND.htmlSelector()).addEventListener("change", {
             introducedDateFilter(it, IndexOperation.LessThanOrEqual)
         })
-        this.view.getElement(BillFilters.LASTMAJORSTATUS.htmlSelector()).addEventListener("change",
+        this.view.getElementBySelector(BillFilters.LASTMAJORSTATUS.htmlSelector()).addEventListener("change",
             this::billMajorStatusFilter)
 
-        this.view.getElement(HtmlSelector(identifier = Identifier.ID,
+        this.view.getElementBySelector(HtmlSelector(identifier = Identifier.ID,
             selectorText = "loadNextPageBtn")).addEventListener("click", {
             nextPageQuery()
         })
@@ -64,8 +66,8 @@ class BrowseBillsController(rootElmt: HtmlSelector,
     @Suppress("unused")
     fun stopListening() {
         //TODO use this
-        this.view.getElement(BillFilters.PARTY.htmlSelector()).removeEventListener("change", this::partyFilter)
-        this.view.getElement(BillFilters.FIXEDSTATUS.htmlSelector()).removeEventListener("change",
+        this.view.getElementBySelector(BillFilters.PARTY.htmlSelector()).removeEventListener("change", this::partyFilter)
+        this.view.getElementBySelector(BillFilters.FIXEDSTATUS.htmlSelector()).removeEventListener("change",
             this::billStatusFilter)
     }
 
@@ -139,7 +141,7 @@ class BrowseBillsController(rootElmt: HtmlSelector,
         //todo make this filtering more generic
         this.view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
         this.view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
-        this.view.generateAndDisplayAllBills()
+        this.view.generateAndDisplayAllBills(getRootElement())
         startListeningFilterForms()
 
     }
@@ -161,7 +163,7 @@ class BrowseBillsController(rootElmt: HtmlSelector,
                 view.appendModelData(this.model.getBillData())
                 view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
                 view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
-                view.generateAndDisplayAllBills(false)
+                view.generateAndDisplayAllBills(getRootElement(), false)
             }
         })
     }
@@ -182,5 +184,9 @@ class BrowseBillsController(rootElmt: HtmlSelector,
             }
             callback.invoke()
         })
+    }
+
+    fun getRootElement():HTMLElement{
+        return this.view.getElementBySelector(this.rootSelector)
     }
 }
