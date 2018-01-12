@@ -2,7 +2,7 @@ package bz.stew.bracken.ui
 
 import bz.stew.bracken.ui.api.BrowseRuntime
 import bz.stew.bracken.ui.api.SingleBillRuntime
-import bz.stew.bracken.ui.context.MainPageContext
+import bz.stew.bracken.ui.context.ClientPageContext
 import bz.stew.bracken.ui.context.PageContext
 import bz.stew.bracken.ui.service.RequestCallback
 import bz.stew.bracken.ui.service.ServerRequestDispatcher
@@ -31,7 +31,7 @@ private fun routeAndExecute(restServiceUrl:String){
         val windowPath = window.location.pathname
         val service = RouteMatch.matchRoute(windowPath)
         if (service != null) {
-            val pageContext = MainPageContext(restServiceUrl, service, windowPath)
+            val pageContext = ClientPageContext(restServiceUrl, service, windowPath)
             executeService(pageContext)
         }
     } catch (e: Exception) {
@@ -42,10 +42,10 @@ private fun routeAndExecute(restServiceUrl:String){
 private fun executeService(pageContext: PageContext) {
     val pathVariables = pathVariableMap(pageContext.windowPath, pageContext.service)
     when (pageContext.service) {
-        AppServices.MAIN -> console.log("Main")
         AppServices.RESPOND -> console.log("Respond: " + pathVariables["id"])
         AppServices.SINGLE_BILL -> SingleBillRuntime(pathVariables["id"]!!).execute(pageContext)
         AppServices.BROWSE_BILL -> BrowseRuntime().execute(pageContext)
         AppServices.SERVICE_URL -> console.error("Error UI can't resolve the current page service from the URL.")
+        else -> console.log("Stew needs to implement ui runtime for service ${pageContext.service}")
     }
 }

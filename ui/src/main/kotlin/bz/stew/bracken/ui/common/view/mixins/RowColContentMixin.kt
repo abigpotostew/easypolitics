@@ -1,6 +1,6 @@
 package bz.stew.bracken.ui.common.view.mixins
 
-import bz.stew.bracken.ui.common.view.Classes
+import bz.stewart.bracken.shared.view.Classes
 import bz.stew.bracken.ui.common.view.SubTemplate
 import bz.stew.bracken.ui.extension.kotlinx.ac
 import kotlinx.html.FlowContent

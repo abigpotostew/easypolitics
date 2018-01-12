@@ -4,8 +4,6 @@ package bz.stew.bracken.ui.util
  * Created by stew on 1/24/17.
  */
 
-//@native("$")  fun jq(window: Window): JQuery = JQuery();
-
 class JsonUtil {
 
     companion object Parse {

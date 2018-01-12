@@ -1,7 +1,7 @@
 package bz.stew.bracken.ui.extension.kotlinx
 
-import bz.stew.bracken.ui.common.view.ClassGroup
-import bz.stew.bracken.ui.common.view.CssClass
+import bz.stewart.bracken.shared.view.ClassGroup
+import bz.stewart.bracken.shared.view.CssClass
 import kotlinx.html.DIV
 import kotlinx.html.TagConsumer
 import kotlinx.html.attributesMapOf

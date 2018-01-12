@@ -1,7 +1,8 @@
 package bz.stewart.bracken.web.view
 
 import bz.stewart.bracken.web.extension.setId
-import bz.stewart.bracken.web.html.ViewTemplate
+import bz.stewart.bracken.web.html.ViewRender
+import bz.stewart.bracken.web.service.WebPageContext
 import kotlinx.html.ButtonType
 import kotlinx.html.HtmlBlockTag
 import kotlinx.html.button
@@ -19,8 +20,8 @@ import kotlinx.html.span
 import kotlinx.html.style
 import kotlinx.html.ul
 
-class NavBar : ViewTemplate {
-    override fun renderIn(parent: HtmlBlockTag) {
+class NavBar : ViewRender {
+    override fun renderIn(parent: HtmlBlockTag, context: WebPageContext) {
         parent.apply {
             div(classes = "fixed-top") {
                 //                <div class="collapse " id="navbarToggleExternalContent">

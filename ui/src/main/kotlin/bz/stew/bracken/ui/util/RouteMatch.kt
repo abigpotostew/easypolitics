@@ -9,7 +9,7 @@ object RouteMatch {
     fun pathVariableMap(pathname: String, service: AppServices): Map<String, String> {
         val out = mutableMapOf<String, String>()
         val urlList = convertPathToList(pathname)
-        val serviceList = convertPathToList(service.path)
+        val serviceList = convertPathToList(service.absoluteUrlPath)
         for (i in (0 until urlList.size)) {
             val urlItem = urlList[i]
             val serviceItem = serviceList[i]
@@ -34,11 +34,11 @@ object RouteMatch {
     }
 
     private fun matchSpecificRoute(pathname: String, service: AppServices): Boolean {
-        if (pathname == service.path) {
+        if (pathname == service.absoluteUrlPath) {
             return true
         }
         val urlList = convertPathToList(pathname)
-        val serviceList = convertPathToList(service.path)
+        val serviceList = convertPathToList(service.absoluteUrlPath)
 
         if (urlList.size != serviceList.size) {
             return false

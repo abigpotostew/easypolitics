@@ -1,4 +1,4 @@
-package bz.stew.bracken.ui.common.view
+package bz.stewart.bracken.shared.view
 
 /**
  * Created by stew on 3/5/17.
@@ -19,7 +19,7 @@ enum class Classes(labelValue: String, addClasses: List<Classes> = emptyList()) 
     boots_card_img_top("card-img-top"),
     boots_tab_pane("tab-pane"),
     boots_tab_card("", listOf(boots_card_block,
-          boots_tab_pane)),
+        boots_tab_pane)),
 
     boots_text_muted("text-muted"),
     boots_text_right("text-right"),
@@ -32,6 +32,8 @@ enum class Classes(labelValue: String, addClasses: List<Classes> = emptyList()) 
     boots_button_group("btn-group"),
     boots_mr2("mr-2"),
     boots_secondary_button("btn btn-secondary"),
+
+    boots_screen_reader_only("sr-only"),
 
     attr_group("group"),
 
@@ -88,7 +90,7 @@ enum class Classes(labelValue: String, addClasses: List<Classes> = emptyList()) 
     boots_colXl11("col-xl-11"),
     boots_colXl12("col-xl-12"),
     boots_12_6_4("col-sm-12", listOf(boots_colLg4,
-          boots_colMd6)),
+        boots_colMd6)),
 
     partyRep("party-republican"),
     partyDem("party-democrat"),
@@ -114,7 +116,7 @@ enum class Classes(labelValue: String, addClasses: List<Classes> = emptyList()) 
     billLinkContainer("billLinkContainer"),
     billExpandedSponsorData("billExpandedSponsorData"),
     billTracker("billTracker", listOf(boots_button_group,
-          boots_mr2)),
+        boots_mr2)),
 
     billCosponsors("billCosponsors"),
     billExpandedSponsorImg("billExpandedSponsorImg", listOf(boots_card_img_top)),
@@ -128,12 +130,11 @@ enum class Classes(labelValue: String, addClasses: List<Classes> = emptyList()) 
     billExpandedTabContent("billExpandedTabContent"),
 
     voteInd("voteInd"),
-    //CLASS_BILL_(""),
+
     ;
 
-    val lbl = labelValue
-    val additionalClasses = if (addClasses.size > 0) addClasses.joinToString(" ") else ""
-    val fullLbl = "$labelValue $additionalClasses"
+    private val additionalClasses = if (addClasses.size > 0) addClasses.joinToString(" ") else ""
+    private val fullLbl = "$labelValue $additionalClasses"
     override fun label(): String {
         return this.fullLbl
     }

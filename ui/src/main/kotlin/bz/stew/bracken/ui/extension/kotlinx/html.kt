@@ -1,7 +1,7 @@
 package bz.stew.bracken.ui.extension.kotlinx
 
-import bz.stew.bracken.ui.common.view.Classes
-import bz.stew.bracken.ui.common.view.CssClass
+import bz.stewart.bracken.shared.view.Classes
+import bz.stewart.bracken.shared.view.CssClass
 import kotlinx.html.CommonAttributeGroupFacade
 import kotlinx.html.FlowContent
 import kotlinx.html.HTMLTag
@@ -20,7 +20,7 @@ fun CommonAttributeGroupFacade.ac(newClass: String) {
 }
 
 fun CommonAttributeGroupFacade.ac(id: Classes) {
-    this.ac(id.lbl)
+    this.ac(id.label())
 }
 
 fun CommonAttributeGroupFacade.ac(vararg ts: String) {
@@ -31,7 +31,7 @@ fun CommonAttributeGroupFacade.ac(vararg ts: String) {
 
 fun CommonAttributeGroupFacade.ac(vararg ts: Classes) {
     for (id in ts) {
-        this.ac(id.lbl)
+        this.ac(id.label())
     }
 }
 

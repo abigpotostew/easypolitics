@@ -2,33 +2,34 @@ package bz.stewart.bracken.web
 
 import bz.stewart.bracken.shared.web.AppServices
 import bz.stewart.bracken.web.html.WebsiteSkeleton
+import bz.stewart.bracken.web.service.WebContextBuilder
 import bz.stewart.bracken.web.view.BrowseBillsView
 import bz.stewart.bracken.web.view.MainPageConfig
 import bz.stewart.bracken.web.view.PrintInputView
 import bz.stewart.bracken.web.view.SingleBillView
-import bz.stewart.bracken.web.view.bill.SingleBillConfig
 import spark.Spark
 
-class ServiceRunner(val config: SparkConfig, private val restUrl:String) {
+class ServiceRunner(val config: SparkConfig, private val restUrl: String) {
 
     init {
         config.config()
     }
 
     fun run() {
-        Spark.get(AppServices.MAIN.path) { _, _ ->
-            WebsiteSkeleton(PrintInputView("pizza"), MainPageConfig()).render()
+        val contextBuilder = WebContextBuilder()
+        Spark.get(AppServices.MAIN.absoluteUrlPath) { req, res ->
+            WebsiteSkeleton(PrintInputView("pizza"), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.MAIN))
         }
-        Spark.get(AppServices.RESPOND.path) { req, _ ->
-            WebsiteSkeleton(PrintInputView(req.params("id")), MainPageConfig()).render()
+        Spark.get(AppServices.RESPOND.absoluteUrlPath) { req, res ->
+            WebsiteSkeleton(PrintInputView(req.params("id")), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.RESPOND))
         }
-        Spark.get(AppServices.SINGLE_BILL.path) { _, _ ->
-            WebsiteSkeleton(SingleBillView(), MainPageConfig()).render()
+        Spark.get(AppServices.SINGLE_BILL.absoluteUrlPath) { req, res ->
+            WebsiteSkeleton(SingleBillView(), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.SINGLE_BILL))
         }
-        Spark.get(AppServices.BROWSE_BILL.path) { _, _ ->
-            WebsiteSkeleton(BrowseBillsView(), MainPageConfig()).render()
+        Spark.get(AppServices.BROWSE_BILL.absoluteUrlPath) { req, res ->
+            WebsiteSkeleton(BrowseBillsView(), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.BROWSE_BILL))
         }
-        Spark.get(AppServices.SERVICE_URL.path) { _, response ->
+        Spark.get(AppServices.SERVICE_URL.absoluteUrlPath) { _, response ->
             response.type("text/html")
             restUrl
         }

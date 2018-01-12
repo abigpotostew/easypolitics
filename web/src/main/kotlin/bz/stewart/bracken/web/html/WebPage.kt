@@ -1,5 +1,7 @@
 package bz.stewart.bracken.web.html
 
+import bz.stewart.bracken.web.service.WebPageContext
+
 interface WebPage {
-    fun render():String
+    fun render(context: WebPageContext):String
 }

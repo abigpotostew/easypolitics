@@ -30,12 +30,12 @@ class SingleBillController(private val rootElmt: HtmlSelector,
         val url = SingleBillRestQueryUrl(this.context, billId = this.billId)
         this.view.setLoading(true)
         this.requestService.sendBillRequest(url, {
-            if (it.response == null) {
+            if (it.isEmpty()) {
                 this.context.log.error("Error downloading bill with id: ${this.billId}")
             } else {
                 this.model.loadBillData(it.response, false)
             }
-            inflateUi(it.response == null)
+            inflateUi(it.isEmpty())
 
             this.view.setLoading(false)
 

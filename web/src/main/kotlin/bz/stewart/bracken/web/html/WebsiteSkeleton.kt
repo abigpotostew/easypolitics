@@ -1,5 +1,6 @@
 package bz.stewart.bracken.web.html
 
+import bz.stewart.bracken.web.service.WebPageContext
 import kotlinx.html.body
 import kotlinx.html.head
 import kotlinx.html.html
@@ -10,8 +11,8 @@ import kotlinx.html.script
 import kotlinx.html.stream.createHTML
 import kotlinx.html.title
 
-class WebsiteSkeleton(private val content: ViewTemplate? = null, private val config: PageConfig) : WebPage {
-    override fun render(): String {
+class WebsiteSkeleton(private val content: ViewRender? = null, private val config: PageConfig) : WebPage {
+    override fun render(context: WebPageContext): String {
         return createHTML().html {
             lang = "en"
             head {
@@ -35,7 +36,7 @@ class WebsiteSkeleton(private val content: ViewTemplate? = null, private val con
                 }
             }
             body {
-                content?.renderIn(this)
+                content?.renderIn(this, context)
                 for (scriptConfig in config.getEndBodyScripts()) {
                     script {
                         scriptConfig.apply(this)

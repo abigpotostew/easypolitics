@@ -15,6 +15,7 @@ class EasyPoliticsParser : AbstractBillParser() {
    }
 
    override fun getBillCount(json: dynamic): Int {
+      @Suppress("UnsafeCastFromDynamic")
       return json.results.length
    }
 
