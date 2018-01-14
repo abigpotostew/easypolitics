@@ -3,19 +3,18 @@ package bz.stewart.bracken.web.view
 import bz.stewart.bracken.web.extension.setId
 import bz.stewart.bracken.web.html.ViewRender
 import bz.stewart.bracken.web.service.WebPageContext
+import bz.stewart.bracken.web.view.browse.FixedStatusFilterForm
+import bz.stewart.bracken.web.view.browse.IntroDateFilter
+import bz.stewart.bracken.web.view.browse.MajorActionFilterForm
+import bz.stewart.bracken.web.view.browse.PartyFilterForm
 import kotlinx.html.ButtonType
 import kotlinx.html.HtmlBlockTag
 import kotlinx.html.button
 import kotlinx.html.div
-import kotlinx.html.form
 import kotlinx.html.h3
 import kotlinx.html.h4
-import kotlinx.html.input
-import kotlinx.html.label
 import kotlinx.html.li
 import kotlinx.html.nav
-import kotlinx.html.option
-import kotlinx.html.select
 import kotlinx.html.span
 import kotlinx.html.style
 import kotlinx.html.ul
@@ -66,85 +65,16 @@ class NavBar : ViewRender {
                             }
                             li {
                                 //<form class="form-inline my-2 my-lg-0 nav-item ">
-                                form(classes = "mr-sm-2 text-white") {
-                                    label(classes = "mr-sm-2 text-white") {
-                                        attributes.put("for", "billFilter-party")
-                                        +"Party:"
-                                    }
-                                    select(classes = "custom-select form-inline mb-2 mr-sm-2 mb-sm-0") {
-                                        setId("billFilter-party")
-                                        option {
-                                            attributes.put("selected", "true")
-                                            attributes.put("value", "NONE")
-                                            +"All"
-                                        }
-                                        option {
-                                            attributes.put("value", "DEMOCRAT")
-                                            +"Democrat"
-                                        }
-                                        option {
-                                            attributes.put("value", "REPUBLICAN")
-                                            +"Republican"
-                                        }
-                                        option {
-                                            attributes.put("value", "INDEPENDENT")
-                                            +"Independent"
-                                        }
-
-                                    }
-                                }
+                                PartyFilterForm().renderIn(this, context)
                             }
                             li {
-                                form(classes = "form-inline mr-sm-2 text-white") {
-                                    label(classes = "mr-sm-2 text-white") {
-                                        attributes.put("for", "billFilter-fixedstatus")
-                                        +"Status:"
-                                    }
-                                    select(classes = "custom-select form-inline mb-2 mr-sm-2 mb-sm-0") {
-                                        setId("billFilter-fixedstatus")
-                                        option {
-                                            attributes.put("selected", "true")
-                                            attributes.put("value", "0")
-                                            +"All"
-                                        }
-                                    }
-                                }
+                                FixedStatusFilterForm().renderIn(this, context)
                             }
-                            li(classes = "form-inline") {
-                                form(classes = "form-inline mr-sm-2 text-white") {
-                                    label(classes = "mr-sm-2 text-white") {
-                                        attributes.put("for", "billFilter-dateintrostart")
-                                        +"Introduced:"
-                                    }
-                                    input(classes = "form-inline form-control") {
-                                        setId("billFilter-dateintrostart")
-                                        attributes.put("type", "date")
-                                    }
-                                    label(classes = "mr-sm-2 text-white") {
-                                        attributes.put("for", "billFilter-dateintroend")
-                                        +"Introduced:"
-                                    }
-                                    input(classes = "form-inline form-control") {
-                                        setId("billFilter-dateintroend")
-                                        attributes.put("type", "date")
-                                    }
-                                }
+                            li {
+                                IntroDateFilter().renderIn(this, context)
                             }
-                            li(classes = "form-inline") {
-                                form(classes = "form-inline mr-sm-2 text-white") {
-                                    label(classes = "mr-sm-2 text-white") {
-                                        attributes.put("for", "billFilter-lastmajorstatus")
-                                        +"Major Action:"
-                                    }
-                                    select(classes = "custom-select form-inline mb-2 mr-sm-2 mb-sm-0") {
-                                        setId("billFilter-lastmajorstatus")
-                                        option {
-                                            attributes.put("selected", "true")
-                                            attributes.put("value", "0")
-                                            +"All"
-                                        }
-                                    }
-                                }
+                            li {
+                                MajorActionFilterForm().renderIn(this, context)
                             }
                         }
                         span(classes = "navbar-text") {

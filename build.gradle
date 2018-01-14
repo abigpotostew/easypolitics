@@ -2,6 +2,13 @@ allprojects {
     apply plugin: "idea"
     group 'bz.stewart.bracken'
     version '1-SNAPSHOT'
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
 }
 
 task wrapper(type: Wrapper) {

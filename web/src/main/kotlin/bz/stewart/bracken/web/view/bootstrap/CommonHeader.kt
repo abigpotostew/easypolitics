@@ -7,7 +7,7 @@ import bz.stewart.bracken.web.html.ViewRender
 import bz.stewart.bracken.web.service.WebPageContext
 import kotlinx.html.*
 
-class CommonHeader(private val navItems: List<NavItem>) : ViewRender {
+class CommonHeader(private val navConfig: NavConfigBuilder) : ViewRender {
     override fun renderIn(parent: HtmlBlockTag, context: WebPageContext) {
         parent.div {
             this.id = "mainheader"
@@ -72,7 +72,7 @@ class CommonHeader(private val navItems: List<NavItem>) : ViewRender {
                         ac("navbar-nav mr-auto")
 
 
-                        for (item in navItems) {
+                        for (item in navConfig.getNavs(context)) {
                             li {
                                 ac("nav-item")
                                 if (item.isActive) {
@@ -106,6 +106,7 @@ class CommonHeader(private val navItems: List<NavItem>) : ViewRender {
                                 +"Search bills"
                             }
                         }
+                        action = "/search"
                     }
                 }
             }

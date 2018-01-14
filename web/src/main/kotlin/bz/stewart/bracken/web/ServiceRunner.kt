@@ -3,10 +3,12 @@ package bz.stewart.bracken.web
 import bz.stewart.bracken.shared.web.AppServices
 import bz.stewart.bracken.web.html.WebsiteSkeleton
 import bz.stewart.bracken.web.service.WebContextBuilder
-import bz.stewart.bracken.web.view.BrowseBillsView
+import bz.stewart.bracken.web.view.browse.BrowseBillsView
 import bz.stewart.bracken.web.view.MainPageConfig
 import bz.stewart.bracken.web.view.PrintInputView
 import bz.stewart.bracken.web.view.SingleBillView
+import bz.stewart.bracken.web.view.home.HomeView
+import bz.stewart.bracken.web.view.search.SearchView
 import spark.Spark
 
 class ServiceRunner(val config: SparkConfig, private val restUrl: String) {
@@ -18,7 +20,7 @@ class ServiceRunner(val config: SparkConfig, private val restUrl: String) {
     fun run() {
         val contextBuilder = WebContextBuilder()
         Spark.get(AppServices.MAIN.absoluteUrlPath) { req, res ->
-            WebsiteSkeleton(PrintInputView("pizza"), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.MAIN))
+            WebsiteSkeleton(HomeView("pizza"), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.MAIN))
         }
         Spark.get(AppServices.RESPOND.absoluteUrlPath) { req, res ->
             WebsiteSkeleton(PrintInputView(req.params("id")), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.RESPOND))
@@ -28,6 +30,9 @@ class ServiceRunner(val config: SparkConfig, private val restUrl: String) {
         }
         Spark.get(AppServices.BROWSE_BILL.absoluteUrlPath) { req, res ->
             WebsiteSkeleton(BrowseBillsView(), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.BROWSE_BILL))
+        }
+        Spark.get(AppServices.SEARCH.absoluteUrlPath) { req, res ->
+            WebsiteSkeleton(SearchView(), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.BROWSE_BILL))
         }
         Spark.get(AppServices.SERVICE_URL.absoluteUrlPath) { _, response ->
             response.type("text/html")

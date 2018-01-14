@@ -6,7 +6,11 @@ import bz.stewart.bracken.web.html.PageConfig
 import bz.stewart.bracken.web.html.config.BasicConfig
 import bz.stewart.bracken.web.html.config.ScriptConfig
 import bz.stewart.bracken.web.html.config.TagConfiguration
+import bz.stewart.bracken.web.html.config.TagViewRender
 import bz.stewart.bracken.web.html.config.TitleConfig
+import bz.stewart.bracken.web.view.bootstrap.BootstrapNavConfig
+import bz.stewart.bracken.web.view.bootstrap.CommonHeader
+import kotlinx.html.HTMLTag
 import kotlinx.html.LINK
 import kotlinx.html.META
 import kotlinx.html.SCRIPT
@@ -52,6 +56,10 @@ open class MainPageConfig : PageConfig {
             //ScriptConfig(ScriptSrcConstants.BOOSTRAP_MIN_EXT)
             //ScriptDataMainConfig(RequireJsDataMain.REQUIREJS_APP)
         )
+    }
+
+    override fun getNavHeader(): TagConfiguration<HTMLTag> {
+        return TagViewRender(CommonHeader(BootstrapNavConfig()))
     }
 
     override fun getEndBodyScripts(): Set<TagConfiguration<SCRIPT>> {

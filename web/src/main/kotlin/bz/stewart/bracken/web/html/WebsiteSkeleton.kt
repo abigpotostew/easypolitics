@@ -18,28 +18,31 @@ class WebsiteSkeleton(private val content: ViewRender? = null, private val confi
             head {
                 for (conf in config.getMetas()) {
                     meta {
-                        conf.apply(this)
+                        conf.apply(this, context)
                     }
                 }
                 for (conf in config.getLinks()) {
                     link {
-                        conf.apply(this)
+                        conf.apply(this, context)
                     }
                 }
                 title {
-                    config.getTitle().apply(this)
+                    config.getTitle().apply(this, context)
                 }
                 for(conf in config.getBeginBodyScripts()){
                     script{
-                        conf.apply(this)
+                        conf.apply(this, context)
                     }
                 }
             }
             body {
+
+                config.getNavHeader()?.apply(this, context)
+
                 content?.renderIn(this, context)
                 for (scriptConfig in config.getEndBodyScripts()) {
                     script {
-                        scriptConfig.apply(this)
+                        scriptConfig.apply(this, context)
                     }
                 }
             }
