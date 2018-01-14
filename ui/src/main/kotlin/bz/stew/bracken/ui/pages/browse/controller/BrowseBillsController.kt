@@ -13,6 +13,7 @@ import bz.stew.bracken.ui.common.query.BillRestQueryUrl
 import bz.stew.bracken.ui.common.service.BillRestService
 import bz.stew.bracken.ui.common.view.Identifier
 import bz.stew.bracken.ui.context.PageContext
+import bz.stew.bracken.ui.extension.jquery.ext.jQuery
 import bz.stew.bracken.ui.extension.niceClamp
 import bz.stew.bracken.ui.pages.browse.view.BootstrapTemplates
 import bz.stew.bracken.ui.pages.browse.view.BrowseBillsView
@@ -26,6 +27,8 @@ import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSelectElement
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.EventTarget
+import kotlin.browser.document
+import kotlin.browser.window
 
 /**
  * Created by stew on 1/25/17.
@@ -59,6 +62,12 @@ class BrowseBillsController(rootElmt: HtmlSelector,
 
         val loadMoreBtn = this.view.getElementBySelector(HtmlSelector(identifier = Identifier.ID,
             selectorText = "loadNextPageBtn"))
+        jQuery("#loadNextPageBtn").click { console.log("jquery click hello") }
+        window.setTimeout({
+            loadMoreBtn.addEventListener("click", {
+                nextPageQuery()
+            })
+        },100)
         loadMoreBtn.addEventListener("click", {
             nextPageQuery()
         })
