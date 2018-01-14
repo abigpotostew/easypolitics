@@ -103,7 +103,7 @@ enum class Classes(labelValue: String, addClasses: List<Classes> = emptyList()) 
     trackerLaw("billTracker-law"),
 
     bill("bill"),
-    card("card"),
+    boots_card("card"),
     billGridContent("billGridContent"),
     billTitle("billTitle"),
     billSponsor("billSponsor"),
@@ -130,6 +130,8 @@ enum class Classes(labelValue: String, addClasses: List<Classes> = emptyList()) 
     billExpandedTabContent("billExpandedTabContent"),
 
     voteInd("voteInd"),
+
+    BROWSE_FILTERS_LIST("browseFiltersList"),
 
     ;
 

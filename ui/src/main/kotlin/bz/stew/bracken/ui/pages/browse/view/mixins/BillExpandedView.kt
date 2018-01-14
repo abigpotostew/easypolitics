@@ -19,7 +19,7 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
         val sponsor = billView.billData.sponsor
         root.div {
             style = "display:none;"
-            ac(Classes.card, Classes.billExpanded)
+            ac(Classes.boots_card, Classes.billExpanded)
             div {
                 ac(Classes.boots_card_header)
                 ul {

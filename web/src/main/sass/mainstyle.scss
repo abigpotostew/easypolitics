@@ -222,7 +222,7 @@ body {
   background-color: #ffffff;
 
   position: absolute;
-  width: 95vw;
+  width: 97vw;
   top: 275px;
   //height:30rem; /* Right now this value is manually kept in sync with BillView.kt constant */
   /*padding: 10px;*/
@@ -337,6 +337,10 @@ body {
 
 .nav > li {
   float: left;
+}
+
+.browseFiltersList > li {
+  display: inline-block;
 }
 
 /*#content dt {*/

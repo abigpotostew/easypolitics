@@ -24,7 +24,7 @@ class CollapsedCardView(private val billView: BillViewItem) : SubTemplate {
 
         root.div {
             //todo make class groups tied to object model
-            ac(Classes.card, Classes.billGridContent, Classes.boots_hvr_fade)
+            ac(Classes.boots_card, Classes.billGridContent, Classes.boots_hvr_fade)
             h4 {
                 ac(Classes.billTitle, Classes.boots_card_header)
                 +billView.shortLabel()

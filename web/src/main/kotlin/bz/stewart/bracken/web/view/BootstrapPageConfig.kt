@@ -3,20 +3,19 @@ package bz.stewart.bracken.web.view
 import bz.stewart.bracken.web.HtmlConstants
 import bz.stewart.bracken.web.ScriptSrcConstants
 import bz.stewart.bracken.web.html.PageConfig
+import bz.stewart.bracken.web.html.ViewRender
 import bz.stewart.bracken.web.html.config.BasicConfig
 import bz.stewart.bracken.web.html.config.ScriptConfig
 import bz.stewart.bracken.web.html.config.TagConfiguration
-import bz.stewart.bracken.web.html.config.TagViewRender
 import bz.stewart.bracken.web.html.config.TitleConfig
 import bz.stewart.bracken.web.view.bootstrap.BootstrapNavConfig
 import bz.stewart.bracken.web.view.bootstrap.CommonHeader
-import kotlinx.html.HTMLTag
 import kotlinx.html.LINK
 import kotlinx.html.META
 import kotlinx.html.SCRIPT
 import kotlinx.html.TITLE
 
-open class MainPageConfig : PageConfig {
+open class BootstrapPageConfig : PageConfig {
     override fun getMetas(): Set<TagConfiguration<META>> {
         val charsetUpper = BasicConfig(META::class, mapOf(Pair("charset", HtmlConstants.UTF8.get())))
         val charsetLower = BasicConfig(META::class, mapOf(Pair("charset", HtmlConstants.utf8.get())))
@@ -58,8 +57,8 @@ open class MainPageConfig : PageConfig {
         )
     }
 
-    override fun getNavHeader(): TagConfiguration<HTMLTag> {
-        return TagViewRender(CommonHeader(BootstrapNavConfig()))
+    override fun getNavHeader(): ViewRender? {
+        return CommonHeader(BootstrapNavConfig())
     }
 
     override fun getEndBodyScripts(): Set<TagConfiguration<SCRIPT>> {

@@ -1,7 +1,6 @@
 package bz.stewart.bracken.web.html
 
 import bz.stewart.bracken.web.html.config.TagConfiguration
-import kotlinx.html.HTMLTag
 import kotlinx.html.LINK
 import kotlinx.html.META
 import kotlinx.html.SCRIPT
@@ -11,7 +10,7 @@ interface PageConfig {
     fun getMetas(): Set<TagConfiguration<META>>
     fun getLinks(): Set<TagConfiguration<LINK>>
     fun getBeginBodyScripts(): Set<TagConfiguration<SCRIPT>>
-    fun getNavHeader(): TagConfiguration<HTMLTag>?
+    fun getNavHeader(): ViewRender?
     fun getTitle(): TagConfiguration<TITLE>
     fun getEndBodyScripts(): Set<TagConfiguration<SCRIPT>>
 }

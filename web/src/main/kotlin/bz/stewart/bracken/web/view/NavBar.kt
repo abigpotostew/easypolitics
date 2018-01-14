@@ -7,20 +7,10 @@ import bz.stewart.bracken.web.view.browse.FixedStatusFilterForm
 import bz.stewart.bracken.web.view.browse.IntroDateFilter
 import bz.stewart.bracken.web.view.browse.MajorActionFilterForm
 import bz.stewart.bracken.web.view.browse.PartyFilterForm
-import kotlinx.html.ButtonType
-import kotlinx.html.HtmlBlockTag
-import kotlinx.html.button
-import kotlinx.html.div
-import kotlinx.html.h3
-import kotlinx.html.h4
-import kotlinx.html.li
-import kotlinx.html.nav
-import kotlinx.html.span
-import kotlinx.html.style
-import kotlinx.html.ul
+import kotlinx.html.*
 
 class NavBar : ViewRender {
-    override fun renderIn(parent: HtmlBlockTag, context: WebPageContext) {
+    override fun renderIn(parent: FlowContent, context: WebPageContext) {
         parent.apply {
             div(classes = "fixed-top") {
                 //                <div class="collapse " id="navbarToggleExternalContent">

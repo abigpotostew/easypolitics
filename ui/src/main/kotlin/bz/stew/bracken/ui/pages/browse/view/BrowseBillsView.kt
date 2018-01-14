@@ -170,13 +170,17 @@ class BrowseBillsView(private val templater: Templates) : View() {
         val child: JQuery = jQuery(bill).children(".billExpanded")
         //TODO made this centered, and the width of the number of bills across the screen
         child.css("transform",
-              "translateX(-" + document.elementFixedOffset(bill).x + "px)")
+              "translateX(-" + expandedBillXOffset(bill) + "px)")
 
         val openHeight = child.actual("height").toInt() + additionalExpandHeight /// MUST be before .show
         val aniOpen: Animation = makeAnimation(openHeight, "px")
         aniOpen.run(openSpeed,
               bill)
         child.show(openSpeed)
+    }
+
+    private fun expandedBillXOffset(bill:HTMLElement):Double{
+        return document.elementFixedOffset(bill).x?.minus(20) ?: 20.0
     }
 
     private fun makeCellActive(billSelector: HtmlSelector) {

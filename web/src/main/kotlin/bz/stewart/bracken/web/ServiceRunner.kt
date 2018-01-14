@@ -4,7 +4,7 @@ import bz.stewart.bracken.shared.web.AppServices
 import bz.stewart.bracken.web.html.WebsiteSkeleton
 import bz.stewart.bracken.web.service.WebContextBuilder
 import bz.stewart.bracken.web.view.browse.BrowseBillsView
-import bz.stewart.bracken.web.view.MainPageConfig
+import bz.stewart.bracken.web.view.BootstrapPageConfig
 import bz.stewart.bracken.web.view.PrintInputView
 import bz.stewart.bracken.web.view.SingleBillView
 import bz.stewart.bracken.web.view.home.HomeView
@@ -20,19 +20,19 @@ class ServiceRunner(val config: SparkConfig, private val restUrl: String) {
     fun run() {
         val contextBuilder = WebContextBuilder()
         Spark.get(AppServices.MAIN.absoluteUrlPath) { req, res ->
-            WebsiteSkeleton(HomeView("pizza"), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.MAIN))
+            WebsiteSkeleton(HomeView("pizza"), BootstrapPageConfig()).render(contextBuilder.build(req, res, AppServices.MAIN))
         }
         Spark.get(AppServices.RESPOND.absoluteUrlPath) { req, res ->
-            WebsiteSkeleton(PrintInputView(req.params("id")), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.RESPOND))
+            WebsiteSkeleton(PrintInputView(req.params("id")), BootstrapPageConfig()).render(contextBuilder.build(req, res, AppServices.RESPOND))
         }
         Spark.get(AppServices.SINGLE_BILL.absoluteUrlPath) { req, res ->
-            WebsiteSkeleton(SingleBillView(), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.SINGLE_BILL))
+            WebsiteSkeleton(SingleBillView(), BootstrapPageConfig()).render(contextBuilder.build(req, res, AppServices.SINGLE_BILL))
         }
         Spark.get(AppServices.BROWSE_BILL.absoluteUrlPath) { req, res ->
-            WebsiteSkeleton(BrowseBillsView(), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.BROWSE_BILL))
+            WebsiteSkeleton(BrowseBillsView(), BootstrapPageConfig()).render(contextBuilder.build(req, res, AppServices.BROWSE_BILL))
         }
         Spark.get(AppServices.SEARCH.absoluteUrlPath) { req, res ->
-            WebsiteSkeleton(SearchView(), MainPageConfig()).render(contextBuilder.build(req, res, AppServices.BROWSE_BILL))
+            WebsiteSkeleton(SearchView(), BootstrapPageConfig()).render(contextBuilder.build(req, res, AppServices.BROWSE_BILL))
         }
         Spark.get(AppServices.SERVICE_URL.absoluteUrlPath) { _, response ->
             response.type("text/html")

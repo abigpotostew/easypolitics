@@ -4,9 +4,7 @@ import bz.stewart.bracken.web.RequireJsDataMain
 import bz.stewart.bracken.web.ScriptSrcConstants
 import bz.stewart.bracken.web.html.ViewRender
 import bz.stewart.bracken.web.service.WebPageContext
-import kotlinx.html.HTMLTag
-import kotlinx.html.SCRIPT
-import kotlinx.html.TITLE
+import kotlinx.html.*
 import kotlin.reflect.KClass
 
 class HtmlConfiguration(val tagConfigurations: Set<TagConfiguration<HTMLTag>>) {
@@ -21,7 +19,12 @@ class HtmlConfiguration(val tagConfigurations: Set<TagConfiguration<HTMLTag>>) {
     }
 }
 
-abstract class TagConfiguration<T : HTMLTag>(val type: KClass<T>, private val attributes: Map<String, String> = emptyMap()) {
+/**
+ * This is used with kotlinx dsl, encapsulates setting up a tag after it has been instantiated with the dsl.
+ *
+ * @see WebsiteSkeleton
+ */
+abstract class TagConfiguration<T : Tag>(val type: KClass<T>, private val attributes: Map<String, String> = emptyMap()) {
     protected abstract fun doConfig(tag: T, context: WebPageContext)
     fun apply(tag: T, context: WebPageContext) {
         for ((k, v) in attributes.entries) {
@@ -67,11 +70,5 @@ class ExecuteJsScriptConfig(val jsValue:String) : TagConfiguration<SCRIPT>(SCRIP
 class TitleConfig(private val title:String):TagConfiguration<TITLE>(TITLE::class, emptyMap()){
     override fun doConfig(tag: TITLE, context: WebPageContext) {
         tag.text(this.title)
-    }
-}
-
-class TagViewRender(private val viewRender: ViewRender):TagConfiguration<HTMLTag>(HTMLTag::class, emptyMap()){
-    override fun doConfig(tag: HTMLTag, context: WebPageContext) {
-        tag.apply { viewRender.renderIn(this, context) }
     }
 }

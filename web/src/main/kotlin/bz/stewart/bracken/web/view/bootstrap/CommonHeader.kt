@@ -1,6 +1,7 @@
 package bz.stewart.bracken.web.view.bootstrap
 
 import bz.stewart.bracken.shared.view.Classes
+import bz.stewart.bracken.shared.web.AppServices
 import bz.stewart.bracken.web.extension.ac
 import bz.stewart.bracken.web.extension.setId
 import bz.stewart.bracken.web.html.ViewRender
@@ -8,7 +9,7 @@ import bz.stewart.bracken.web.service.WebPageContext
 import kotlinx.html.*
 
 class CommonHeader(private val navConfig: NavConfigBuilder) : ViewRender {
-    override fun renderIn(parent: HtmlBlockTag, context: WebPageContext) {
+    override fun renderIn(parent: FlowContent, context: WebPageContext) {
         parent.div {
             this.id = "mainheader"
 
@@ -94,7 +95,7 @@ class CommonHeader(private val navConfig: NavConfigBuilder) : ViewRender {
                         }
                         //todo in progress the filters could go here maybe
                     }
-                    form {
+                    form(AppServices.SEARCH.absoluteUrlPath) {
                         ac("form-inline my-2 my-lg-0")
                         input {
                             ac("form-control mr-sm-2")
@@ -106,7 +107,6 @@ class CommonHeader(private val navConfig: NavConfigBuilder) : ViewRender {
                                 +"Search bills"
                             }
                         }
-                        action = "/search"
                     }
                 }
             }

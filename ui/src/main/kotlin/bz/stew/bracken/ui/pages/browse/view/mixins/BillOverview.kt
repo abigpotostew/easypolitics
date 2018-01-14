@@ -81,7 +81,7 @@ class BillOverview(
                 div {
                     ac(Classes.billExpandedSponsorData)
                     if (isCard) {
-                        ac(Classes.card)
+                        ac(Classes.boots_card)
                     }
                     if (showProfileImage) {
                         img {

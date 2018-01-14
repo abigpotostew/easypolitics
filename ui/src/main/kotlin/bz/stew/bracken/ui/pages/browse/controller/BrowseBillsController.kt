@@ -57,9 +57,16 @@ class BrowseBillsController(rootElmt: HtmlSelector,
         this.view.getElementBySelector(BillFilters.LASTMAJORSTATUS.htmlSelector()).addEventListener("change",
             this::billMajorStatusFilter)
 
-        this.view.getElementBySelector(HtmlSelector(identifier = Identifier.ID,
-            selectorText = "loadNextPageBtn")).addEventListener("click", {
+        val loadMoreBtn = this.view.getElementBySelector(HtmlSelector(identifier = Identifier.ID,
+            selectorText = "loadNextPageBtn"))
+        loadMoreBtn.addEventListener("click", {
             nextPageQuery()
+        })
+        loadMoreBtn.addEventListener("mouseover",{
+            context.log.info("hello")
+        })
+        this.view.getElementBySelector(HtmlSelector(Identifier.ID,"nav-bar-billCount")).addEventListener("click",{
+            context.log.error("YOYOYOYO bill count click")
         })
     }
 

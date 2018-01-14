@@ -1,15 +1,8 @@
 package bz.stewart.bracken.web.html
 
 import bz.stewart.bracken.web.service.WebPageContext
-import kotlinx.html.body
-import kotlinx.html.head
-import kotlinx.html.html
-import kotlinx.html.lang
-import kotlinx.html.link
-import kotlinx.html.meta
-import kotlinx.html.script
+import kotlinx.html.*
 import kotlinx.html.stream.createHTML
-import kotlinx.html.title
 
 class WebsiteSkeleton(private val content: ViewRender? = null, private val config: PageConfig) : WebPage {
     override fun render(context: WebPageContext): String {
@@ -29,15 +22,15 @@ class WebsiteSkeleton(private val content: ViewRender? = null, private val confi
                 title {
                     config.getTitle().apply(this, context)
                 }
-                for(conf in config.getBeginBodyScripts()){
-                    script{
+                for (conf in config.getBeginBodyScripts()) {
+                    script {
                         conf.apply(this, context)
                     }
                 }
             }
             body {
 
-                config.getNavHeader()?.apply(this, context)
+                config.getNavHeader()?.renderIn(this, context)
 
                 content?.renderIn(this, context)
                 for (scriptConfig in config.getEndBodyScripts()) {
