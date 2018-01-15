@@ -6,9 +6,9 @@ function prop {
 
 THIS_PWD=$(pwd)
 DB_PATH=$(prop 'DB_PATH')
-TEST_BILL_DB_DATA=$(prop 'TEST_BILL_DB_DATA')
-TEST_LEGISLATOR_DB_DATA=$(prop 'TEST_LEGISLATOR_DB_DATA')
-TEST_DBNAME=$(prop 'TEST_DBNAME')
+TEST_BILL_DB_DATA=$(prop 'TEST_BILL_DBDATA')
+TEST_LEGISLATOR_DB_DATA=$(prop 'TEST_LEGISLATOR_DBDATA')
+TEST_DBNAME=$(prop 'TEST_DB_NAME')
 
 if [[ -z "$DB_PATH" ]]; then
 	echo "Property 'DB_PATH' must be defined in my.propertied"

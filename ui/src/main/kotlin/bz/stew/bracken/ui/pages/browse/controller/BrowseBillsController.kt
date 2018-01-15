@@ -62,20 +62,8 @@ class BrowseBillsController(rootElmt: HtmlSelector,
 
         val loadMoreBtn = this.view.getElementBySelector(HtmlSelector(identifier = Identifier.ID,
             selectorText = "loadNextPageBtn"))
-        jQuery("#loadNextPageBtn").click { console.log("jquery click hello") }
-        window.setTimeout({
-            loadMoreBtn.addEventListener("click", {
-                nextPageQuery()
-            })
-        },100)
         loadMoreBtn.addEventListener("click", {
             nextPageQuery()
-        })
-        loadMoreBtn.addEventListener("mouseover",{
-            context.log.info("hello")
-        })
-        this.view.getElementBySelector(HtmlSelector(Identifier.ID,"nav-bar-billCount")).addEventListener("click",{
-            context.log.error("YOYOYOYO bill count click")
         })
     }
 

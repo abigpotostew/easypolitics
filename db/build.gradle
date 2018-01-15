@@ -51,8 +51,16 @@ repositories {
 }
 
 dependencies {
+    compile project(":shared-jvm")
     compile libraries.kotlin_stdlib
-    compile "org.litote.kmongo:kmongo:3.6.+"
+    compile  group: 'org.litote.kmongo', name: 'kmongo', version: '3.6.0'
+    compile  group: 'org.litote.kmongo', name: 'kmongo', version: '3.6.0', configuration: "javadoc"
+    compile  group: 'org.litote.kmongo', name: 'kmongo', version: '3.6.0', configuration: "sources"
+
+    compile group:"com.fasterxml.jackson.module", name:"jackson-module-kotlin", version:"2.9.2", configuration: "javadoc"
+    compile group:"com.fasterxml.jackson.module", name:"jackson-module-kotlin", version:"2.9.2", configuration: "sources"
+    compile group:"com.fasterxml.jackson.core", name:"jackson-core", version:"2.9.3", configuration: "sources"
+    compile group:"com.fasterxml.jackson.core", name:"jackson-core", version:"2.9.3", configuration: "javadoc"
     compile 'io.github.microutils:kotlin-logging:1.4.3'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.22' //required at compile time
     compile "com.xenomachina:kotlin-argparser:2.0.0"

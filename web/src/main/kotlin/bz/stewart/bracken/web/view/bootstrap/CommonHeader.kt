@@ -13,23 +13,23 @@ class CommonHeader(private val navConfig: NavConfigBuilder) : ViewRender {
         parent.div {
             this.id = "mainheader"
 
-            div(classes = "collapse") {
-                setId("navbarToggleExternalContent")
-                //attributes.put("aria-expanded","false")
-                div(classes = "bg-inverse p-4") {
-                    h4(classes = "text-white") {
-                        +"Collapsed pizza"
-                    }
-                    span("text-muted") {
-                        +"toggle via navbar"
-                    }
-                    button(classes = "btn btn-primary btn-sm") {
-                        setId("loadNextPageBtn")
-                        type = ButtonType.button
-                        +"Load Next Page"
-                    }
-                }
-            }
+//            div(classes = "collapse") {
+//                setId("navbarToggleExternalContent")
+//                //attributes.put("aria-expanded","false")
+//                div(classes = "bg-inverse p-4") {
+//                    h4(classes = "text-white") {
+//                        +"Collapsed pizza"
+//                    }
+//                    span("text-muted") {
+//                        +"toggle via navbar"
+//                    }
+//                    button(classes = "btn btn-primary btn-sm") {
+//                        setId("loadNextPageBtn")
+//                        type = ButtonType.button
+//                        +"Load Next Page"
+//                    }
+//                }
+//            }
 
             nav {
                 ac("navbar navbar-toggleable-md navbar-inverse bg-inverse")

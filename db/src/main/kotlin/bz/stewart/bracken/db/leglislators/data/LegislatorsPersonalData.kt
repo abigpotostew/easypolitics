@@ -27,9 +27,10 @@ data class IdData(
       val ballotpedia: String? = null, //The ballotpedia.org page name for the person (spaces are given as spaces, not underscores).
       val maplight: String? = null, //The numeric ID for this legislator on maplight.org (stored as an integer).
       val house_history: String? = null, //The numeric ID for this legislator on http://history.house.gov/People/Search/. The ID is present only for members who have served in the U.S. House.
-      val bioguide_previous: String? = null, //When bioguide.congress.gov mistakenly listed a legislator under multiple IDs, this field is a list of alternative IDs. (This often ocurred for women who changed their name.) The IDs in this list probably were removed from bioguide.congress.gov but might still be in use in the wild.
+      val bioguide_previous: Array<String>? = null, //When bioguide.congress.gov mistakenly listed a legislator under multiple IDs, this field is a list of alternative IDs. (This often ocurred for women who changed their name.) The IDs in this list probably were removed from bioguide.congress.gov but might still be in use in the wild.
       val wikidata: String? = null,
-      val google_entity_id: String? = null
+      val google_entity_id: String? = null,
+      val house_history_alternate:Int? = null
                  )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

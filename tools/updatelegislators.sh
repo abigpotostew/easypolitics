@@ -13,4 +13,5 @@ git checkout gh-pages
 git pull
 
 cd $THIS_PWD
-./gradlew :db:run -PappArgs="['-l', '-f', '$LEGIS/legislators-current.json', '-s', '$LEGIS/legislators-social-media.json', '-b', '$DB']"
+./gradlew :db:run -PappArgs="['-l', '-f', '$LEGIS/legislators-current.json', '-f', '$LEGIS/legislators-historical.json', '-s', '$LEGIS/legislators-social-media.json', '-b', '$DB']"
+#echo "['-l', '-f', '$LEGIS/legislators-current.json', '-f', '$LEGIS/legislators-historical.json', '-s', '$LEGIS/legislators-social-media.json', '-b', '$DB']"
