@@ -20,7 +20,7 @@ class LegislatorProfile(private val legislator: Legislator) : SubTemplate {
          }
 
          val contentMap = contentMap()
-         this.horzizontalDescriptionList(content = contentMap)
+         this.horzizontalDescriptionList(content = contentMap, dlClasses = null)
       }
    }
 

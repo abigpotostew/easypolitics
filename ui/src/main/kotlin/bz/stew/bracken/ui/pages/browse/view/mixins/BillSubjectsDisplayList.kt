@@ -28,6 +28,6 @@ class BillSubjectsDisplayList(val billSubjects:Set<BillSubject>): SubTemplate {
         }
         descriptionListMap.put("Subjects: ", subjectView)
 
-        root.horzizontalDescriptionList(descriptionListMap)
+        root.horzizontalDescriptionList(descriptionListMap, null)
     }
 }

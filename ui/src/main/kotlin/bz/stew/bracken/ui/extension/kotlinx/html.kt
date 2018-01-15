@@ -35,14 +35,15 @@ fun CommonAttributeGroupFacade.ac(vararg ts: Classes) {
     }
 }
 
-fun FlowContent.horzizontalDescriptionList(content: Map<String, HtmlFunc>) {
+fun FlowContent.horzizontalDescriptionList(content: Map<String, HtmlFunc>, dlClasses: Classes?) {
     dl {
-        ac(Classes.boots_row)
+        if (dlClasses != null) {
+            ac(dlClasses)
+        }
         for ((titleString, dataFunc) in content) {
             dt {
-                this.ac(Classes.boots_colSm2, Classes.boots_colXl1)
+                //this.ac(Classes.boots_colSm2, Classes.boots_colXl1)
                 +titleString
-                //this.text(titleString)
             }
             dd {
                 ac(Classes.boots_colSm10, Classes.boots_colXl11)
@@ -57,11 +58,11 @@ fun FlowContent.horzizontalDescriptionList(content: Map<DlTitleFunc, HtmlFunc>) 
         ac(Classes.boots_row)
         for ((titleFunc, dataFunc) in content) {
             dt {
-                ac(Classes.boots_colSm2, Classes.boots_colXl1)
+                //ac(Classes.boots_colSm2, Classes.boots_colXl1)
                 titleFunc(this)
             }
             dd {
-                ac(Classes.boots_colSm10, Classes.boots_colXl11)
+                ac(Classes.boots_colSm12, Classes.boots_colXl12)
                 dataFunc(this)
             }
         }

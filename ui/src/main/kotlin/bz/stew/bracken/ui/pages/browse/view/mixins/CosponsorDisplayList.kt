@@ -4,6 +4,7 @@ import bz.stew.bracken.ui.extension.kotlinx.HtmlFunc
 import bz.stew.bracken.ui.extension.kotlinx.horzizontalDescriptionList
 import bz.stew.bracken.ui.common.view.SubTemplate
 import bz.stewart.bracken.shared.data.person.Legislator
+import bz.stewart.bracken.shared.view.Classes
 import kotlinx.html.FlowContent
 import kotlinx.html.HtmlBlockTag
 import kotlinx.html.li
@@ -27,6 +28,6 @@ class CosponsorDisplayList (private val cosponsors: List<Legislator>): SubTempla
         }
         descriptionListMap.put("Cosponsored by:", cosponsorsContent)
 
-        root.horzizontalDescriptionList(descriptionListMap)
+        root.horzizontalDescriptionList(descriptionListMap, Classes.boots_row)
     }
 }

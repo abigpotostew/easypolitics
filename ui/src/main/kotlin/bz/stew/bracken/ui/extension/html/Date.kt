@@ -21,3 +21,16 @@ inline fun jsDate(): Date = js("new Date()")
 fun emptyDate() = jsDate(1970, 0, 1)//jsDate(1970,0,1)
 
 fun jsParseDate(date: String): Date = js("new Date(Date.parse(date))")
+
+fun asJsDate(date:Date):DateJs{
+    return js("date")
+}
+
+external class DateJs {
+    fun getTime(): Double
+    fun getDay(): Int
+    fun getFullYear(): Int
+    fun getMonth(): Int
+    fun getHours(): Int
+    fun getMinutes(): Int
+}

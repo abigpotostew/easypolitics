@@ -1,13 +1,13 @@
 package bz.stew.bracken.model.parse.bill
 
-import bz.stew.bracken.ui.extension.html.jsParseDate
-import bz.stew.bracken.ui.common.bill.BillDataBuilder
-import bz.stew.bracken.ui.common.bill.EasyPoliticsMajorAction
-import bz.stew.bracken.ui.common.bill.EasyPoliticsParser
 import bz.stew.bracken.ui.common.bill.BillAction
 import bz.stew.bracken.ui.common.bill.BillData
+import bz.stew.bracken.ui.common.bill.BillDataBuilder
 import bz.stew.bracken.ui.common.bill.BillSubject
+import bz.stew.bracken.ui.common.bill.EasyPoliticsMajorAction
+import bz.stew.bracken.ui.common.bill.EasyPoliticsParser
 import bz.stew.bracken.ui.common.bill.status.BillStatusData
+import bz.stew.bracken.ui.extension.html.jsParseDate
 import bz.stew.bracken.ui.util.log.Log
 import bz.stewart.bracken.shared.data.BillResolutionType
 import bz.stewart.bracken.shared.data.BillType
@@ -101,15 +101,15 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
         return out
     }
 
-    private fun resolveActions(actionsArr: dynamic):Set<BillAction>{
-        if(!actionsArr) {
+    private fun resolveActions(actionsArr: dynamic): Set<BillAction> {
+        if (!actionsArr) {
             return emptySet()
         }
         val out = mutableSetOf<BillAction>()
         val len = actionsArr.length
-        for(i in 0..len){
+        for (i in 0..len) {
             val actionDyn = actionsArr[i]
-            if(actionDyn== undefined){
+            if (actionDyn == undefined) {
                 continue
             }
             val action = BillAction(actionDyn)
@@ -121,8 +121,8 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
     override fun build(govInput: dynamic): BillData {
         val title = govInput.officialTitle
         val shortTitle = govInput.billName
-        val uniqueParsedId: String = govInput.billId
-        val uniqueId: Int = uniqueParsedId.hashCode()
+        val billId: String = govInput.billId
+        val uniqueId: Int = billId.hashCode()
         val congress: Int = govInput.congress
         val subjectsArrDyn = govInput.subjects
 
@@ -137,10 +137,10 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
         //todo status label and description not entered
 
         val currentStatus = BillStatusData(fixedStatus = resolvedFixedStatus,
-              date = jsParseDate(govInput.currentStatusAt),
-              majorActions = majorActions,
-              description = govInput.currentStatusDescription,
-              label = govInput.currentStatusLabel)
+            date = jsParseDate(govInput.currentStatusAt),
+            majorActions = majorActions,
+            description = govInput.currentStatusDescription,
+            label = govInput.currentStatusLabel)
 
         val number = (govInput.number as String).toInt()
 
@@ -149,7 +149,7 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
 
         val parsedSponsor = resolveLegislator(govInput.sponsor)
         if (parsedSponsor == null) {
-            Log.error("sponsor is null for bill: $uniqueParsedId of congress $congress")
+            Log.error("sponsor is null for bill: $billId of congress $congress")
         }
         val sponsor = parsedSponsor ?: emptyLegislator()
 
@@ -161,22 +161,22 @@ class EasyPoliticsBillData(private val parser: EasyPoliticsParser) : BillDataBui
         val actions = resolveActions(govInput.actions)
 
         return BillData(
-              officialTitle = title,
-              shortTitle = shortTitle,
-              uniqueId = uniqueId,
-              congress = congress,
-              bill_type = bill_type,
-              bill_resolution_type = bill_res_type,
-              currentStatus = currentStatus,
-              number = number,
-              link = link,
-              intro_date = intro_date,
-              sponsor = sponsor,
-              cosponsors = cosponsors,
-              origData = govInput,
-              subjects = subjects,
-              subjectsTopTerm = topSubject,
-              actions = actions
+            billId = billId,
+            officialTitle = title,
+            shortTitle = shortTitle,
+            congress = congress,
+            bill_type = bill_type,
+            bill_resolution_type = bill_res_type,
+            currentStatus = currentStatus,
+            number = number,
+            link = link,
+            intro_date = intro_date,
+            sponsor = sponsor,
+            cosponsors = cosponsors,
+            origData = govInput,
+            subjects = subjects,
+            subjectsTopTerm = topSubject,
+            actions = actions
         )
     }
 }

@@ -15,7 +15,7 @@ import kotlin.js.Date
  * have this inherit from PublicBill
  */
 data class BillData(
-      val uniqueId: Int = -1,
+    val billId:String,
       val officialTitle: String = "",
       val shortTitle: String = "", //is the bill id in the front of officialTitle
       val congress: Int = -1,
@@ -48,7 +48,7 @@ data class BillData(
     }
 
     override fun toString(): String {
-        return "BillData\$$uniqueId@${intro_date.getTime()}"
+        return "BillData[${this.billId}]@${this.intro_date.getTime()}"
     }
 
     fun officialId(useFullType:Boolean=false):String{

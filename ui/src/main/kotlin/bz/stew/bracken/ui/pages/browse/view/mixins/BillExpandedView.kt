@@ -68,7 +68,7 @@ class BillExpandedView(private val template: Bill) : SubTemplate {
                         }
                         set("role", "tabpanel")
                         div {
-                            ac(Classes.boots_container, Classes.billExpandedTabContent)
+                            ac(Classes.boots_container_fluid, Classes.billExpandedTabContent)
                             tabTemplates[i].renderIn(this)
                         }
                     }

@@ -10,34 +10,31 @@ import bz.stew.bracken.view.item.ViewItem
  */
 class BillViewItem(val billData: BillData) : ViewItem {
 
-   //val billData:BillData=billData
+    fun trueTitle(): String {
+        if (billData.officialTitle.isBlank()) {
+            return billData.shortTitle
+        }
+        return billData.officialTitle
+    }
 
-   fun trueTitle(): String {
-      if (billData.officialTitle.isBlank()) {
-         return billData.shortTitle
-      }
-      return billData.officialTitle
-   }
+    fun shortLabel(): String {
+        return this.billData.bill_type.shortLabel() + " " + this.billData.number
+    }
 
-   fun shortLabel(): String {
-      return this.billData.bill_type.shortLabel() + " " + this.billData.number
-   }
+    override fun sortBy(): Int {
+        return this.billData.number
+    }
 
-   override fun sortBy(): Int {
-      return this.billData.number
-   }
+    override fun selector(): HtmlSelector {
+        return HtmlSelector(Identifier.ID, "bill" + (this.billData.billId).hashCode())
+    }
 
-   override fun selector(): HtmlSelector {
-      return HtmlSelector(Identifier.ID,
-                          "bill" + this.billData.uniqueId.toString())
-   }
+    override fun compareTo(other: ViewItem): Int {
+        return this.sortBy() - other.sortBy()
+    }
 
-   override fun compareTo(other: ViewItem): Int {
-      return this.sortBy() - other.sortBy()
-   }
-
-   fun sponsorImageUrl(): String {
-      val twitterId = this.billData.sponsor.getTwitter()
-      return "https://twitter.com/$twitterId/profile_image?size=original"
-   }
+    fun sponsorImageUrl(): String {
+        val twitterId = this.billData.sponsor.getTwitter()
+        return "https://twitter.com/$twitterId/profile_image?size=original"
+    }
 }

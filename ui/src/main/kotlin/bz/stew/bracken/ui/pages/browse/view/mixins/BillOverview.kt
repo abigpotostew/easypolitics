@@ -6,7 +6,7 @@ import bz.stewart.bracken.shared.view.Classes
 import bz.stew.bracken.ui.common.view.SubTemplate
 import bz.stew.bracken.ui.extension.kotlinx.ac
 import bz.stew.bracken.ui.extension.kotlinx.set
-import bz.stew.bracken.ui.util.ui.UIFormatter
+import bz.stew.bracken.ui.util.date.DateFormatter
 import bz.stewart.bracken.shared.data.MajorStatus
 import kotlinx.html.*
 
@@ -25,7 +25,7 @@ class BillOverview(
         val sponsor = bd.sponsor
         val sponsorName = sponsor.getFullTitle(true)
         val name = bd.officialTitle
-        val introDate = UIFormatter.prettyDate(bd.intro_date)
+        val introDate = DateFormatter.fuzzyDate(bd.intro_date)
         val status: BillStatus = bd.currentStatus
         val statusDescr: String = status.description()
         val billSponsorProfileImg = billView.sponsorImageUrl()

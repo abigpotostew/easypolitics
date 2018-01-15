@@ -1,5 +1,7 @@
-package bz.stew.bracken.ui.util.ui
+package bz.stew.bracken.ui.util.date
 
+import bz.stew.bracken.ui.extension.html.DateJs
+import bz.stew.bracken.ui.extension.html.asJsDate
 import kotlin.js.Date
 import kotlin.math.floor
 import kotlin.math.round
@@ -8,9 +10,9 @@ import kotlin.math.round
  * Created by stew on 1/28/17.
  */
 
-class UIFormatter {
+class DateFormatter private constructor() {
     companion object DateCompanion {
-        fun prettyDate(date: Date): String {
+        fun fuzzyDate(date: Date): String {
             // Make a fuzzy time
             val delta = round(((Date().getTime()) - (date.getTime())) / 1000)
 
@@ -52,6 +54,34 @@ class UIFormatter {
             }
             return fuzzy
         }
+
+        fun prettyDate(date: Date): String {
+            return prettyDate(asJsDate(date))
+        }
+
+        fun prettyDate(date: DateJs): String {
+            val amPm = getAmPmString(date)
+            val MM = date.getMonth() + 1
+            val dd = date.getDay()
+            val yy = date.getFullYear()
+            val hh = date.getHours()
+            val hh12 = if (hh == 0) 12 else if (hh > 12) hh - 12 else hh
+            val mm = leftPad(date.getMinutes(), 2)
+            return "$MM/$dd/$yy, $hh12:$mm $amPm"
+        }
+
+        fun leftPad(n: Int, width: Int, pad: String = "0"): String {
+            return leftPad(n.toString(), width, pad)
+        }
+
+        fun leftPad(str: String, width: Int, pad: String = "0"): String {
+            var n = str
+            while (n.length < width) {
+                n = pad + n
+            }
+            return n
+        }
+
+        fun getAmPmString(date: DateJs): String = if (date.getHours() > 11) "PM" else "AM"
     }
 }
-

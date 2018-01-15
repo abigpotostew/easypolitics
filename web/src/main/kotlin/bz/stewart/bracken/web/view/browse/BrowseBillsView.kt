@@ -2,6 +2,7 @@ package bz.stewart.bracken.web.view.browse
 
 import bz.stewart.bracken.shared.view.Classes
 import bz.stewart.bracken.web.extension.ac
+import bz.stewart.bracken.web.extension.setId
 import bz.stewart.bracken.web.html.ViewRender
 import bz.stewart.bracken.web.service.WebPageContext
 import bz.stewart.bracken.web.view.BillsMultiView

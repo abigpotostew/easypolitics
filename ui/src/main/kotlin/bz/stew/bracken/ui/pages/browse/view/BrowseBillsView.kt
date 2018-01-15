@@ -26,19 +26,18 @@ import kotlin.browser.document
  */
 class BrowseBillsView(private val templater: Templates) : View() {
 
-    //private val rootElmntSelector = rootElmtStr
     private val countBillsTextHtmlSelector = HtmlSelector(Identifier.ID, "nav-bar-billCount")
     private val openSpeed: Int = 250
     private val hideSpeed: Int = 200
     private var activeCell: HTMLElement? = null
-    private val billViews = mutableMapOf<Int, BillViewItem>()
+    private val billViews = mutableMapOf<String, BillViewItem>()
     private var visibleBills = mutableSetOf<BillViewItem>()
 
     fun appendModelData(bills: List<BillData>) {
         for (b: BillData in bills) {
-            val existing = billViews.get(b.uniqueId)
+            val existing = billViews.get(b.billId)
             if (existing == null) {
-                billViews.put(b.uniqueId, BillViewItem(b))
+                billViews.put(b.billId, BillViewItem(b))
             }
         }
     }
@@ -80,7 +79,7 @@ class BrowseBillsView(private val templater: Templates) : View() {
         this.visibleBills.clear()
 
         bills
-              .map { this.billViews[it.uniqueId] }
+              .map { this.billViews[it.billId] }
               .forEach { it?.let { this.visibleBills.add(it) } }
 
         Log.debug { "Showing #${bills.size} bills" }
@@ -90,7 +89,7 @@ class BrowseBillsView(private val templater: Templates) : View() {
         val remainingBills = this.billViews.toMutableMap()
         for (bv: BillViewItem in this.visibleBills) {
             getJq(bv.selector()).addClass("billVisible").removeClass("billHidden")
-            remainingBills.remove(bv.billData.uniqueId)
+            remainingBills.remove(bv.billData.billId)
         }
         remainingBills.forEach {
             getJq(it.value.selector()).addClass("billHidden").removeClass("billVisible")

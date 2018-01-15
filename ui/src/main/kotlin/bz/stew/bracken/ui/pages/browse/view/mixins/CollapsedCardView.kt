@@ -1,7 +1,7 @@
 package bz.stew.bracken.ui.pages.browse.view.mixins
 
 import bz.stew.bracken.ui.extension.kotlinx.ac
-import bz.stew.bracken.ui.util.ui.UIFormatter
+import bz.stew.bracken.ui.util.date.DateFormatter
 import bz.stewart.bracken.shared.view.Classes
 import bz.stew.bracken.ui.common.view.SubTemplate
 import bz.stew.bracken.ui.common.view.BillViewItem
@@ -17,8 +17,8 @@ class CollapsedCardView(private val billView: BillViewItem) : SubTemplate {
         val billView = this.billView
         val bd = billView.billData
         //val sponsorName = bd.sponsor.getOfficialName()
-        val introDate = UIFormatter.prettyDate(bd.intro_date)
-        val lastUpdatedDateString = UIFormatter.prettyDate(bd.lastUpdatedDate())
+        val introDate = DateFormatter.fuzzyDate(bd.intro_date)
+        val lastUpdatedDateString = DateFormatter.fuzzyDate(bd.lastUpdatedDate())
         //val status: BillStatus = bd.currentStatus
         //val statusLabel: String = status.label()
 

@@ -13,8 +13,8 @@ import bz.stew.bracken.ui.common.query.BillRestQueryUrl
 import bz.stew.bracken.ui.common.service.BillRestService
 import bz.stew.bracken.ui.common.view.Identifier
 import bz.stew.bracken.ui.context.PageContext
-import bz.stew.bracken.ui.extension.jquery.ext.jQuery
 import bz.stew.bracken.ui.extension.niceClamp
+import bz.stew.bracken.ui.id.Base64
 import bz.stew.bracken.ui.pages.browse.view.BootstrapTemplates
 import bz.stew.bracken.ui.pages.browse.view.BrowseBillsView
 import bz.stew.bracken.ui.util.log.Log
@@ -27,8 +27,6 @@ import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSelectElement
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.EventTarget
-import kotlin.browser.document
-import kotlin.browser.window
 
 /**
  * Created by stew on 1/25/17.
@@ -39,9 +37,12 @@ class BrowseBillsController(rootElmt: HtmlSelector,
                             pageContext: PageContext)
     : PageController<BrowseBillsView, BillData>(BrowseBillsView(BootstrapTemplates()), model, pageContext) {
 
-    private val rootSelector=rootElmt
+    private val rootSelector = rootElmt
     private val requestService = BillRestService()
     private var lastSuccessfulQuery: BillDataServiceEndpoint? = null
+    /**
+     * This serves as the async lock to prevent multiple query being executed by user and bamboozling the controller
+     */
     private var inProgressQuery: BillDataServiceEndpoint? = null
 
 
@@ -50,7 +51,8 @@ class BrowseBillsController(rootElmt: HtmlSelector,
      */
     private fun startListeningFilterForms() {
         this.view.getElementBySelector(BillFilters.PARTY.htmlSelector()).addEventListener("change", this::partyFilter)
-        this.view.getElementBySelector(BillFilters.FIXEDSTATUS.htmlSelector()).addEventListener("change", this::billStatusFilter)
+        this.view.getElementBySelector(BillFilters.FIXEDSTATUS.htmlSelector()).addEventListener("change",
+            this::billStatusFilter)
         this.view.getElementBySelector(BillFilters.DATEINTROSTART.htmlSelector()).addEventListener("change", {
             introducedDateFilter(it, IndexOperation.GreaterThanOrEqual)
         })
@@ -70,7 +72,8 @@ class BrowseBillsController(rootElmt: HtmlSelector,
     @Suppress("unused")
     fun stopListening() {
         //TODO use this
-        this.view.getElementBySelector(BillFilters.PARTY.htmlSelector()).removeEventListener("change", this::partyFilter)
+        this.view.getElementBySelector(BillFilters.PARTY.htmlSelector()).removeEventListener("change",
+            this::partyFilter)
         this.view.getElementBySelector(BillFilters.FIXEDSTATUS.htmlSelector()).removeEventListener("change",
             this::billStatusFilter)
     }
@@ -158,16 +161,22 @@ class BrowseBillsController(rootElmt: HtmlSelector,
         }
         val nextQuery = (lastQuery as BillRestQueryUrl).nextPage()
         val controller = this
+        if (this.inProgressQuery != null) {
+            return
+        } else {
+            this.inProgressQuery = nextQuery
+        }
         this.requestService.sendBillRequest(nextQuery, {
             val view = controller.view
-            val response = it.rawResponse
-            var data = it.response
+            val data = it.response
             if (data != null) {
                 controller.model.loadBillData(data, true)
                 view.appendModelData(this.model.getBillData())
                 view.loadStatusFilter(STATUS_INDEX.filterType(), STATUS_INDEX.allKeys())
                 view.loadMajorStatusFilter(MAJOR_STATUS_INDEX.filterType(), MAJOR_STATUS_INDEX.allKeys())
                 view.generateAndDisplayAllBills(getRootElement(), false)
+                this.lastSuccessfulQuery = nextQuery
+                this.inProgressQuery = null
             }
         })
     }
@@ -190,7 +199,7 @@ class BrowseBillsController(rootElmt: HtmlSelector,
         })
     }
 
-    fun getRootElement():HTMLElement{
+    fun getRootElement(): HTMLElement {
         return this.view.getElementBySelector(this.rootSelector)
     }
 }

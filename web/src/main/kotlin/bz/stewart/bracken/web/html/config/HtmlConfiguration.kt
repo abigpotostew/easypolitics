@@ -2,9 +2,11 @@ package bz.stewart.bracken.web.html.config
 
 import bz.stewart.bracken.web.RequireJsDataMain
 import bz.stewart.bracken.web.ScriptSrcConstants
-import bz.stewart.bracken.web.html.ViewRender
 import bz.stewart.bracken.web.service.WebPageContext
-import kotlinx.html.*
+import kotlinx.html.HTMLTag
+import kotlinx.html.SCRIPT
+import kotlinx.html.TITLE
+import kotlinx.html.Tag
 import kotlin.reflect.KClass
 
 class HtmlConfiguration(val tagConfigurations: Set<TagConfiguration<HTMLTag>>) {
@@ -24,7 +26,8 @@ class HtmlConfiguration(val tagConfigurations: Set<TagConfiguration<HTMLTag>>) {
  *
  * @see WebsiteSkeleton
  */
-abstract class TagConfiguration<T : Tag>(val type: KClass<T>, private val attributes: Map<String, String> = emptyMap()) {
+abstract class TagConfiguration<T : Tag>(val type: KClass<T>,
+                                         private val attributes: Map<String, String> = emptyMap()) {
     protected abstract fun doConfig(tag: T, context: WebPageContext)
     fun apply(tag: T, context: WebPageContext) {
         for ((k, v) in attributes.entries) {
@@ -48,7 +51,7 @@ class BasicConfig<T : HTMLTag>(type: KClass<T>,
     }
 }
 
-class ScriptDataMainConfig(val scriptDef: RequireJsDataMain): TagConfiguration<SCRIPT>(SCRIPT::class, emptyMap()){
+class ScriptDataMainConfig(val scriptDef: RequireJsDataMain) : TagConfiguration<SCRIPT>(SCRIPT::class, emptyMap()) {
     override fun doConfig(tag: SCRIPT, context: WebPageContext) {
         tag.attributes.put("data-main", scriptDef.dataMain)
         tag.src = scriptDef.src
@@ -60,14 +63,14 @@ class ScriptConfig(scriptDef: ScriptSrcConstants) : TagConfiguration<SCRIPT>(SCR
     }
 }
 
-class ExecuteJsScriptConfig(val jsValue:String) : TagConfiguration<SCRIPT>(SCRIPT::class) {
+class ExecuteJsScriptConfig(val jsValue: String) : TagConfiguration<SCRIPT>(SCRIPT::class) {
     override fun doConfig(tag: SCRIPT, context: WebPageContext) {
         val js = this.jsValue
         tag.apply { +js }
     }
 }
 
-class TitleConfig(private val title:String):TagConfiguration<TITLE>(TITLE::class, emptyMap()){
+class TitleConfig(private val title: String) : TagConfiguration<TITLE>(TITLE::class, emptyMap()) {
     override fun doConfig(tag: TITLE, context: WebPageContext) {
         tag.text(this.title)
     }
