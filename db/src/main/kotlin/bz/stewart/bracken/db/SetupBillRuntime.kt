@@ -12,7 +12,7 @@ import mu.KLogging
 /**
  * Created by stew on 3/11/17.
  */
-class SetupBillRuntime<Bill : DbItem>(private val args: BillArguments) : DbRuntime<Bill> {
+class SetupBillRuntime(private val args: BillArguments) : DbRuntime {
 
     companion object : KLogging()
 

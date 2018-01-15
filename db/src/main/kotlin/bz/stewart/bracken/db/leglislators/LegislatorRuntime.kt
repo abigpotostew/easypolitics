@@ -1,5 +1,6 @@
 package bz.stewart.bracken.db.leglislators
 
+import bz.stewart.bracken.db.DbRuntime
 import bz.stewart.bracken.db.database.Database
 import bz.stewart.bracken.db.database.DatabaseClient
 import bz.stewart.bracken.db.database.mongo.AbstractMongoDb
@@ -12,12 +13,16 @@ import bz.stewart.bracken.db.leglislators.data.SocialMapper
 import com.mongodb.MongoClient
 import mu.KLogging
 
-class LegislatorRuntime(private val args: LegislatorArguments) {
+class LegislatorRuntime(private val args: LegislatorArguments) : DbRuntime {
     companion object : KLogging()
 
     private var db: LegislatorCreateDb? = null
 
-    fun execute() {
+    override fun validateArgs() {
+        return //TODO
+    }
+
+    override fun run() {
         val writer: CollectionWriter<LegislatorData, AbstractMongoDb<LegislatorData>> = if (args.testMode) {
             emptyDatabaseWriter<LegislatorData, Database<LegislatorData>>()
         } else {
@@ -44,7 +49,7 @@ class LegislatorRuntime(private val args: LegislatorArguments) {
         }
     }
 
-    fun executeCurrentLegislators(socialMapper: SocialMapper) {
+    private fun executeCurrentLegislators(socialMapper: SocialMapper) {
 
         val collName = db?.getCollectionName() ?: "legislators"
         val db: LegislatorCreateDb = db!!

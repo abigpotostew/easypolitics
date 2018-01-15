@@ -16,24 +16,12 @@ class ActionsList(private val actionsList: Set<BillAction>) : SubTemplate {
         for (action in actionsList) {
             descriptionListMap.put({
                 it.text(DateFormatter.prettyDate(action.actedAtDate()))
-            },
-                {
-                    it.p {
-                        +action.getText()
-                    }
-                })
+            }, {
+                it.p {
+                    +action.getText()
+                }
+            })
         }
         root.horzizontalDescriptionList(descriptionListMap)
-//            .associate {
-//            return Pair<String, (HtmlBodyTag) -> Unit>(it.actedAtDate().toString(),{
-//                {
-//                    val action = it
-//                    return {
-//
-//                        +action.getText()
-//                    }
-//                }
-//            })
-//        }
     }
 }

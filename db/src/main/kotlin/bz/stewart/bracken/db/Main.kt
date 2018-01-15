@@ -74,8 +74,14 @@ enum class MainMode(val flag: String) {
                logger.error(msg)
                error(msg)
             }
-            legs.execute()
+            legs.run()
          }
+      }
+   },
+   INDEX("-i"){
+      override fun mainRun(argv: Array<String>) {
+          logger.info({ "Starting Index Sync mode. Will create any missing index." })
+         SyncAllIndex().run()
       }
    };
 
