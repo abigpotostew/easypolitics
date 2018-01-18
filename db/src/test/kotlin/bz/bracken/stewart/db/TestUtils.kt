@@ -59,7 +59,7 @@ class TestUtils {
                     _testMode = false,
                     _dbName = dbName,
                     _socialFile = File(getTestLegislatorsSocialData())))
-            legislator.execute() //build legislator db
+            legislator.run() //build legislator db
 
             return db
         }

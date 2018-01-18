@@ -106,7 +106,7 @@ class LegislatorDbTest {
                                     _files = mutableListOf(File(currentDataPath)),
                                     _testMode = true)
       val runtime = LegislatorRuntime(args = args)
-      runtime.execute()
+      runtime.run()
 
       val writer = LegislatorDbWriter()
       val db = LegislatorCreateDb(DefaultMongoClient(dbName), writer)
@@ -126,7 +126,7 @@ class LegislatorDbTest {
                                     _files = mutableListOf(File(currentDataPath)),
                                     _testMode = false)
       val runtime = LegislatorRuntime(args = args)
-      runtime.execute()
+      runtime.run()
 
       val db = LegislatorCreateDb(DefaultMongoClient(dbName), emptyDatabaseWriter())
       db.openDatabase()
@@ -141,7 +141,7 @@ class LegislatorDbTest {
                                     _testMode = false,
                                     _socialFile = File(socialDataPath))
       val runtime = LegislatorRuntime(args)
-      runtime.execute()
+      runtime.run()
 
       val db = LegislatorCreateDb(DefaultMongoClient(dbName), emptyDatabaseWriter())
       db.openDatabase()

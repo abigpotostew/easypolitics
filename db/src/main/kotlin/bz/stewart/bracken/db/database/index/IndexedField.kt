@@ -1,30 +1,30 @@
 package bz.stewart.bracken.db.database.index
 
-import kotlin.reflect.KProperty1
+import com.mongodb.BasicDBObject
+
 
 interface IndexedField<T> {
     val name: String
-    val type: T
+    fun toBson(): BasicDBObject
 }
 
-class KIndexedField<T>(val field: KProperty1<T, Any>) : IndexedField<Int> {
-    override val name: String = field.name
-    override val type: Int
-        get() = TODO()
+abstract class IndexedKField<T>(val field: KField<T>) : IndexedField<T> {
 }
 
-interface KField<T> {
-    val name: String
+class StandardIndexedField<T>(field: KField<T>, val sortDirection: IndexSortTypes) : IndexedKField<T>(field) {
+    override val name = field.name + "_" + sortDirection.directionValue
+    override fun toBson(): BasicDBObject {
+        val keys = BasicDBObject()
+        keys.put(this.field.name, this.sortDirection.directionValue)
+        return keys
+    }
 }
 
-class SingleKField<T>(val field: KProperty1<T, Any>) : KField<T> {
-    override val name: String = field.name
-}
-
-class NestedKField<T, T2, T3>(val first:KProperty1<T, T2>, val second:KProperty1<T2, T3>):KField<T> {
-    override val name: String
-
-    private fun getNestedName():String{
-        // the fields cnames joined by period
+class TextIndexedField<T>(field: KField<T>) : IndexedKField<T>(field) {
+    override val name: String = field.name + "_" + "text"
+    override fun toBson(): BasicDBObject {
+        val keys = BasicDBObject()
+        keys.put(this.field.name, "text")
+        return keys
     }
 }

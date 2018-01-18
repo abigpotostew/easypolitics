@@ -1,6 +1,7 @@
 package bz.stewart.bracken.db.leglislators
 
 import bz.stewart.bracken.db.DbRuntime
+import bz.stewart.bracken.db.database.ClientBuilder
 import bz.stewart.bracken.db.database.Database
 import bz.stewart.bracken.db.database.DatabaseClient
 import bz.stewart.bracken.db.database.mongo.AbstractMongoDb
@@ -74,16 +75,10 @@ class LegislatorRuntime(private val args: LegislatorArguments) : DbRuntime {
     }
 
     private fun getClient(): DatabaseClient<MongoClient> {
-        val host = this.args.hostname
-        val port = this.args.port
-        val user = this.args.username
-        val pass = this.args.password
-        if (host != null && user != null && pass != null) {
-            logger.info { "Remote db connection: host = '$host', port = '$port', user = '$user'" }
-            return RemoteMongoClient(host, port?.toInt(), this.args.dbName, user, pass.toCharArray())
-        } else {
-            logger.info { "Setting up DB client with all default settings." }
-            return DefaultMongoClient(this.args.dbName)
-        }
+        return ClientBuilder(this.args.dbName,
+            this.args.hostname,
+            this.args.port,
+            this.args.username,
+            this.args.password).createClient()
     }
 }
