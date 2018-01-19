@@ -1,7 +1,7 @@
 package bz.bracken.stewart.db.mongodb
 
 import bz.bracken.stewart.db.AssertAllFound
-import bz.stewart.bracken.db.RuntimeMode
+import bz.stewart.bracken.db.bill.RuntimeMode
 import bz.stewart.bracken.db.TestUtils.Methods.getTestResourcesData
 import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.bill.data.BillHistory

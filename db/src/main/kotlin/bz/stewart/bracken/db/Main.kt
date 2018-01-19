@@ -1,9 +1,12 @@
 package bz.stewart.bracken.db
 
+import bz.stewart.bracken.db.bill.BillArguments
 import bz.stewart.bracken.db.file.DataWalk
 import bz.stewart.bracken.db.file.parse.EmptyParser
 import bz.stewart.bracken.db.leglislators.LegislatorRuntime
 import bz.stewart.bracken.db.leglislators.ParsedArguments
+import bz.stewart.bracken.db.sync.SyncAllIndex
+import bz.stewart.bracken.db.sync.SyncIndexArgs
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.mainBody
 import mu.KotlinLogging
@@ -80,9 +83,10 @@ enum class MainMode(val flag: String) {
     },
     INDEX("-i") {
         override fun mainRun(argv: Array<String>) {
-            logger.info({ "Starting Index Sync mode. Will create any missing index." })
-
-            SyncAllIndex().run()
+            SyncIndexArgs(ArgParser(argv)).run {
+                logger.info({ "Starting Index Sync mode. Will create any missing index." })
+                SyncAllIndex(this).run()
+            }
         }
     };
 

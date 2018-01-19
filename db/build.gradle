@@ -21,6 +21,7 @@ file("../my.properties").withInputStream { props.load(it) }
 ////////////////////////////////////////////////////////////////////////
 //  LOAD IN SOME MY PROPS
 String DB_PATH = props.getProperty("DB_PATH")
+String DBNAME = props.getProperty("DBNAME")
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -115,7 +116,7 @@ task run(dependsOn: classes, type: JavaExec) {
 task syncIndexTest(dependsOn: classes, type: JavaExec) {
     main = "$MAIN_CLASS"
     classpath = sourceSets.main.runtimeClasspath
-    args = ["-i"]
+    args = ["-i", '-b', "$DBNAME"]
     ignoreExitValue(true)
 }
 

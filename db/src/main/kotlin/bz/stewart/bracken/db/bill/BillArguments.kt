@@ -1,14 +1,16 @@
-package bz.stewart.bracken.db
+package bz.stewart.bracken.db.bill
 
+import bz.stewart.bracken.db.DbRuntime
+import bz.stewart.bracken.db.args.AbstractClientArgs
+import bz.stewart.bracken.db.emptyDbRuntime
 import com.xenomachina.argparser.ArgParser
-import com.xenomachina.argparser.default
 import java.io.File
 
 /**
  * Immutable
  * Created by stew on 3/10/17.
  */
-class BillArguments(parser: ArgParser) {
+class BillArguments(parser: ArgParser) : AbstractClientArgs(parser) {
     val data by parser.storing("-d", "--data",
         help = "Path to the data folder from the bills script.") { File(this) }
 
@@ -24,13 +26,6 @@ class BillArguments(parser: ArgParser) {
         "-C",
         help = "Only parse these specified congress numbers, ie -C114 -C115 to only parse bills in congress 114 and 115")
     { this.toInt() }
-
-    val dbName: String by parser.storing("-b", "--database", help = "The database name.")
-
-    val hostname: String? by parser.storing("--host", help = "Hostname for a remote db connection.").default(null)
-    val port: String? by parser.storing("--port", help = "Port for a remote db connection.").default(null)
-    val username: String? by parser.storing("-u", "--user", help = "Username for db authentication.").default(null)
-    val password: String? by parser.storing("-p", "--pass", help = "Password for db authentication.").default(null)
 }
 
 enum class RuntimeMode {
@@ -39,7 +34,8 @@ enum class RuntimeMode {
     fun getDbRuntime(args: BillArguments): DbRuntime {
         return when (this) {
             NONE -> emptyDbRuntime()
-            RESET, UPDATE -> SetupBillRuntime(args)
+            RESET, UPDATE -> SetupBillRuntime(
+                args)
         }
     }
 

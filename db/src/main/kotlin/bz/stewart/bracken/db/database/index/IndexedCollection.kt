@@ -17,8 +17,8 @@ abstract class AbstractIndexedCollection<T>(override val collection: MongoCollec
 
 
     override fun isInCollection(indexedField: IndexedField<T>): Boolean {
-        val idxs = collection.listIndexes()
-        return idxs.any { it.get("name") == indexedField.name }
+        val indexes = collection.listIndexes()
+        return indexes.any { it["name"] == indexedField.name }
     }
 
     override fun addIndexToCollection(indexedField: IndexedField<T>): Boolean {

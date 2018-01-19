@@ -1,6 +1,6 @@
 package bz.bracken.stewart.db.file
 
-import bz.stewart.bracken.db.RuntimeMode
+import bz.stewart.bracken.db.bill.RuntimeMode
 import bz.stewart.bracken.db.TestUtils
 import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.database.mongo.AbstractMongoDb

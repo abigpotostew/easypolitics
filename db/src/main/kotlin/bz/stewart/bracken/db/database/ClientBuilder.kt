@@ -1,5 +1,6 @@
 package bz.stewart.bracken.db.database
 
+import bz.stewart.bracken.db.args.ClientConnectionArgs
 import bz.stewart.bracken.db.database.mongo.DefaultMongoClient
 import bz.stewart.bracken.db.database.mongo.RemoteMongoClient
 import com.mongodb.MongoClient
@@ -10,6 +11,8 @@ class ClientBuilder(val dbName: String,
                     val port: String? = null,
                     val user: String? = null,
                     val pass: String? = null) {
+
+    constructor(args: ClientConnectionArgs):this(args.dbName, args.hostname, args.port, args.username, args.password)
 
     companion object : KLogging()
 

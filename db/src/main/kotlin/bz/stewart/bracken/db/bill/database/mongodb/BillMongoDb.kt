@@ -1,7 +1,6 @@
 package bz.stewart.bracken.db.bill.database.mongodb
 
 import bz.stewart.bracken.db.bill.data.Bill
-import bz.stewart.bracken.db.database.Database
 import bz.stewart.bracken.db.database.DatabaseClient
 import bz.stewart.bracken.db.database.mongo.AbstractMongoDb
 import bz.stewart.bracken.db.database.mongo.CollectionWriter
@@ -16,5 +15,8 @@ abstract class BillMongoDb(dbClient: DatabaseClient<MongoClient>,
                            collWriter: CollectionWriter<Bill, AbstractMongoDb<Bill>> = emptyDatabaseWriter())
 
     : AbstractMongoDb<Bill>(dbClient, Bill::class.java, collWriter) {
-    //TODO hardcode the 'bills' collection somewhere in here, similar to LegislatorCreateDb
+
+    override fun getCollectionName(): String {
+        return "bills"
+    }
 }

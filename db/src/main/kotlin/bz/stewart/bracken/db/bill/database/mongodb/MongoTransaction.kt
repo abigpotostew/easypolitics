@@ -1,7 +1,7 @@
 package bz.stewart.bracken.db.bill.database.mongodb
 
-import bz.stewart.bracken.db.RuntimeMode
-import bz.stewart.bracken.db.SetupBillRuntime
+import bz.stewart.bracken.db.bill.RuntimeMode
+import bz.stewart.bracken.db.bill.SetupBillRuntime
 import bz.stewart.bracken.db.bill.data.Bill
 import bz.stewart.bracken.db.database.DatabaseClient
 import bz.stewart.bracken.db.database.Transaction

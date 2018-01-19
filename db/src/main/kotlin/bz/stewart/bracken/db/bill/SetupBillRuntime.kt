@@ -1,5 +1,6 @@
-package bz.stewart.bracken.db
+package bz.stewart.bracken.db.bill
 
+import bz.stewart.bracken.db.DbRuntime
 import bz.stewart.bracken.db.bill.database.mongodb.MongoTransaction
 import bz.stewart.bracken.db.database.ClientBuilder
 import bz.stewart.bracken.db.database.DatabaseClient
@@ -24,8 +25,8 @@ class SetupBillRuntime(private val args: BillArguments) : DbRuntime {
         if (this.args.mode == RuntimeMode.NONE) {
             return "Bad runtime mode of ${this.args.mode}"
         }
-        if (this.args.hostname != null && (this.args.username == null || this.args.password == null)) {
-            return "Username (-u) and password (-p) are required when specifying the host (--host)"
+        if (!args.hasValidClientArgs()) {
+            return args.getInvalidClientArgsMessage()
         }
         return null
     }

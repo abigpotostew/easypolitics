@@ -2,7 +2,6 @@ package bz.stewart.bracken.db.database.index
 
 import com.mongodb.BasicDBObject
 
-
 interface IndexedField<T> {
     val name: String
     fun toBson(): BasicDBObject

@@ -30,6 +30,12 @@ class IndexedFieldTest {
     }
 
     @Test
+    fun testArrayIndexField() {
+        val index = IndexFieldBuilder.createText(IndexedKPropertyTestClass::stringArr, IndexedKPropertyTestClass::class)
+        assertEquals("STR_ARRAY_text", index.name)
+    }
+
+    @Test
     fun testBson() {
         val index = IndexFieldBuilder.create(IndexedKPropertyTestClass::prop1,
             IndexedKPropertyTestClass::class,
@@ -39,6 +45,9 @@ class IndexedFieldTest {
         assertEquals(expected.toJson(), index.toBson().toJson())
     }
 
-    class IndexedKPropertyTestClass(@JsonProperty("PROP_1") val prop1: String, val nestedProp: Array<IndexedNestedClass>)
+    class IndexedKPropertyTestClass(@JsonProperty("PROP_1") val prop1: String,
+                                    val nestedProp: Array<IndexedNestedClass>,
+                                    @JsonProperty("STR_ARRAY") val stringArr: Array<String>)
+
     class IndexedNestedClass(@JsonProperty("NESTED_PROP_") val innerProp: String)
 }
