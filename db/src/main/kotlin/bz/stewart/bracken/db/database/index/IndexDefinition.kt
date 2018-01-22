@@ -1,5 +1,7 @@
 package bz.stewart.bracken.db.database.index
 
-interface IndexDefinition<T> {
+import bz.stewart.bracken.db.database.DbItem
+
+interface IndexDefinition<T: DbItem> {
     val field:IndexedField<T>
 }

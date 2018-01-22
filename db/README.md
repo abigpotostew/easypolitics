@@ -36,3 +36,10 @@ gw debugRun -PappArgs="['-b','-d', '/Users/stew/Documents/Code/github/congress/d
     - + introduced_at : -1 (current first)
     - + status_at : -1 (last major action status date)
     - + updated_at: -1 (?? last time bill data updated maybe??)
+    
+### Legislator Index
+- 1 String index
+    - + LegislatorData.id.buiguide
+    - LegislatorData.name.official_full
+    - LegislatorData.name.first
+    - LegislatorData.name.last
