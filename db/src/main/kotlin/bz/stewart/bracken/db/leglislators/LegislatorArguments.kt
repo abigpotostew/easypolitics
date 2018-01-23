@@ -9,5 +9,6 @@ import java.io.File
 interface LegislatorArguments : ClientConnectionArgs {
     val files: MutableList<File>
     val testMode: Boolean
+    val resetMode: Boolean
     var socialFile: File?
 }

@@ -15,7 +15,7 @@ abstract class AbstractClientArgs(parser: ArgParser) : ClientConnectionArgs {
         null)
 
     fun hasValidClientArgs():Boolean{
-        return (this.hostname == null || (this.hostname != null && (this.username == null || this.password == null)))
+        return (this.hostname == null || (this.hostname != null && this.username != null && this.password != null))
     }
 
     fun getInvalidClientArgsMessage():String{

@@ -2,6 +2,7 @@ package bz.stewart.bracken.db.leglislators.data
 
 import bz.stewart.bracken.shared.DateUtils
 import com.fasterxml.jackson.annotation.JsonInclude
+import java.util.Arrays
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class FamilyMember(val name: String? = null,
@@ -31,7 +32,55 @@ data class IdData(
       val wikidata: String? = null,
       val google_entity_id: String? = null,
       val house_history_alternate:Int? = null
-                 )
+                 ) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as IdData
+
+        if (bioguide != other.bioguide) return false
+        if (thomas != other.thomas) return false
+        if (lis != other.lis) return false
+        if (fec != other.fec) return false
+        if (govtrack != other.govtrack) return false
+        if (opensecrets != other.opensecrets) return false
+        if (votesmart != other.votesmart) return false
+        if (icpsr != other.icpsr) return false
+        if (cspan != other.cspan) return false
+        if (wikipedia != other.wikipedia) return false
+        if (ballotpedia != other.ballotpedia) return false
+        if (maplight != other.maplight) return false
+        if (house_history != other.house_history) return false
+        if (!Arrays.equals(bioguide_previous, other.bioguide_previous)) return false
+        if (wikidata != other.wikidata) return false
+        if (google_entity_id != other.google_entity_id) return false
+        if (house_history_alternate != other.house_history_alternate) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = bioguide.hashCode()
+        result = 31 * result + (thomas?.hashCode() ?: 0)
+        result = 31 * result + (lis?.hashCode() ?: 0)
+        result = 31 * result + (fec?.hashCode() ?: 0)
+        result = 31 * result + (govtrack?.hashCode() ?: 0)
+        result = 31 * result + (opensecrets?.hashCode() ?: 0)
+        result = 31 * result + (votesmart?.hashCode() ?: 0)
+        result = 31 * result + (icpsr?.hashCode() ?: 0)
+        result = 31 * result + (cspan?.hashCode() ?: 0)
+        result = 31 * result + (wikipedia?.hashCode() ?: 0)
+        result = 31 * result + (ballotpedia?.hashCode() ?: 0)
+        result = 31 * result + (maplight?.hashCode() ?: 0)
+        result = 31 * result + (house_history?.hashCode() ?: 0)
+        result = 31 * result + (bioguide_previous?.let { Arrays.hashCode(it) } ?: 0)
+        result = 31 * result + (wikidata?.hashCode() ?: 0)
+        result = 31 * result + (google_entity_id?.hashCode() ?: 0)
+        result = 31 * result + (house_history_alternate ?: 0)
+        return result
+    }
+}
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class NameData(

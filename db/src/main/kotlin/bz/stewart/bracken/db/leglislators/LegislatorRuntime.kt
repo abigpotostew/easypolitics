@@ -13,6 +13,9 @@ import bz.stewart.bracken.db.leglislators.data.SocialMapper
 import bz.stewart.bracken.db.leglislators.index.LegislatorIndexDefinition
 import com.mongodb.MongoClient
 import mu.KLogging
+import org.litote.kmongo.find
+import org.litote.kmongo.formatJson
+import org.litote.kmongo.json
 
 class LegislatorRuntime(private val args: LegislatorArguments) : DbRuntime {
     companion object : KLogging()
@@ -32,6 +35,8 @@ class LegislatorRuntime(private val args: LegislatorArguments) : DbRuntime {
         val client = getClient()
         db = LegislatorCreateDb(client, writer)
 
+        val runDb = db!!
+
         val socialMapper = if (args.socialFile != null) {
             SocialMapper(ParserSocialJson().parseData(
                 args.socialFile!!.toPath()))
@@ -39,11 +44,11 @@ class LegislatorRuntime(private val args: LegislatorArguments) : DbRuntime {
             SocialMapper(emptyList())
         }
 
-        db.use {
+        runDb.use {
             executeCurrentLegislators(socialMapper)
         }
-        db.use {
-            indexCollection(client)
+        runDb.use {
+            indexCollection(runDb)
         }
 
         if (args.testMode == true) {
@@ -59,10 +64,13 @@ class LegislatorRuntime(private val args: LegislatorArguments) : DbRuntime {
         val db: LegislatorCreateDb = db!!
         db.openDatabase()
         val writer = db.getWriter()
-        writer.before(db)
-        writer.drop(collName, db)
-        logger.info { "Dropped collection '$collName' in preparation to load fresh data." }
-        writer.after(db)
+
+        if (this.args.resetMode) {
+            writer.before(db)
+            writer.drop(collName, db)
+            logger.info { "Dropped collection '$collName' in preparation to load fresh data." }
+            writer.after(db)
+        }
 
         //parse data
         val legislators = ParserLegislatorJson().parseData(args.files.map { it.toPath() })
@@ -71,15 +79,14 @@ class LegislatorRuntime(private val args: LegislatorArguments) : DbRuntime {
         //write to database
         writer.before(db)
         for (legislator in legislators) {
-            writer.write(legislator, collName, db)
+            writeDataIfNecessary(legislator, writer, collName, db)
         }
         writer.after(db)
         logger.info { "Successfully wrote ${legislators.size} current legislators to database." }
     }
 
-    private fun indexCollection(client: DatabaseClient<MongoClient>) {
-        SyncIndex(LegislatorCreateDb(client, emptyDatabaseWriter()),
-            { LegislatorIndexDefinition(it) }).doSync(this.args.testMode)
+    private fun indexCollection(db: LegislatorCreateDb) {
+        SyncIndex(db, { LegislatorIndexDefinition(it) }).doSync(this.args.testMode)
     }
 
     private fun getClient(): DatabaseClient<MongoClient> {
@@ -89,4 +96,20 @@ class LegislatorRuntime(private val args: LegislatorArguments) : DbRuntime {
             this.args.username,
             this.args.password).createClient()
     }
+
+    private fun writeDataIfNecessary(legislatorData: LegislatorData,
+                                     writer: CollectionWriter<LegislatorData, AbstractMongoDb<LegislatorData>>,
+                                     collName: String,
+                                     db: LegislatorCreateDb) {
+        var existing: LegislatorData? = null
+        db.queryCollection(collName, {
+            val found = find(
+                "{id.buiguide:${legislatorData.id.bioguide.json} }".formatJson())
+            existing = found.first()
+        })
+        if (existing == null || (existing != null && existing != legislatorData)) {
+            writer.write(legislatorData, collName, db)
+        }
+    }
+
 }

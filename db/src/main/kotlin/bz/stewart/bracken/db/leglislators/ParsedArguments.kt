@@ -14,6 +14,7 @@ class ParsedArguments(parser: ArgParser) : AbstractClientArgs(parser), Legislato
     }
     val socialMediaFiles by parser.storing("-s", "--social", help = "Path to social media json file.").default("")
     override val testMode by parser.flagging("-t", "--test", help = "Turns on test run mode. No data will be written.")
+    override val resetMode by parser.flagging("--reset", help = "Drops the collection before populating. Default false.").default(false)
     //override val dbName: String by parser.storing("-b", "--database", help = "Name of db to write to.")
 
     override var socialFile: File? = null

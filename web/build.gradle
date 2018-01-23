@@ -16,7 +16,8 @@ archivesBaseName = 'easypolitics-web'
 mainClassName = MAIN_CLASS
 
 configurations {
-    uiJsSource
+    devUiApp
+    prodUiApp
 }
 
 sass {
@@ -41,15 +42,31 @@ dependencies {
     testCompile libraries.junit
     testCompile libraries.mockito
     testCompile libraries.kotlin_test
-    uiJsSource project(path: ":ui-app", configuration: "devJsArtifact")
+    devUiApp project(path: ":ui-app", configuration: "devJsArtifact")
+    prodUiApp project(path: ":ui-app", configuration: "prodJsArtifact")
     expectedBy project(":shared")
 }
 
 task prepare {
-    inputs.file configurations.uiJsSource//.resolvedConfiguration.resolvedArtifacts
+    inputs.file configurations.devUiApp//.resolvedConfiguration.resolvedArtifacts
     outputs.dir "$buildDir/resources/main/static/lib"
     doLast {
-        configurations.uiJsSource.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+        configurations.devUiApp.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+            copy {
+                from project.zipTree(artifact.getFile())
+                exclude "META-INF/"
+                into "$buildDir/resources/main/static/lib"
+            }
+        }
+    }
+    dependsOn ":ui:build"
+}
+
+task prepareProd {
+    inputs.file configurations.prodUiApp
+    outputs.dir "$buildDir/resources/main/static/lib"
+    doLast {
+        configurations.prodUiApp.resolvedConfiguration.resolvedArtifacts.each { artifact ->
             copy {
                 from project.zipTree(artifact.getFile())
                 exclude "META-INF/"
@@ -78,7 +95,8 @@ task copyNodeLibraries(type: Copy, dependsOn: installRequireJs) {
     into "${buildDir}/resources/main/static/lib"
 }
 prepare.dependsOn copyNodeLibraries
-classes.dependsOn prepare
+prepareProd.dependsOn copyNodeLibraries
+classes.dependsOn prepareProd
 
 mainSass {
     doFirst {
@@ -99,7 +117,7 @@ task fatJar(type: Jar, dependsOn: build) {
     }
 }
 
-task runWeb(type: JavaExec, dependsOn: [classes, fatJar, prepare]) {
+task runWeb(type: JavaExec, dependsOn: [prepare, classes, fatJar]) {
     main = MAIN_CLASS
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue(true)
@@ -137,3 +155,5 @@ distributions {
         }
     }
 }
+distTar.dependsOn prepareProd
+distZip.dependsOn prepareProd
