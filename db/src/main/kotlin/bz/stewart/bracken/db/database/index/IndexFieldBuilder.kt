@@ -31,7 +31,7 @@ object IndexFieldBuilder {
                                       clazz2: KClass<T2>,
                                       sortDirection: IndexSortTypes): IndexedField<T> {
         val kField = NestedArrayKField(first, clazz, second, clazz2)
-        return TextIndexedField(kField)
+        return StandardIndexedField(kField, sortDirection)
     }
 
     fun <T : Any, T2Nullable : Any?, T2Same : Any> createNullable(first: KProperty1<T, T2Nullable>,

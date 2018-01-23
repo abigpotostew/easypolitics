@@ -1,10 +1,11 @@
 package bz.stewart.bracken.db.bill.database.mongodb
 
 import bz.stewart.bracken.db.bill.RuntimeMode
-import bz.stewart.bracken.db.bill.SetupBillRuntime
 import bz.stewart.bracken.db.bill.data.Bill
+import bz.stewart.bracken.db.bill.index.BillIndexDefinition
 import bz.stewart.bracken.db.database.DatabaseClient
 import bz.stewart.bracken.db.database.Transaction
+import bz.stewart.bracken.db.database.index.InlineSyncIndex
 import bz.stewart.bracken.db.database.mongo.AbstractMongoDb
 import bz.stewart.bracken.db.database.mongo.CollectionWriter
 import bz.stewart.bracken.db.debug.DebugUtils
@@ -40,7 +41,7 @@ class MongoTransaction(val dbClient: DatabaseClient<MongoClient>,
         }
         val collName = "bills"
         db = BillJsonDataDatabase(this.data, this.dbClient, collName, mode, test, writer)
-        SetupBillRuntime.logger.info { "Loading bill into database@${this.dbClient.databaseName} in collection@$collName with mode@$mode and test@$test" }
+        logger.info { "Loading bill into database@${this.dbClient.databaseName} in collection@$collName with mode@$mode and test@$test" }
         db!!.openDatabase()
         startedTransaction = true
     }
@@ -49,11 +50,10 @@ class MongoTransaction(val dbClient: DatabaseClient<MongoClient>,
         if (!startedTransaction) {
             throw IllegalStateException("trying to run MongoTransaction before calling beginTransaction() or before starting successfully.")
         }
+        val db = this.db ?: return
         try {
-            //todo do the drop db here
-            db!!.loadData(if (congressParseLimit.isEmpty()) null else congressParseLimit.map(Int::toString))//todo move this write logic to a writer
-            //todo have loadData return the stats.
-            //todo print the stats here
+            db.loadData(if (congressParseLimit.isEmpty()) null else congressParseLimit.map(Int::toString))//todo move this write logic to a writer
+            InlineSyncIndex(db, { BillIndexDefinition(it) }).doSync(this.test)
         } catch (e: MongoCommandException) {
             abort("Mongo exception: ${DebugUtils.stackTraceToString(e)}")
         } catch (e: MongoWriteException) {
@@ -64,6 +64,8 @@ class MongoTransaction(val dbClient: DatabaseClient<MongoClient>,
         } catch (e: RuntimeException) {
             abort("Unknown error, this should be fixed:\n\n ${DebugUtils.stackTraceToString(e)}")
         }
+
+
     }
 
     override fun endTransaction() {

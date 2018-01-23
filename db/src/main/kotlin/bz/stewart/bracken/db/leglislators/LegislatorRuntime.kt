@@ -4,13 +4,13 @@ import bz.stewart.bracken.db.DbRuntime
 import bz.stewart.bracken.db.database.ClientBuilder
 import bz.stewart.bracken.db.database.Database
 import bz.stewart.bracken.db.database.DatabaseClient
+import bz.stewart.bracken.db.database.index.SyncIndex
 import bz.stewart.bracken.db.database.mongo.AbstractMongoDb
 import bz.stewart.bracken.db.database.mongo.CollectionWriter
-import bz.stewart.bracken.db.database.mongo.DefaultMongoClient
-import bz.stewart.bracken.db.database.mongo.RemoteMongoClient
 import bz.stewart.bracken.db.database.mongo.emptyDatabaseWriter
 import bz.stewart.bracken.db.leglislators.data.LegislatorData
 import bz.stewart.bracken.db.leglislators.data.SocialMapper
+import bz.stewart.bracken.db.leglislators.index.LegislatorIndexDefinition
 import com.mongodb.MongoClient
 import mu.KLogging
 
@@ -42,6 +42,9 @@ class LegislatorRuntime(private val args: LegislatorArguments) : DbRuntime {
         db.use {
             executeCurrentLegislators(socialMapper)
         }
+        db.use {
+            indexCollection(client)
+        }
 
         if (args.testMode == true) {
             logger.info { "Completed database update. Test mode enabled. No data was updated." }
@@ -72,6 +75,11 @@ class LegislatorRuntime(private val args: LegislatorArguments) : DbRuntime {
         }
         writer.after(db)
         logger.info { "Successfully wrote ${legislators.size} current legislators to database." }
+    }
+
+    private fun indexCollection(client: DatabaseClient<MongoClient>) {
+        SyncIndex(LegislatorCreateDb(client, emptyDatabaseWriter()),
+            { LegislatorIndexDefinition(it) }).doSync(this.args.testMode)
     }
 
     private fun getClient(): DatabaseClient<MongoClient> {
