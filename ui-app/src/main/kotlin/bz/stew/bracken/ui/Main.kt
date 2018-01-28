@@ -1,5 +1,6 @@
 package bz.stew.bracken.ui
 
+import bz.stew.bracken.ui.api.BrowseMapRuntime
 import bz.stew.bracken.ui.api.BrowseRuntime
 import bz.stew.bracken.ui.api.SingleBillRuntime
 import bz.stew.bracken.ui.context.ClientPageContext
@@ -46,6 +47,7 @@ private fun executeService(pageContext: PageContext) {
         AppServices.SINGLE_BILL -> SingleBillRuntime(pathVariables["id"]!!).execute(pageContext)
         AppServices.BROWSE_BILL -> BrowseRuntime().execute(pageContext)
         AppServices.SERVICE_URL -> console.error("Error UI can't resolve the current page service from the URL.")
+        AppServices.MAP -> BrowseMapRuntime().execute(pageContext)
         else -> console.log("Stew needs to implement ui runtime for service ${pageContext.service}")
     }
 }

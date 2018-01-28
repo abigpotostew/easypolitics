@@ -11,5 +11,6 @@ enum class AppServices(val absoluteUrlPath: String) {
     BROWSE_BILL("/browse"),
     SEARCH("/search"),
     SERVICE_URL("/serviceurl"),
+    MAP("/map"),
     ;
 }

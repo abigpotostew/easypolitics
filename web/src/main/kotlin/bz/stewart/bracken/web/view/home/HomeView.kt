@@ -9,7 +9,6 @@ import kotlinx.html.div
 
 class HomeView(val debugText:String) : ViewRender {
     override fun renderIn(parent: FlowContent, context: WebPageContext) {
-        //CommonHeader(BootstrapNavConfig()).renderIn(parent, context)
         parent.div {
             +debugText
         }

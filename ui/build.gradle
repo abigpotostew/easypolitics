@@ -81,15 +81,22 @@ task installJqueryActual(type: NpmTask) {
     args = ['install', "jquery.actual@${jqueryActualVersion}"]
 }
 
-task installBootstrapBeta(type:NpmTask) {
+task installBootstrapBeta(type: NpmTask) {
     inputs.property('bootstrapBetaVersion', bootstrapBetaVersion)
     outputs.dir file('node_modules/bootstrap-beta')
 
     args = ['install', "bootstrap-beta@${bootstrapBetaVersion}"]
 }
 
+task installPaperJs(type: NpmTask) {
+    inputs.property('paperJsVersion', paperJsVersion)
+    outputs.dir file('node_modules/paper')
 
-task populateNodeModules(type: Copy, dependsOn: [compileKotlin2Js, installJquery, installJqueryActual, installBootstrapBeta]) {
+    args = ['install', "paper@${paperJsVersion}"]
+}
+
+
+task populateNodeModules(type: Copy, dependsOn: [compileKotlin2Js, installJquery, installJqueryActual, installBootstrapBeta, installPaperJs]) {
     from compileKotlin2Js.destinationDir
 
     configurations.compile.each {
@@ -104,6 +111,8 @@ task copyNodeLibraries(type: Copy, dependsOn: populateNodeModules) {
     from "node_modules/bootstrap-beta/dist/js/bootstrap.bundle.js"
     from "node_modules/jquery.actual/jquery.actual.js"
     from "node_modules/jquery/dist/jquery.js"
+    from "node_modules/paper/dist/paper-full.js"
+
     into "${buildDir}/resources/main/lib"
 }
 assemble.dependsOn copyNodeLibraries

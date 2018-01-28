@@ -37,6 +37,7 @@ combineJs {
             "${buildDir}/classes/kotlin/main/dependencies-tmp/lib/jquery.js",
             "${buildDir}/classes/kotlin/main/dependencies-tmp/lib/jquery.actual.js",
             "${buildDir}/classes/kotlin/main/dependencies-tmp/lib/bootstrap.bundle.js",
+            "${buildDir}/classes/kotlin/main/dependencies-tmp/lib/paper-full.js",
             "${buildDir}/classes/kotlin/main/min/kotlin.js",
             "${buildDir}/classes/kotlin/main/min/kotlinx-html-js.js",
             "${buildDir}/classes/kotlin/main/min/easypolitics-ui.js",

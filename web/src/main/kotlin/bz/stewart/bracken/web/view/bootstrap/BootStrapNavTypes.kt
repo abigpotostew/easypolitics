@@ -7,6 +7,7 @@ enum class BootStrapNavTypes(label:String, val service:AppServices, extraClasses
     HOME("Home", AppServices.MAIN),
     BROWSE("Browse", AppServices.BROWSE_BILL),
     FIND_A_BILL("Find a Bill", AppServices.SEARCH),
+    MAP("Map", AppServices.MAP),
     ;
 
     override val href: String = this.service.absoluteUrlPath

@@ -8,6 +8,7 @@ import bz.stewart.bracken.web.view.BootstrapPageConfig
 import bz.stewart.bracken.web.view.PrintInputView
 import bz.stewart.bracken.web.view.SingleBillView
 import bz.stewart.bracken.web.view.home.HomeView
+import bz.stewart.bracken.web.view.map.MapView
 import bz.stewart.bracken.web.view.search.SearchView
 import spark.Spark
 
@@ -33,6 +34,9 @@ class ServiceRunner(val config: SparkConfig, private val restUrl: String) {
         }
         Spark.get(AppServices.SEARCH.absoluteUrlPath) { req, res ->
             WebsiteSkeleton(SearchView(), BootstrapPageConfig()).render(contextBuilder.build(req, res, AppServices.BROWSE_BILL))
+        }
+        Spark.get(AppServices.MAP.absoluteUrlPath) { req, res ->
+            WebsiteSkeleton(MapView(), BootstrapPageConfig()).render(contextBuilder.build(req, res, AppServices.MAP))
         }
         Spark.get(AppServices.SERVICE_URL.absoluteUrlPath) { _, response ->
             response.type("text/html")
