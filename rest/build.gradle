@@ -96,7 +96,7 @@ artifacts {
 ///////////////////
 // Distribution
 ///////////////////
-applicationDefaultJvmArgs=["-Dbz.stewart.bracken.rest.properties=main.properties"]
+applicationDefaultJvmArgs=["-Xmx512", "-Dbz.stewart.bracken.rest.properties=main.properties"]
 //copy resources as static files outside of the jar
 distributions {
     main {

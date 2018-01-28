@@ -1,9 +1,12 @@
 package bz.stew.bracken.ui.pages.singlebill.view
 
 import bz.stew.bracken.ui.common.view.BillViewItem
+import bz.stew.bracken.ui.extension.kotlinx.ac
 import bz.stew.bracken.ui.extension.kotlinx.div
 import bz.stew.bracken.ui.pages.browse.view.mixins.BillOverview
 import bz.stew.bracken.view.View
+import bz.stewart.bracken.shared.view.Classes
+import kotlinx.html.div
 import kotlinx.html.dom.createTree
 import kotlinx.html.h4
 import kotlinx.html.id
@@ -13,8 +16,11 @@ class SingleBillView : View() {
 
    fun constructBillView(bill: BillViewItem) {
       this.element = document.createTree().div {
-         id = bill.billData.officialId()
-         BillOverview(bill).renderIn(this)
+         ac(Classes.CONTENT_ROOT)
+         div {
+            id = bill.billData.officialId()
+            BillOverview(bill).renderIn(this)
+         }
       }
    }
 

@@ -133,6 +133,8 @@ enum class Classes(labelValue: String, addClasses: List<Classes> = emptyList()) 
 
     BROWSE_FILTERS_LIST("browseFiltersList"),
 
+    CONTENT_ROOT("contentRoot"),
+
     ;
 
     private val additionalClasses = if (addClasses.size > 0) addClasses.joinToString(" ") else ""

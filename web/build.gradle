@@ -140,7 +140,7 @@ artifacts {
 // Application stuff
 //todo this should pull in from build environment and bundle into the distribution
 String appHomeSub = '\$APP_HOME'
-applicationDefaultJvmArgs=["-Dbz.stewart.bracken.web.properties=$appHomeSub/conf/main.properties"]
+applicationDefaultJvmArgs=["-Xmx512", "-Dbz.stewart.bracken.web.properties=$appHomeSub/conf/main.properties"]
 
 //copy resources as static files outside of the jar
 distributions {

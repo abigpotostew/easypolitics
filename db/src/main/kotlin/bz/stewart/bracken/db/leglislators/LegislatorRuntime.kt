@@ -103,8 +103,9 @@ class LegislatorRuntime(private val args: LegislatorArguments) : DbRuntime {
                                      db: LegislatorCreateDb) {
         var existing: LegislatorData? = null
         db.queryCollection(collName, {
+            val id = legislatorData.id.bioguide.json
             val found = find(
-                "{id.buiguide:${legislatorData.id.bioguide.json} }".formatJson())
+                "{\"id.buiguide\":$id }".formatJson())
             existing = found.first()
         })
         if (existing == null || (existing != null && existing != legislatorData)) {

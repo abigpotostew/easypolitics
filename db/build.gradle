@@ -120,6 +120,13 @@ task syncIndexTest(dependsOn: classes, type: JavaExec) {
     ignoreExitValue(true)
 }
 
+task runLegislatorsTest(dependsOn: classes, type: JavaExec) {
+    main = "$MAIN_CLASS"
+    classpath = sourceSets.main.runtimeClasspath
+    args = ['-l', '-f', '/Users/stew/Documents/Code/github/congress-legislators/legislators-current.json', '-f', '/Users/stew/Documents/Code/github/congress-legislators/legislators-historical.json', '-s', '/Users/stew/Documents/Code/github/congress-legislators/legislators-social-media.json', '-b', 'congress3']
+    ignoreExitValue(true)
+}
+
 task sourcesJar(type: Jar) {
     classifier = 'sources'
     from sourceSets.main.kotlin
